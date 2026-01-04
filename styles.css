@@ -1,11 +1,11 @@
 /* ===========================
-   FARMHOUSE MOCK — styles.css
-   - No top bar
-   - No bottom dock
+   FARMHOUSE MOCK — styles.css (FIXED)
+   - Uses NEW filenames: coffee-bg.PNG + bg-mobile.PNG
    - Hero image NOT darkened
    - Hero image shows FULL frame (no cropping)
    - Glass panel is clearer/untinted + readable
-   - Social icons correctly sized
+   - Social icons correctly sized (uses instagram.PNG/facebook.PNG/tiktok.PNG)
+   - Removes any legacy topbar/dock if still in HTML
    =========================== */
 
 :root{
@@ -18,15 +18,19 @@
 
   --wrap: min(1100px, calc(100% - 36px));
 
-  /* “clear glass” */
-  --glass: rgba(255,255,255,.16);
-  --glass2: rgba(255,255,255,.22);
-  --glassBorder: rgba(255,255,255,.38);
+  /* “clear glass” (more see-through, less tint) */
+  --glass: rgba(255,255,255,.10);
+  --glass2: rgba(255,255,255,.16);
+  --glassBorder: rgba(255,255,255,.46);
+
+  /* readability helpers (NOT a dark overlay on the hero image) */
+  --panelText: rgba(17,18,20,.92);
+  --panelTextSoft: rgba(17,18,20,.78);
 
   /* buttons */
-  --btn: rgba(255,255,255,.55);
-  --btnBorder: rgba(255,255,255,.55);
-  --btnHover: rgba(255,255,255,.70);
+  --btn: rgba(255,255,255,.60);
+  --btnBorder: rgba(255,255,255,.62);
+  --btnHover: rgba(255,255,255,.78);
 
   --primary: #e3c08a;
   --primaryHover: #efcf9d;
@@ -43,10 +47,11 @@ body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   overflow-x:hidden;
 
-  /* Let it SHINE: no dark overlay layer here. */
-  background-image: url("coffee-bg.jpg");
+  /* ✅ NEW ROOT FILENAMES (PNG, correct case) */
+  background-image: url("./coffee-bg.PNG");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
@@ -86,75 +91,83 @@ a{ color: inherit; text-decoration: none; }
   background: rgba(255,255,255,.06);
 }
 
-/* HERO MEDIA (supports BOTH a div with background-image OR an <img>) */
+/* HERO MEDIA (div with background-image OR an <img>) */
 .hero__media{
   width: 100%;
-  /* IMPORTANT: show the whole hero image (no crop) */
-  background-image: url("sf-hero.jpg");
+  background-image: url("./sf-hero.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
-  background-color: rgba(255,255,255,.08);
+  background-size: contain;          /* ✅ NO CROP */
+  background-color: rgba(255,255,255,.06);
 
-  /* Height tuned to keep the image large but not ridiculous */
-  height: clamp(260px, 42vw, 430px);
+  /* Make it BIG so it doesn’t feel “tiny” */
+  height: clamp(360px, 46vw, 560px);
 }
 
-/* If your HTML uses an <img class="hero__img" src="sf-hero.jpg"> */
+/* If your HTML uses an <img class="hero__img"> */
 .hero__img{
   width:100%;
-  height: clamp(260px, 42vw, 430px);
-  object-fit: contain;     /* NO CROP */
+  height: clamp(360px, 46vw, 560px);
+  object-fit: contain;               /* ✅ NO CROP */
   object-position: center;
-  background: rgba(255,255,255,.08);
+  background: rgba(255,255,255,.06);
 }
 
 /* Glass panel overlayed on the image area */
 .hero__panel{
-  /* If your HTML positions panel inside hero media, this still works.
-     If it’s below hero media, it still looks good. */
-  margin: -120px auto 18px;
-  width: min(760px, calc(100% - 26px));
+  margin: -160px auto 18px;
+  width: min(820px, calc(100% - 26px));
   padding: 18px 18px 16px;
   border-radius: 22px;
 
-  /* “clear untinted glass” feel */
+  /* ✅ clearer/untinted glass */
   background:
     linear-gradient(180deg, var(--glass2), var(--glass));
   border: 1px solid var(--glassBorder);
-  backdrop-filter: blur(14px) saturate(1.05);
-  -webkit-backdrop-filter: blur(14px) saturate(1.05);
-  box-shadow: 0 18px 55px rgba(0,0,0,.16);
+
+  /* blur is the “glass”; keep saturation low to avoid tint */
+  backdrop-filter: blur(18px) saturate(1.0);
+  -webkit-backdrop-filter: blur(18px) saturate(1.0);
+
+  box-shadow: 0 18px 55px rgba(0,0,0,.14);
 
   text-align: center;
+  color: var(--panelText);
 }
 
-/* Readability WITHOUT darkening the hero image:
-   use subtle text shadow + a tiny translucent white highlight behind text lines */
-.hero__panel *{
-  text-shadow: 0 1px 0 rgba(255,255,255,.55);
-}
-
-.hero__logo{
-  width: 86px;
-  height: 86px;
-  margin: 0 auto 10px;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.15));
+/* Improve readability without darkening the HERO image:
+   a subtle “text plate” behind the copy only */
+.hero__title,
+.hero__desc{
+  display:inline-block;
+  padding: 6px 10px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.36);
+  border: 1px solid rgba(255,255,255,.38);
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
 }
 
 .hero__title{
-  margin: 0 0 6px;
-  font-size: 24px;
+  margin: 0 0 10px;
+  font-size: 22px;
   letter-spacing: .2px;
 }
 
 .hero__desc{
   margin: 0 auto 14px;
-  max-width: 52ch;
-  color: rgba(17,18,20,.78);
+  max-width: 56ch;
+  color: var(--panelTextSoft);
   line-height: 1.35;
   font-size: 14px;
+}
+
+/* Logo inside hero panel */
+.hero__logo{
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
 }
 
 /* CTA buttons */
@@ -194,29 +207,25 @@ a{ color: inherit; text-decoration: none; }
 }
 
 .socialBtn{
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 999px;
-  background: rgba(255,255,255,.55);
-  border: 1px solid rgba(255,255,255,.55);
+  background: rgba(255,255,255,.62);
+  border: 1px solid rgba(255,255,255,.62);
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
   cursor: pointer;
 }
-.socialBtn:hover{ background: rgba(255,255,255,.72); }
+.socialBtn:hover{ background: rgba(255,255,255,.80); }
 
+/* ✅ properly sized icons (do NOT rely on content:url; use <img src="..."> in HTML) */
 .socialBtn img{
-  width: 22px;            /* ✅ properly sized icons */
-  height: 22px;
+  width: 26px;
+  height: 26px;
   object-fit: contain;
   display:block;
 }
-
-/* If you used the filenames EXACTLY as you said: */
-.instagramIcon{ content: url("instagram.PNG"); }
-.facebookIcon{ content: url("facebook.PNG"); }
-.tiktokIcon{ content: url("tiktok.PNG"); }
 
 /* =======================
    HOURS BANNER (full width under hero)
@@ -232,7 +241,7 @@ a{ color: inherit; text-decoration: none; }
 
 .hoursBanner img{
   width:100%;
-  height:auto;            /* ✅ show entire hours image */
+  height:auto; /* ✅ show full image */
   display:block;
 }
 
@@ -399,18 +408,19 @@ a{ color: inherit; text-decoration: none; }
 @media (max-width: 760px){
   body{
     background-attachment: scroll;
-    background-image: url("bg-mobile.jpg");
+    /* ✅ NEW ROOT MOBILE FILENAME (PNG, correct case) */
+    background-image: url("./bg-mobile.PNG");
   }
 
   .wrap{ padding: 18px 0 34px; }
 
   .hero__media,
   .hero__img{
-    height: clamp(240px, 60vw, 380px);
+    height: clamp(320px, 72vw, 520px); /* keep it big on mobile too */
   }
 
   .hero__panel{
-    margin-top: -110px;
+    margin-top: -150px;
     width: calc(100% - 22px);
   }
 
