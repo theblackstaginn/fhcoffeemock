@@ -438,3 +438,89 @@ body{
   font-size: 12px;
   color: var(--muted);
 }
+
+/* ===========================
+   MODAL MENU STYLES
+   =========================== */
+
+.menuTop{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  margin: 4px 0 14px;
+}
+
+.orderBtn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding: 12px 16px;
+  border-radius: 14px;
+  text-decoration:none;
+  font-weight: 700;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.14);
+  color: inherit;
+}
+
+.orderBtn:hover{
+  background: rgba(255,255,255,.14);
+}
+
+.menuNote{
+  opacity:.78;
+  font-size: .92rem;
+  text-align:center;
+}
+
+.menuList{
+  display:flex;
+  flex-direction:column;
+  gap: 14px;
+}
+
+.msec{
+  padding: 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.msec__title{
+  margin: 0 0 8px;
+  text-align:center;
+  letter-spacing:.2px;
+}
+
+.mitem{
+  padding: 10px 8px;
+  border-top: 1px solid rgba(255,255,255,.08);
+  text-align:center;
+}
+
+.mitem:first-child{ border-top: 0; }
+
+.mitem__name{
+  font-weight: 600;
+}
+
+.mitem__desc{
+  margin-top: 4px;
+  opacity: .78;
+  font-size: .92rem;
+}
+
+/* hours image in modal */
+.hoursModal{
+  display:flex;
+  justify-content:center;
+}
+
+.hoursModal__img{
+  width: 100%;
+  height: auto;
+  max-width: 860px;
+  border-radius: 16px;
+  display:block;
+}
