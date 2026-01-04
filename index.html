@@ -3,14 +3,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#111214" />
+  <meta name="theme-color" content="#ffffff" />
   <title>Farmhouse Coffee — Mock</title>
-  <meta name="description" content="Farmhouse Coffee mock site. Social-style tiles, centered text, fast hours + menu + ordering." />
+  <meta name="description" content="Farmhouse Coffee mock site. Warm, simple, tile-first." />
 
-  <!-- Favicon -->
   <link rel="icon" href="favicon.PNG" type="image/png" />
-
-  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icon-192.PNG" />
 
@@ -18,66 +15,66 @@
 </head>
 
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <main class="wrap" id="main">
 
-  <!-- Background (no dark overlay; let it shine) -->
-  <div class="bg" aria-hidden="true"></div>
-
-  <main id="main" class="wrap" role="main">
-
-    <!-- HERO -->
+    <!-- HERO (no crop) -->
     <section class="hero" aria-label="Farmhouse Coffee hero">
-      <div class="hero__inner">
-        <img class="hero__logo" src="icon-512.PNG" alt="Farmhouse Coffee logo" />
+      <picture>
+        <source media="(max-width: 720px)" srcset="bg-mobile.jpg">
+        <img class="hero__img" src="sf-hero.jpg" alt="Farmhouse Coffee hero image">
+      </picture>
 
-        <p class="hero__desc">
+      <div class="hero__panel">
+        <img class="hero__logo" src="icon-512.PNG" alt="Farmhouse Coffee logo">
+
+        <p class="hero__copy">
           Warm coffee. Small-town comfort. A place to slow down and feel at home.
         </p>
 
-        <div class="hero__cta" aria-label="Primary actions">
-          <button class="btn btn--primary" type="button" data-open="menu" aria-haspopup="dialog">Menu</button>
-          <button class="btn" type="button" data-open="hours" aria-haspopup="dialog">Hours</button>
+        <div class="hero__actions" aria-label="Quick actions">
+          <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
+          <button class="btn" type="button" data-open="hours">Hours</button>
         </div>
 
         <div class="hero__social" aria-label="Social links">
-          <a class="socialBtn" href="#" aria-label="Instagram (mock link)">
-            <img src="instagram.PNG" alt="" aria-hidden="true" />
+          <a class="social" href="#" aria-label="Instagram (mock link)">
+            <img src="instagram.PNG" alt="">
           </a>
-          <a class="socialBtn" href="#" aria-label="Facebook (mock link)">
-            <img src="facebook.PNG" alt="" aria-hidden="true" />
+          <a class="social" href="#" aria-label="Facebook (mock link)">
+            <img src="facebook.PNG" alt="">
           </a>
-          <a class="socialBtn" href="#" aria-label="TikTok (mock link)">
-            <img src="tiktok.PNG" alt="" aria-hidden="true" />
+          <a class="social" href="#" aria-label="TikTok (mock link)">
+            <img src="tiktok.PNG" alt="">
           </a>
         </div>
       </div>
     </section>
 
-    <!-- HOURS BANNER (full width, show entire image) -->
-    <section class="hoursBanner" aria-label="New hours banner">
-      <img src="hours-panel.PNG" alt="New hours" loading="lazy" />
+    <!-- HOURS BANNER (full width, fully visible) -->
+    <section class="hours-banner" aria-label="New hours">
+      <img src="hours-panel.PNG" alt="New hours panel">
     </section>
 
-    <!-- SOCIAL-STYLE TILE GRID -->
+    <!-- TILES -->
     <section class="grid" aria-label="Featured tiles">
-      <article class="tile" tabindex="0" role="button" data-open="menu" aria-haspopup="dialog" aria-label="Open menu">
-        <img src="r-s-coffee.jpg" alt="Coffee feature" loading="lazy" />
+      <article class="tile" tabindex="0" role="button" data-open="menu" aria-label="Open menu">
+        <img src="menu.jpg" alt="Menu tile image" loading="lazy" />
         <div class="tile__cap">
           <div class="tile__title">Menu</div>
-          <div class="tile__sub">Browse sections + Order</div>
+          <div class="tile__sub">Browse sections</div>
         </div>
       </article>
 
-      <article class="tile" tabindex="0" role="button" data-open="counter" aria-haspopup="dialog" aria-label="Open counter photo">
-        <img src="counter.jpg" alt="Inside the shop" loading="lazy" />
+      <article class="tile" tabindex="0" role="button" data-open="counter" aria-label="Open counter photo">
+        <img src="counter.jpg" alt="Counter photo" loading="lazy" />
         <div class="tile__cap">
           <div class="tile__title">Inside</div>
-          <div class="tile__sub">Counter + vibe</div>
+          <div class="tile__sub">A look at the bar</div>
         </div>
       </article>
 
-      <article class="tile" tabindex="0" role="button" data-open="feature" aria-haspopup="dialog" aria-label="Open Rise and Shine photo">
-        <img src="r-s-coffee.jpg" alt="Rise and Shine coffee" loading="lazy" />
+      <article class="tile" tabindex="0" role="button" data-open="feature" aria-label="Open Rise and Shine feature">
+        <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" loading="lazy" />
         <div class="tile__cap">
           <div class="tile__title">Rise &amp; Shine</div>
           <div class="tile__sub">Morning fuel</div>
@@ -85,14 +82,9 @@
       </article>
     </section>
 
-    <footer class="footer" role="contentinfo">
-      <div class="footer__inner">
-        <div class="footer__small">Mock site • Centered layout • Tile-first • Offline-ready</div>
-      </div>
-    </footer>
   </main>
 
-  <!-- Modal -->
+  <!-- MODAL -->
   <div class="modal" id="modal" hidden>
     <div class="modal__backdrop" data-close="1" aria-hidden="true"></div>
 
