@@ -9,12 +9,15 @@
 (() => {
   "use strict";
 
-  const $ = (sel, root=document) => root.querySelector(sel);
-  const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
   const modal = $("#modal");
   const modalTitle = $("#modalTitle");
   const modalBody = $("#modalBody");
+
+  // Mock order link (replace later if you get a real URL)
+  const ORDER_URL = "#";
 
   const MENU = [
     {
@@ -127,14 +130,15 @@
 
   const CARDS = {
     hours: {
-      title: "New Hours",
+      title: "Hours",
+      // NOTE: We keep the hours image only (full visible).
       html: `
         <div class="menuSection">
-          <h3>Hours Panel</h3>
-          <img src="hours-panel.PNG" alt="New hours panel" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-          <div class="note" style="margin-top:10px;color:rgba(242,244,246,.72);font-size:12px;">
-            (Mock) Exact hours shown on the panel image.
-          </div>
+          <img
+            src="hours-panel.PNG"
+            alt="New hours panel"
+            style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;"
+          />
         </div>
       `
     },
@@ -142,7 +146,6 @@
       title: "Inside",
       html: `
         <div class="menuSection">
-          <h3>Counter</h3>
           <img src="counter.jpg" alt="Counter photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
         </div>
       `
@@ -151,7 +154,6 @@
       title: "Rise & Shine",
       html: `
         <div class="menuSection">
-          <h3>Morning Mood</h3>
           <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
         </div>
       `
@@ -162,16 +164,16 @@
     }
   };
 
-  function esc(s){
+  function esc(s) {
     return String(s ?? "")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
-  function buildMenuUI(){
+  function buildMenuUI() {
     const tabs = MENU.map((sec, i) => {
       const selected = i === 0 ? 'aria-selected="true"' : 'aria-selected="false"';
       return `<button class="menuTab" type="button" data-tab="${esc(sec.id)}" ${selected}>${esc(sec.id)}</button>`;
@@ -179,10 +181,12 @@
 
     const sections = MENU.map((sec, i) => {
       const hidden = i === 0 ? "" : 'style="display:none"';
-      const items = sec.items.map(it => {
-        const note = it.note ? `<div class="note">${esc(it.note)}</div>` : "";
-        return `<div class="menuItem"><div class="name">${esc(it.name)}</div>${note}</div>`;
-      }).join("");
+      const items = sec.items
+        .map((it) => {
+          const note = it.note ? `<div class="note">${esc(it.note)}</div>` : "";
+          return `<div class="menuItem"><div class="name">${esc(it.name)}</div>${note}</div>`;
+        })
+        .join("");
 
       return `
         <div class="menuSection" data-section="${esc(sec.id)}" ${hidden}>
@@ -192,21 +196,26 @@
       `;
     }).join("");
 
+    // ✅ Changes:
+    // - Remove the menu.jpg "Full Menu Image" block entirely.
+    // - Add a single "Order Pickup" button at top (mock link).
     return `
+      <div class="menuTop">
+        <a class="orderBtn" href="${ORDER_URL}" target="_blank" rel="noopener">Order Pickup</a>
+        <div class="menuNote">(Mock) In-store pickup only</div>
+      </div>
+
       <div class="menuTop" role="tablist" aria-label="Menu sections">
         ${tabs}
       </div>
+
       ${sections}
-      <div class="menuSection">
-        <h3>Full Menu Image</h3>
-        <img src="menu.jpg" alt="Menu image" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-      </div>
     `;
   }
 
-  function openModal(key){
+  function openModal(key) {
     const card = CARDS[key];
-    if(!card) return;
+    if (!card) return;
 
     modalTitle.textContent = card.title;
     modalBody.innerHTML = card.html;
@@ -215,36 +224,36 @@
     document.body.style.overflow = "hidden";
 
     // Wire menu tabs each time menu modal opens
-    if(key === "menu") wireMenuTabs();
+    if (key === "menu") wireMenuTabs();
   }
 
-  function closeModal(){
+  function closeModal() {
     modal.hidden = true;
     modalBody.innerHTML = "";
     document.body.style.overflow = "";
   }
 
-  function wireMenuTabs(){
+  function wireMenuTabs() {
     const tabs = $$(".menuTab", modalBody);
     const sections = $$(".menuSection[data-section]", modalBody);
 
     const show = (id) => {
-      tabs.forEach(t => t.setAttribute("aria-selected", String(t.dataset.tab === id)));
-      sections.forEach(sec => {
-        sec.style.display = (sec.dataset.section === id) ? "" : "none";
+      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === id)));
+      sections.forEach((sec) => {
+        sec.style.display = sec.dataset.section === id ? "" : "none";
       });
       modalBody.scrollTop = 0;
     };
 
-    tabs.forEach(t => t.addEventListener("click", () => show(t.dataset.tab)));
+    tabs.forEach((t) => t.addEventListener("click", () => show(t.dataset.tab)));
   }
 
   // Click handlers for any [data-open]
-  function bindOpeners(){
-    $$("[data-open]").forEach(el => {
+  function bindOpeners() {
+    $$("[data-open]").forEach((el) => {
       el.addEventListener("click", () => openModal(el.dataset.open));
       el.addEventListener("keydown", (e) => {
-        if(e.key === "Enter" || e.key === " "){
+        if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
           openModal(el.dataset.open);
         }
@@ -253,14 +262,14 @@
   }
 
   // Close handlers
-  function bindClosers(){
+  function bindClosers() {
     modal.addEventListener("click", (e) => {
       const t = e.target;
-      if(t && t.dataset && t.dataset.close) closeModal();
+      if (t && t.dataset && t.dataset.close) closeModal();
     });
 
     document.addEventListener("keydown", (e) => {
-      if(!modal.hidden && e.key === "Escape") closeModal();
+      if (!modal.hidden && e.key === "Escape") closeModal();
     });
   }
 
@@ -269,7 +278,7 @@
   bindClosers();
 
   // Service worker (offline)
-  if("serviceWorker" in navigator){
+  if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
       navigator.serviceWorker.register("sw.js").catch(() => {});
     });
