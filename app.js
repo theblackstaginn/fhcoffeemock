@@ -5,7 +5,7 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
 
-  // ---- EDIT THIS MENU DATA ----
+  // ---- MENU DATA (placeholder) ----
   const MENU = [
     {
       tab: "Coffee",
@@ -14,7 +14,7 @@
           title: "House Coffee",
           items: [
             { name: "Drip Coffee", price: "$", note: "" },
-            { name: "Cold Brew", price: "$", note: "" },
+            { name: "Cold Brew", price: "$", note: "" }
           ]
         },
         {
@@ -22,7 +22,7 @@
           items: [
             { name: "Americano", price: "$", note: "" },
             { name: "Latte", price: "$", note: "" },
-            { name: "Cappuccino", price: "$", note: "" },
+            { name: "Cappuccino", price: "$", note: "" }
           ]
         }
       ]
@@ -34,7 +34,7 @@
           title: "Breakfast",
           items: [
             { name: "Breakfast Sandwich", price: "$", note: "" },
-            { name: "Biscuits & Gravy", price: "$", note: "" },
+            { name: "Biscuits & Gravy", price: "$", note: "" }
           ]
         }
       ]
@@ -46,7 +46,7 @@
           title: "Lunch",
           items: [
             { name: "Soup + Sandwich", price: "$", note: "" },
-            { name: "Salad", price: "$", note: "" },
+            { name: "Salad", price: "$", note: "" }
           ]
         }
       ]
@@ -142,12 +142,71 @@
     return wrap;
   }
 
-  // ---- Modal wiring (Menu button) ----
+  function buildHoursUI() {
+    const wrap = document.createElement("div");
+    const img = document.createElement("img");
+    img.className = "hoursImg";
+    img.src = "./hours-panel.PNG";
+    img.alt = "Hours";
+    img.loading = "lazy";
+    wrap.appendChild(img);
+    return wrap;
+  }
+
+  // ---- Carousel dots + swipe indexing ----
+  function initCarousel(carousel) {
+    const track = carousel.querySelector(".carousel__track");
+    const slides = [...carousel.querySelectorAll(".carousel__slide")];
+    const dotsWrap = carousel.querySelector(".carousel__dots");
+    if (!track || slides.length === 0 || !dotsWrap) return;
+
+    dotsWrap.innerHTML = "";
+
+    const dots = slides.map((_, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "carousel__dot";
+      b.setAttribute("aria-label", `Go to slide ${i + 1}`);
+      b.setAttribute("aria-current", i === 0 ? "true" : "false");
+      b.addEventListener("click", () => {
+        const w = track.clientWidth;
+        track.scrollTo({ left: i * w, behavior: "smooth" });
+      });
+      dotsWrap.appendChild(b);
+      return b;
+    });
+
+    function setActive(idx) {
+      dots.forEach((d, i) => d.setAttribute("aria-current", i === idx ? "true" : "false"));
+    }
+
+    let raf = 0;
+    track.addEventListener("scroll", () => {
+      if (raf) cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const w = track.clientWidth || 1;
+        const idx = Math.round(track.scrollLeft / w);
+        setActive(Math.max(0, Math.min(idx, slides.length - 1)));
+      });
+    });
+
+    // Ensure correct on resize
+    window.addEventListener("resize", () => {
+      const w = track.clientWidth || 1;
+      const idx = Math.round(track.scrollLeft / w);
+      setActive(Math.max(0, Math.min(idx, slides.length - 1)));
+    });
+  }
+
+  document.querySelectorAll("[data-carousel]").forEach(initCarousel);
+
+  // ---- Event wiring ----
   document.addEventListener("click", (e) => {
     const openBtn = e.target.closest("[data-open]");
     if (openBtn) {
       const what = openBtn.getAttribute("data-open");
       if (what === "menu") openModal("Menu", buildMenuUI());
+      if (what === "hours") openModal("Hours", buildHoursUI());
       return;
     }
 
@@ -157,66 +216,6 @@
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modal.hidden) closeModal();
+    if (e.key === "Escape" && modal && !modal.hidden) closeModal();
   });
-
-  // ---- Instagram-style swipe dots for carousels ----
-  function initCarousels() {
-    const carousels = document.querySelectorAll(".carousel");
-    carousels.forEach((c) => {
-      const track = c.querySelector(".carousel__track");
-      const dotsWrap = c.querySelector(".carousel__dots");
-      const slides = [...track.querySelectorAll("img")];
-
-      if (!track || !dotsWrap || slides.length === 0) return;
-
-      // build dots
-      dotsWrap.innerHTML = "";
-      const dots = slides.map((_, i) => {
-        const d = document.createElement("button");
-        d.type = "button";
-        d.className = "dot" + (i === 0 ? " is-active" : "");
-        d.setAttribute("aria-label", `Slide ${i + 1}`);
-        d.addEventListener("click", () => {
-          slides[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-        });
-        dotsWrap.appendChild(d);
-        return d;
-      });
-
-      // update active dot on scroll
-      let raf = 0;
-      const update = () => {
-        raf = 0;
-
-        const trackRect = track.getBoundingClientRect();
-        const centerX = trackRect.left + trackRect.width / 2;
-
-        let bestIdx = 0;
-        let bestDist = Infinity;
-
-        slides.forEach((img, i) => {
-          const r = img.getBoundingClientRect();
-          const imgCenter = r.left + r.width / 2;
-          const dist = Math.abs(centerX - imgCenter);
-          if (dist < bestDist) {
-            bestDist = dist;
-            bestIdx = i;
-          }
-        });
-
-        dots.forEach((d, i) => d.classList.toggle("is-active", i === bestIdx));
-      };
-
-      track.addEventListener("scroll", () => {
-        if (raf) return;
-        raf = requestAnimationFrame(update);
-      }, { passive: true });
-
-      // initial
-      update();
-    });
-  }
-
-  initCarousels();
 })();
