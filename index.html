@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Farmhouse Coffee — Mock</title>
-  <meta name="theme-color" content="#f2eadc" />
+  <meta name="theme-color" content="#efe6d6" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 
@@ -13,33 +13,32 @@
 
   <main id="main" class="wrap">
     <section class="hero" aria-label="Farmhouse Coffee hero">
-      <!-- Hero image area -->
-      <div class="hero__media" role="img" aria-label="Farmhouse Coffee hero image"></div>
+      <!-- HERO IMAGE (no crop) -->
+      <div class="hero__media" role="img" aria-label="Farmhouse Coffee storefront photo"></div>
 
-      <!-- Glass panel -->
+      <!-- GLASS PANEL (compact, readable, not foggy) -->
       <div class="hero__panel">
-        <img class="hero__logo" src="logo.PNG" alt="Farmhouse Coffee logo" />
+        <!-- Use your actual logo filename here if you have it -->
+        <img class="hero__logo" src="favicon.PNG" alt="Farmhouse Coffee logo" />
 
-        <h1 class="hero__title">Warm coffee. Small-town comfort.</h1>
-        <p class="hero__desc">A place to slow down and feel at home.</p>
+        <p class="hero__desc">
+          Warm coffee. Small-town comfort. A place to slow down and feel at home.
+        </p>
 
-        <div class="hero__cta">
-          <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
-          <button class="btn" type="button" data-open="hours">Hours</button>
-          <button class="btn" type="button" data-open="order">Order</button>
+        <div class="hero__cta" aria-label="Primary links">
+          <a class="btn btn--primary" href="menu.html">Menu</a>
+          <a class="btn" href="hours.html">Hours</a>
+          <a class="btn" href="order.html">Order</a>
         </div>
 
-        <!-- ✅ Social icons: these must NOT link to the PNG files -->
         <div class="hero__meta" aria-label="Social links">
-          <!-- Replace these hrefs with their real public URLs when you have them -->
+          <!-- Put real URLs when you have them -->
           <a class="socialBtn" href="#" aria-label="Instagram">
             <img src="instagram.PNG" alt="" />
           </a>
-
           <a class="socialBtn" href="#" aria-label="Facebook">
             <img src="facebook.PNG" alt="" />
           </a>
-
           <a class="socialBtn" href="#" aria-label="TikTok">
             <img src="tiktok.PNG" alt="" />
           </a>
@@ -47,44 +46,10 @@
       </div>
     </section>
 
-    <!-- Hours banner under hero -->
-    <section class="hoursBanner" aria-label="Hours banner">
-      <img src="hours-panel.PNG" alt="Farmhouse Coffee hours" />
-    </section>
-
-    <!-- Tiles -->
-    <section class="grid" aria-label="Highlights">
-      <article class="tile" role="button" tabindex="0" data-open="counter" aria-label="Inside photo">
-        <img src="counter.jpg" alt="Inside the shop" />
-        <div class="tile__cap">
-          <div class="tile__title">Inside</div>
-          <div class="tile__sub">Cozy counter + friendly faces</div>
-        </div>
-      </article>
-
-      <article class="tile" role="button" tabindex="0" data-open="feature" aria-label="Feature photo">
-        <img src="r-s-coffee.jpg" alt="Coffee feature" />
-        <div class="tile__cap">
-          <div class="tile__title">Rise &amp; Shine</div>
-          <div class="tile__sub">Fresh pours + good mornings</div>
-        </div>
-      </article>
+    <!-- Optional: keep your secondary image strip, or remove it -->
+    <section class="strip" aria-label="Coffee photo strip">
+      <img src="counter.jpg" alt="Counter photo" />
     </section>
   </main>
-
-  <!-- Modal -->
-  <section class="modal" id="modal" hidden aria-hidden="true">
-    <div class="modal__backdrop" data-close="1"></div>
-
-    <div class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-      <div class="modal__head">
-        <div class="modal__title" id="modalTitle">Modal</div>
-        <button class="modal__close" type="button" data-close="1" aria-label="Close">✕</button>
-      </div>
-      <div class="modal__body" id="modalBody"></div>
-    </div>
-  </section>
-
-  <script src="app.js" defer></script>
 </body>
 </html>
