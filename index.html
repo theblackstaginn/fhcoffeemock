@@ -10,102 +10,145 @@
 </head>
 
 <body>
-  <!-- fixed background layer (works on iOS) -->
+  <!-- Fixed background layer (works on iOS) -->
   <div class="bg-fixed" aria-hidden="true"></div>
 
   <a class="skip" href="#content">Skip to content</a>
 
   <main id="content" class="wrap">
-
-    <!-- HERO IMAGE (NO PANEL OVER IT) -->
+    <!-- HERO -->
     <section class="hero" aria-label="Farmhouse Coffee">
       <div class="hero__media" role="img" aria-label="Farmhouse Coffee hero image"></div>
-    </section>
 
-    <!-- LOGO + ACTIONS + SOCIAL (separate, no overlap) -->
-    <section class="card card--center" aria-label="Actions">
-      <img class="logo" src="./logo.PNG" alt="Farmhouse Coffee logo" onerror="this.style.display='none';" />
+      <div class="hero__panel">
+        <img class="hero__logo" src="./logo.PNG" alt="Farmhouse Coffee logo" onerror="this.style.display='none';" />
 
-      <p class="tagline">
-        Warm coffee. Small-town comfort. A place to slow down and feel at home.
-      </p>
+        <p class="hero__desc">
+          Warm coffee. Small-town comfort. A place to slow down and feel at home.
+        </p>
 
-      <div class="actions" role="group" aria-label="Primary actions">
-        <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
-        <a class="btn" href="./hours.html" aria-label="Hours page">Hours</a>
-        <a class="btn" href="./order.html" aria-label="Order page">Order</a>
-      </div>
-
-      <div class="social" aria-label="Social links">
-        <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
-          <img src="./instagram.PNG" alt="" />
-        </a>
-        <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
-          <img src="./facebook.PNG" alt="" />
-        </a>
-        <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
-          <img src="./tiktok.PNG" alt="" />
-        </a>
-      </div>
-    </section>
-
-    <!-- NEW HOURS (its own block, like your sketch) -->
-    <section class="card" aria-label="New Hours">
-      <div class="cardTitle">New Hours</div>
-      <a class="hoursLink" href="./hours.html" aria-label="View hours">
-        <img class="hoursImgInline" src="./hours-panel.PNG" alt="Hours" loading="lazy" />
-      </a>
-    </section>
-
-    <!-- SLIDES (Instagram-style swipe) -->
-    <section class="slides" aria-label="Slides">
-      <!-- beanslide -->
-      <div class="carousel" data-carousel="beanslide" aria-label="Bean Slide carousel">
-        <div class="carousel__track" tabindex="0">
-          <img src="./beanslide/coff-1.jpg" alt="" loading="lazy" />
-          <img src="./beanslide/coff-2.jpg" alt="" loading="lazy" />
-          <img src="./beanslide/coff-3.jpg" alt="" loading="lazy" />
-          <img src="./beanslide/coff-4.jpg" alt="" loading="lazy" />
-          <img src="./beanslide/coff-5.jpg" alt="" loading="lazy" />
-          <img src="./beanslide/coff-6.jpg" alt="" loading="lazy" />
+        <div class="hero__cta" role="group" aria-label="Primary actions">
+          <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
+          <button class="btn" type="button" data-open="hours">Hours</button>
+          <a class="btn" href="./order.html" aria-label="Order (pickup)">Order</a>
         </div>
-        <div class="carousel__dots" aria-hidden="true"></div>
+
+        <div class="hero__meta" aria-label="Social links">
+          <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="./instagram.PNG" alt="" />
+          </a>
+          <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="./facebook.PNG" alt="" />
+          </a>
+          <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+            <img src="./tiktok.PNG" alt="" />
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOURS PANEL (between hero and slides, no overlap) -->
+    <section class="hoursPanel" aria-label="Hours panel">
+      <img src="./hours-panel.PNG" alt="Hours" loading="lazy" />
+    </section>
+
+    <!-- SLIDES (same size as tiles, not cropped, swipe like Instagram) -->
+    <section class="mediaStack" aria-label="Slides">
+      <!-- beanslide -->
+      <div class="carousel" data-carousel aria-label="Bean Slide">
+        <div class="carousel__viewport">
+          <div class="carousel__track">
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-1.jpg" alt="Bean Slide 1" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-2.jpg" alt="Bean Slide 2" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-3.jpg" alt="Bean Slide 3" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-4.jpg" alt="Bean Slide 4" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-5.jpg" alt="Bean Slide 5" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanslide/coff-6.jpg" alt="Bean Slide 6" loading="lazy" />
+            </div>
+          </div>
+        </div>
+        <div class="carousel__dots" aria-label="Slide position"></div>
       </div>
 
       <!-- beanstory -->
-      <div class="carousel" data-carousel="beanstory" aria-label="Bean Story carousel">
-        <div class="carousel__track" tabindex="0">
-          <img src="./beanstory/cbs-1.jpg" alt="" loading="lazy" />
-          <img src="./beanstory/cbs-2.jpg" alt="" loading="lazy" />
-          <img src="./beanstory/cbs-3.jpg" alt="" loading="lazy" />
-          <img src="./beanstory/cbs-4.jpg" alt="" loading="lazy" />
-          <img src="./beanstory/cbs-5.jpg" alt="" loading="lazy" />
-          <img src="./beanstory/cbs-6.jpg" alt="" loading="lazy" />
+      <div class="carousel" data-carousel aria-label="Bean Story">
+        <div class="carousel__viewport">
+          <div class="carousel__track">
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-1.jpg" alt="Bean Story 1" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-2.jpg" alt="Bean Story 2" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-3.jpg" alt="Bean Story 3" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-4.jpg" alt="Bean Story 4" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-5.jpg" alt="Bean Story 5" loading="lazy" />
+            </div>
+            <div class="carousel__slide">
+              <img src="./beanstory/cbs-6.jpg" alt="Bean Story 6" loading="lazy" />
+            </div>
+          </div>
         </div>
-        <div class="carousel__dots" aria-hidden="true"></div>
+        <div class="carousel__dots" aria-label="Slide position"></div>
       </div>
     </section>
 
-    <!-- IMAGE TILES (JUST IMAGES, NO TEXT) -->
-    <section class="tileGrid" aria-label="Image tiles">
-      <img src="./tiles/counter.jpg" alt="" loading="lazy" />
-      <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
-      <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
-      <img src="./tiles/menu.jpg" alt="" loading="lazy" />
-      <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
-    </section>
+    <!-- IMAGE TILES (just images, symmetrical, pulled from /tiles) -->
+    <section class="grid" aria-label="Image tiles">
+      <!-- Menu + Hours still trigger modal, but show your new tile images -->
+      <button class="tile" type="button" data-open="menu" aria-label="Open menu">
+        <img src="./tiles/menu.jpg" alt="Menu" loading="lazy" />
+      </button>
 
+      <button class="tile" type="button" data-open="hours" aria-label="Open hours">
+        <img src="./hours-panel.PNG" alt="Hours" loading="lazy" />
+      </button>
+
+      <!-- The rest are just pretty tiles -->
+      <div class="tile" role="img" aria-label="Tile: counter">
+        <img src="./tiles/counter.jpg" alt="" loading="lazy" />
+      </div>
+
+      <div class="tile" role="img" aria-label="Tile: espresso">
+        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
+      </div>
+
+      <div class="tile" role="img" aria-label="Tile: fh-mc">
+        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
+      </div>
+
+      <div class="tile" role="img" aria-label="Tile: r-s-coffee">
+        <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
+      </div>
+    </section>
   </main>
 
-  <!-- MODAL (menu + optional hours if you still use it elsewhere) -->
+  <!-- MODAL -->
   <div class="modal" hidden aria-hidden="true">
     <div class="modal__backdrop" data-close></div>
 
     <section class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <header class="modal__head">
-        <div id="modalTitle" class="modal__title"></div>
+        <div id="modalTitle" class="modal__title">Menu</div>
         <button class="modal__close" type="button" data-close aria-label="Close">✕</button>
       </header>
+
       <div class="modal__body" id="modalBody"></div>
     </section>
   </div>
