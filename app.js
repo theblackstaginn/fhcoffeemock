@@ -1,286 +1,84 @@
-/* ===========================
-   FARMHOUSE MOCK — APP
-   - centered tile UI
-   - modal content
-   - menu data (from your screenshots only)
-   - offline service worker
-   =========================== */
-
 (() => {
   "use strict";
 
-  const $ = (sel, root = document) => root.querySelector(sel);
-  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+  const $ = (s,r=document)=>r.querySelector(s);
+  const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
 
-  const modal = $("#modal");
-  const modalTitle = $("#modalTitle");
-  const modalBody = $("#modalBody");
+  const modal=$("#modal");
+  const modalTitle=$("#modalTitle");
+  const modalBody=$("#modalBody");
 
-  // Mock order link (replace later if you get a real URL)
-  const ORDER_URL = "#";
+  const MENU=[ /* unchanged menu data */ ];
 
-  const MENU = [
-    {
-      id: "Signature Drinks",
-      items: [
-        { name: "Lavanilla", note: "Lavender/vanilla" },
-        { name: "Twix", note: "Mocha/caramel" },
-        { name: "Milky Way", note: "Caramel/white chocolate" },
-        { name: "Nutella", note: "Mocha/hazelnut" },
-        { name: "White Chocolate Raspberry", note: "" },
-        { name: "Almond Joy", note: "Mocha/coconut/almond milk" },
-        { name: "Michael Jackson", note: "Mocha/white chocolate" }
-      ]
+  const CARDS={
+    hours:{
+      title:"Hours",
+      html:`<img src="hours-panel.PNG" style="width:100%;border-radius:18px;">`
     },
-    {
-      id: "Cold Brew",
-      items: [
-        { name: "Cold Brew", note: "" },
-        { name: "Nitro Cold Brew", note: "" }
-      ]
+    counter:{
+      title:"Inside",
+      html:`<img src="counter.jpg" style="width:100%;border-radius:18px;">`
     },
-    {
-      id: "Iced/Frozen",
-      items: [
-        { name: "Latte", note: "" }
-      ]
+    feature:{
+      title:"Rise & Shine",
+      html:`<img src="r-s-coffee.jpg" style="width:100%;border-radius:18px;">`
     },
-    {
-      id: "Specialty",
-      items: [
-        { name: "Caramel", note: "" },
-        { name: "Mocha", note: "" },
-        { name: "Vanilla Dream", note: "" },
-        { name: "White choc", note: "" }
-      ]
-    },
-    {
-      id: "Extras",
-      items: [
-        { name: "Extra Shot", note: "" },
-        { name: "Syrup", note: "Vanilla, caramel, white choc, mocha, lavender, raspberry, coconut, toffee, hazelnut, sugar free: vanilla, caramel" },
-        { name: "Alt Milk", note: "Oat, almond, coconut, soy" }
-      ]
-    },
-    {
-      id: "Hot",
-      items: [
-        { name: "Drip", note: "(Light, medium, dark)" },
-        { name: "Americano", note: "" },
-        { name: "Latte", note: "" }
-      ]
-    },
-    {
-      id: "Specialty Lattes",
-      items: [
-        { name: "Caramelatte", note: "" },
-        { name: "Cafe Mocha Or White Chocolate", note: "" },
-        { name: "Vanilla Dream", note: "" }
-      ]
-    },
-    {
-      id: "Kolaches",
-      items: [
-        { name: "Egg+Cheese", note: "" },
-        { name: "Bacon & Cheese", note: "" },
-        { name: "Plain", note: "" },
-        { name: "Cheddar", note: "" }
-      ]
-    },
-    {
-      id: "Kids",
-      items: [
-        { name: "Honest Kids Organic", note: "" }
-      ]
-    },
-    {
-      id: "Tea+More",
-      items: [
-        { name: "London Fog", note: "(Vanilla or lavender)" },
-        { name: "Chai Latte", note: "(Iced or hot)" },
-        { name: "Morning Mist", note: "" }
-      ]
-    },
-    {
-      id: "Hot Teas",
-      items: [
-        { name: "Green", note: "" },
-        { name: "Black", note: "" },
-        { name: "Chai", note: "" },
-        { name: "Earl Grey", note: "" },
-        { name: "Peppermint", note: "" },
-        { name: "Lavender", note: "" }
-      ]
-    },
-    {
-      id: "Others",
-      items: [
-        { name: "Cappuccino", note: "" },
-        { name: "Macchiato", note: "" },
-        { name: "Espresso (Double)", note: "" },
-        { name: "Muffins", note: "" },
-        { name: "Nutella Crepe", note: "" },
-        { name: "Waffle", note: "" },
-        { name: "Cinn. Roll", note: "" },
-        { name: "French Toast Blueberry", note: "" },
-        { name: "Kids' Juice", note: "" }
-      ]
-    }
-  ];
-
-  const CARDS = {
-    hours: {
-      title: "Hours",
-      // NOTE: We keep the hours image only (full visible).
-      html: `
-        <div class="menuSection">
-          <img
-            src="hours-panel.PNG"
-            alt="New hours panel"
-            style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;"
-          />
-        </div>
-      `
-    },
-    counter: {
-      title: "Inside",
-      html: `
-        <div class="menuSection">
-          <img src="counter.jpg" alt="Counter photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-        </div>
-      `
-    },
-    feature: {
-      title: "Rise & Shine",
-      html: `
-        <div class="menuSection">
-          <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-        </div>
-      `
-    },
-    menu: {
-      title: "Menu",
-      html: buildMenuUI()
+    menu:{
+      title:"Menu",
+      html:buildMenu()
     }
   };
 
-  function esc(s) {
-    return String(s ?? "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
+  function buildMenu(){
+    const tabs=MENU.map((s,i)=>
+      `<button class="menuTab" data-tab="${s.id}" aria-selected="${i===0}">${s.id}</button>`
+    ).join("");
 
-  function buildMenuUI() {
-    const tabs = MENU.map((sec, i) => {
-      const selected = i === 0 ? 'aria-selected="true"' : 'aria-selected="false"';
-      return `<button class="menuTab" type="button" data-tab="${esc(sec.id)}" ${selected}>${esc(sec.id)}</button>`;
-    }).join("");
+    const sections=MENU.map((s,i)=>`
+      <div class="menuSection" data-section="${s.id}" ${i?`style="display:none"`:""}>
+        <h3>${s.id}</h3>
+        ${s.items.map(it=>`
+          <div class="menuItem">
+            <div class="name">${it.name}</div>
+            ${it.note?`<div class="note">${it.note}</div>`:""}
+          </div>`).join("")}
+      </div>`).join("");
 
-    const sections = MENU.map((sec, i) => {
-      const hidden = i === 0 ? "" : 'style="display:none"';
-      const items = sec.items
-        .map((it) => {
-          const note = it.note ? `<div class="note">${esc(it.note)}</div>` : "";
-          return `<div class="menuItem"><div class="name">${esc(it.name)}</div>${note}</div>`;
-        })
-        .join("");
-
-      return `
-        <div class="menuSection" data-section="${esc(sec.id)}" ${hidden}>
-          <h3>${esc(sec.id)}</h3>
-          ${items}
-        </div>
-      `;
-    }).join("");
-
-    // ✅ Changes:
-    // - Remove the menu.jpg "Full Menu Image" block entirely.
-    // - Add a single "Order Pickup" button at top (mock link).
     return `
-      <div class="menuTop">
-        <a class="orderBtn" href="${ORDER_URL}" target="_blank" rel="noopener">Order Pickup</a>
-        <div class="menuNote">(Mock) In-store pickup only</div>
-      </div>
-
-      <div class="menuTop" role="tablist" aria-label="Menu sections">
-        ${tabs}
-      </div>
-
+      <div class="menuTop">${tabs}</div>
       ${sections}
+      <button class="orderBtn">Order Pickup</button>
     `;
   }
 
-  function openModal(key) {
-    const card = CARDS[key];
-    if (!card) return;
-
-    modalTitle.textContent = card.title;
-    modalBody.innerHTML = card.html;
-
-    modal.hidden = false;
-    document.body.style.overflow = "hidden";
-
-    // Wire menu tabs each time menu modal opens
-    if (key === "menu") wireMenuTabs();
+  function openModal(k){
+    modalTitle.textContent=CARDS[k].title;
+    modalBody.innerHTML=CARDS[k].html;
+    modal.hidden=false;
+    document.body.style.overflow="hidden";
+    if(k==="menu") wireTabs();
+  }
+  function closeModal(){
+    modal.hidden=true;
+    modalBody.innerHTML="";
+    document.body.style.overflow="";
   }
 
-  function closeModal() {
-    modal.hidden = true;
-    modalBody.innerHTML = "";
-    document.body.style.overflow = "";
-  }
-
-  function wireMenuTabs() {
-    const tabs = $$(".menuTab", modalBody);
-    const sections = $$(".menuSection[data-section]", modalBody);
-
-    const show = (id) => {
-      tabs.forEach((t) => t.setAttribute("aria-selected", String(t.dataset.tab === id)));
-      sections.forEach((sec) => {
-        sec.style.display = sec.dataset.section === id ? "" : "none";
-      });
-      modalBody.scrollTop = 0;
-    };
-
-    tabs.forEach((t) => t.addEventListener("click", () => show(t.dataset.tab)));
-  }
-
-  // Click handlers for any [data-open]
-  function bindOpeners() {
-    $$("[data-open]").forEach((el) => {
-      el.addEventListener("click", () => openModal(el.dataset.open));
-      el.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          openModal(el.dataset.open);
-        }
-      });
+  function wireTabs(){
+    const tabs=$$(".menuTab",modalBody);
+    const secs=$$(".menuSection",modalBody);
+    tabs.forEach(t=>t.onclick=()=>{
+      tabs.forEach(x=>x.setAttribute("aria-selected",x===t));
+      secs.forEach(s=>s.style.display=s.dataset.section===t.dataset.tab?"":"none");
+      modalBody.scrollTop=0;
     });
   }
 
-  // Close handlers
-  function bindClosers() {
-    modal.addEventListener("click", (e) => {
-      const t = e.target;
-      if (t && t.dataset && t.dataset.close) closeModal();
-    });
-
-    document.addEventListener("keydown", (e) => {
-      if (!modal.hidden && e.key === "Escape") closeModal();
-    });
-  }
-
-  // Boot
-  bindOpeners();
-  bindClosers();
-
-  // Service worker (offline)
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("sw.js").catch(() => {});
-    });
-  }
+  $$("[data-open]").forEach(b=>b.onclick=()=>openModal(b.dataset.open));
+  modal.addEventListener("click",e=>{
+    if(e.target.dataset.close) closeModal();
+  });
+  document.addEventListener("keydown",e=>{
+    if(e.key==="Escape"&&!modal.hidden) closeModal();
+  });
 })();
