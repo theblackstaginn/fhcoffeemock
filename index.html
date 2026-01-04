@@ -52,7 +52,6 @@
 
     <!-- TILES GRID (2 columns) -->
     <section class="grid" aria-label="Slides + image tiles">
-
       <!-- SLOT 1: Carousel (beanslide) -->
       <div class="card carousel" data-carousel="beanslide" aria-label="Bean Slide carousel">
         <div class="carousel__viewport" tabindex="0" aria-label="Tap or swipe slides">
@@ -103,7 +102,6 @@
       <button class="card tile" type="button" aria-label="Farmhouse image">
         <img class="tile__img" src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
       </button>
-
     </section>
   </main>
 
@@ -122,91 +120,5 @@
   </div>
 
   <script src="./app.js"></script>
-
-  <!-- Inline: Carousels (swipe + dots + MOBILE-SAFE tap-to-advance). No external libs. -->
-  <script>
-  (() => {
-    "use strict";
-
-    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
-
-    function initCarousel(root){
-      const viewport = root.querySelector(".carousel__viewport");
-      const track = root.querySelector(".carousel__track");
-      const imgs = Array.from(root.querySelectorAll(".carousel__img"));
-      const dots = root.querySelector(".dots");
-      if (!viewport || !track || imgs.length === 0 || !dots) return;
-
-      // Build dots
-      dots.innerHTML = "";
-      const dotEls = imgs.map((_, i) => {
-        const d = document.createElement("button");
-        d.type = "button";
-        d.className = "dot";
-        d.setAttribute("aria-label", `Slide ${i+1}`);
-        d.addEventListener("pointerup", (e) => {
-          e.preventDefault();
-          viewport.scrollTo({ left: viewport.clientWidth * i, behavior: "smooth" });
-        });
-        dots.appendChild(d);
-        return d;
-      });
-
-      const getIndex = () =>
-        clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
-
-      const go = (idx) => {
-        idx = clamp(idx, 0, imgs.length - 1);
-        viewport.scrollTo({ left: viewport.clientWidth * idx, behavior: "smooth" });
-      };
-
-      const setActive = () => {
-        const idx = getIndex();
-        dotEls.forEach((d, i) => d.classList.toggle("is-active", i === idx));
-      };
-
-      viewport.addEventListener("scroll", () => requestAnimationFrame(setActive), { passive: true });
-      window.addEventListener("resize", setActive);
-      setActive();
-
-      // Mobile-safe tap-to-advance (ignores swipes)
-      let downX = 0, downY = 0, downT = 0, moved = false;
-
-      viewport.addEventListener("pointerdown", (e) => {
-        if (e.pointerType === "mouse" && e.button !== 0) return;
-        downX = e.clientX;
-        downY = e.clientY;
-        downT = performance.now();
-        moved = false;
-      });
-
-      viewport.addEventListener("pointermove", (e) => {
-        const dx = Math.abs(e.clientX - downX);
-        const dy = Math.abs(e.clientY - downY);
-        if (dx > 10 || dy > 10) moved = true;
-      });
-
-      viewport.addEventListener("pointerup", (e) => {
-        // If user tapped dots, dot handler wins.
-        if (e.target && (e.target.classList?.contains("dot") || e.target.closest?.(".dots"))) return;
-
-        const dt = performance.now() - downT;
-        const dx = Math.abs(e.clientX - downX);
-        const dy = Math.abs(e.clientY - downY);
-
-        const isTap = !moved && dt < 450 && dx < 12 && dy < 12;
-        if (!isTap) return;
-
-        const r = viewport.getBoundingClientRect();
-        const x = e.clientX - r.left;
-        const idx = getIndex();
-        if (x < r.width * 0.5) go(idx - 1);
-        else go(idx + 1);
-      });
-    }
-
-    document.querySelectorAll(".carousel").forEach(initCarousel);
-  })();
-  </script>
 </body>
 </html>
