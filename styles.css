@@ -1,265 +1,425 @@
+/* ===========================
+   FARMHOUSE MOCK — styles.css
+   - No top bar
+   - No bottom dock
+   - Hero image NOT darkened
+   - Hero image shows FULL frame (no cropping)
+   - Glass panel is clearer/untinted + readable
+   - Social icons correctly sized
+   =========================== */
+
 :root{
-  --radius: 28px;
-  --radius-sm: 18px;
+  --text: #111214;
+  --muted: rgba(17,18,20,.72);
 
-  --text: #1a1a1a;
-  --muted: rgba(26,26,26,.65);
+  --radius: 26px;
+  --tileRadius: 22px;
+  --shadow: 0 18px 55px rgba(0,0,0,.18);
 
-  /* clear, UNTINTED glass */
+  --wrap: min(1100px, calc(100% - 36px));
+
+  /* “clear glass” */
   --glass: rgba(255,255,255,.16);
-  --glass-border: rgba(255,255,255,.38);
+  --glass2: rgba(255,255,255,.22);
+  --glassBorder: rgba(255,255,255,.38);
 
-  --shadow: 0 18px 55px rgba(0,0,0,.14);
+  /* buttons */
+  --btn: rgba(255,255,255,.55);
+  --btnBorder: rgba(255,255,255,.55);
+  --btnHover: rgba(255,255,255,.70);
 
-  --accent: #d6b27c;
+  --primary: #e3c08a;
+  --primaryHover: #efcf9d;
 }
 
-*{ box-sizing:border-box; }
-html,body{ margin:0; padding:0; }
-
+/* =======================
+   RESET
+   ======================= */
+*{ box-sizing: border-box; }
+html,body{ height:100%; }
 body{
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-  color: var(--text);
+  margin:0;
+  color:var(--text);
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  overflow-x:hidden;
 
-  /* Let it shine — no dark overlays */
-  background: url("coffee-bg.jpg") repeat;
+  /* Let it SHINE: no dark overlay layer here. */
+  background-image: url("coffee-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
+img{ max-width:100%; height:auto; display:block; }
+button{ font: inherit; color: inherit; }
+a{ color: inherit; text-decoration: none; }
+
+.skip{
+  position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
+}
+.skip:focus{
+  left: 12px; top: 12px; width:auto; height:auto;
+  padding:10px 12px;
+  background: rgba(255,255,255,.9);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  z-index: 9999;
+}
+
+/* =======================
+   PAGE WRAP
+   ======================= */
 .wrap{
-  max-width: 1120px;
+  width: var(--wrap);
   margin: 0 auto;
-  padding: 44px 18px 80px;
+  padding: 24px 0 42px;
 }
 
-/* HERO */
+/* =======================
+   HERO
+   ======================= */
 .hero{
-  position: relative;
   border-radius: var(--radius);
   overflow: hidden;
   box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.06);
 }
 
-/* The key: never crop */
+/* HERO MEDIA (supports BOTH a div with background-image OR an <img>) */
+.hero__media{
+  width: 100%;
+  /* IMPORTANT: show the whole hero image (no crop) */
+  background-image: url("sf-hero.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: rgba(255,255,255,.08);
+
+  /* Height tuned to keep the image large but not ridiculous */
+  height: clamp(260px, 42vw, 430px);
+}
+
+/* If your HTML uses an <img class="hero__img" src="sf-hero.jpg"> */
 .hero__img{
-  display:block;
   width:100%;
-  height:auto;          /* keeps full image */
-  object-fit: contain;  /* just in case */
-  background: #f2f2f2;
+  height: clamp(260px, 42vw, 430px);
+  object-fit: contain;     /* NO CROP */
+  object-position: center;
+  background: rgba(255,255,255,.08);
 }
 
-/* glass overlay */
+/* Glass panel overlayed on the image area */
 .hero__panel{
-  position:absolute;
-  left:50%;
-  top:50%;
-  transform: translate(-50%,-50%);
-  width: min(720px, calc(100% - 36px));
+  /* If your HTML positions panel inside hero media, this still works.
+     If it’s below hero media, it still looks good. */
+  margin: -120px auto 18px;
+  width: min(760px, calc(100% - 26px));
+  padding: 18px 18px 16px;
+  border-radius: 22px;
 
-  padding: 26px 28px;
-  border-radius: var(--radius-sm);
-  text-align:center;
+  /* “clear untinted glass” feel */
+  background:
+    linear-gradient(180deg, var(--glass2), var(--glass));
+  border: 1px solid var(--glassBorder);
+  backdrop-filter: blur(14px) saturate(1.05);
+  -webkit-backdrop-filter: blur(14px) saturate(1.05);
+  box-shadow: 0 18px 55px rgba(0,0,0,.16);
 
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  backdrop-filter: blur(18px) saturate(1.1);
-  -webkit-backdrop-filter: blur(18px) saturate(1.1);
+  text-align: center;
+}
+
+/* Readability WITHOUT darkening the hero image:
+   use subtle text shadow + a tiny translucent white highlight behind text lines */
+.hero__panel *{
+  text-shadow: 0 1px 0 rgba(255,255,255,.55);
 }
 
 .hero__logo{
-  width: 108px;
-  height: auto;
-  display:block;
+  width: 86px;
+  height: 86px;
+  margin: 0 auto 10px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.15));
+}
+
+.hero__title{
+  margin: 0 0 6px;
+  font-size: 24px;
+  letter-spacing: .2px;
+}
+
+.hero__desc{
   margin: 0 auto 14px;
-}
-
-.hero__copy{
-  margin: 0 0 18px;
-  font-size: 18px;
+  max-width: 52ch;
+  color: rgba(17,18,20,.78);
   line-height: 1.35;
-  color: #1f1f1f;
-  text-shadow: 0 1px 0 rgba(255,255,255,.12);
+  font-size: 14px;
 }
 
-.hero__actions{
+/* CTA buttons */
+.hero__cta{
   display:flex;
-  gap: 12px;
   justify-content:center;
-  margin-bottom: 16px;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
 }
 
 .btn{
   appearance:none;
-  border: 1px solid rgba(0,0,0,.14);
-  background: rgba(255,255,255,.85);
-  padding: 10px 18px;
+  border: 1px solid var(--btnBorder);
+  background: var(--btn);
+  color: rgba(17,18,20,.92);
+  padding: 10px 16px;
   border-radius: 999px;
-  font-size: 14px;
   cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
 }
+.btn:hover{ background: var(--btnHover); }
+.btn:active{ transform: translateY(1px); }
 
 .btn--primary{
-  background: var(--accent);
-  border-color: transparent;
+  border-color: rgba(227,192,138,.85);
+  background: var(--primary);
 }
+.btn--primary:hover{ background: var(--primaryHover); }
 
-.hero__social{
+/* Social row (icon-only) */
+.hero__meta{
   display:flex;
   justify-content:center;
-  gap: 14px;
+  gap: 10px;
+  margin-top: 6px;
 }
 
-.social{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width: 38px;
-  height: 38px;
+.socialBtn{
+  width: 40px;
+  height: 40px;
   border-radius: 999px;
   background: rgba(255,255,255,.55);
-  border: 1px solid rgba(255,255,255,.30);
+  border: 1px solid rgba(255,255,255,.55);
+  display:grid;
+  place-items:center;
+  box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  cursor: pointer;
 }
+.socialBtn:hover{ background: rgba(255,255,255,.72); }
 
-.social img{
-  width: 22px;
+.socialBtn img{
+  width: 22px;            /* ✅ properly sized icons */
   height: 22px;
   object-fit: contain;
   display:block;
 }
 
-/* HOURS BANNER */
-.hours-banner{
-  margin: 30px 0 34px;
+/* If you used the filenames EXACTLY as you said: */
+.instagramIcon{ content: url("instagram.PNG"); }
+.facebookIcon{ content: url("facebook.PNG"); }
+.tiktokIcon{ content: url("tiktok.PNG"); }
+
+/* =======================
+   HOURS BANNER (full width under hero)
+   ======================= */
+.hoursBanner{
+  margin-top: 18px;
   border-radius: var(--radius);
   overflow:hidden;
   box-shadow: var(--shadow);
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.05);
 }
 
-.hours-banner img{
+.hoursBanner img{
   width:100%;
-  height:auto;
+  height:auto;            /* ✅ show entire hours image */
   display:block;
 }
 
-/* GRID */
+/* =======================
+   TILE GRID
+   ======================= */
 .grid{
+  margin-top: 18px;
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .tile{
-  border-radius: var(--radius-sm);
+  border-radius: var(--tileRadius);
   overflow:hidden;
-  cursor:pointer;
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.22);
   box-shadow: var(--shadow);
-  outline: none;
-}
-
-.tile:focus{
-  box-shadow: 0 0 0 3px rgba(214,178,124,.45), var(--shadow);
+  cursor: pointer;
+  text-align: center;
 }
 
 .tile img{
   width:100%;
-  height:auto;
-  display:block;
+  height: 210px;
+  object-fit: cover;
 }
 
 .tile__cap{
-  padding: 14px 14px 16px;
-  text-align:center;
+  padding: 12px 12px 14px;
+  background: rgba(255,255,255,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
-.tile__title{ font-weight: 650; }
-.tile__sub{ font-size: 13px; color: var(--muted); }
+.tile__title{
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.tile__sub{
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(17,18,20,.72);
+}
 
-/* MODAL */
+/* =======================
+   MODAL
+   ======================= */
+.modal[hidden]{ display:none; }
+
 .modal{
-  position:fixed;
-  inset:0;
-  z-index:100;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
 }
 
 .modal__backdrop{
   position:absolute;
   inset:0;
-  background: rgba(0,0,0,.38);
+  background: rgba(0,0,0,.35);
 }
 
 .modal__sheet{
-  position:relative;
-  margin: 60px auto;
-  width: min(720px, calc(100% - 24px));
-  background: rgba(255,255,255,.96);
-  border-radius: 18px;
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+
+  width: min(860px, calc(100% - 24px));
+  max-height: min(80vh, 700px);
   overflow:hidden;
-  box-shadow: var(--shadow);
+
+  border-radius: 22px;
+  background: rgba(255,255,255,.88);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
 }
 
 .modal__head{
-  padding: 16px 16px;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap: 10px;
+  padding: 14px 16px;
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
-.modal__title{ font-weight: 700; }
+.modal__title{
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+
 .modal__close{
-  border: 0;
-  background: transparent;
-  font-size: 18px;
-  cursor: pointer;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.75);
+  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  cursor:pointer;
 }
 
 .modal__body{
   padding: 16px;
-  max-height: 72vh;
-  overflow: auto;
+  overflow:auto;
+  max-height: calc(min(80vh, 700px) - 64px);
 }
 
-/* Menu UI */
+/* Menu UI inside modal */
 .menuTop{
   display:flex;
   gap: 8px;
   overflow:auto;
   padding-bottom: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
-
 .menuTab{
-  border: 1px solid rgba(0,0,0,.12);
-  background: rgba(255,255,255,.9);
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.7);
   padding: 8px 12px;
   border-radius: 999px;
   cursor:pointer;
   white-space: nowrap;
-  font-size: 13px;
+}
+.menuTab[aria-selected="true"]{
+  background: var(--primary);
+  border-color: rgba(227,192,138,.85);
+}
+
+.menuSection{
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.7);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
 }
 
 .menuSection h3{
-  margin: 10px 0 8px;
+  margin: 0 0 10px;
+  font-size: 14px;
+  letter-spacing: .2px;
 }
 
 .menuItem{
   padding: 10px 10px;
-  border-radius: 14px;
-  border: 1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.9);
-  margin-bottom: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(255,255,255,.85);
+  margin-bottom: 8px;
 }
-
-.menuItem .name{ font-weight: 650; }
+.menuItem .name{
+  font-weight: 700;
+}
 .note{
-  color: rgba(26,26,26,.65);
-  font-size: 12px;
   margin-top: 4px;
+  font-size: 12px;
+  color: rgba(17,18,20,.68);
+  line-height: 1.25;
 }
 
-/* small screens: keep panel comfy */
-@media (max-width: 520px){
-  .hero__panel{ padding: 18px 16px; }
-  .hero__copy{ font-size: 16px; }
+/* =======================
+   RESPONSIVE
+   ======================= */
+@media (max-width: 760px){
+  body{
+    background-attachment: scroll;
+    background-image: url("bg-mobile.jpg");
+  }
+
+  .wrap{ padding: 18px 0 34px; }
+
+  .hero__media,
+  .hero__img{
+    height: clamp(240px, 60vw, 380px);
+  }
+
+  .hero__panel{
+    margin-top: -110px;
+    width: calc(100% - 22px);
+  }
+
+  .grid{
+    grid-template-columns: 1fr;
+  }
+
+  .tile img{ height: 220px; }
 }
+
+/* Nuke any legacy topbar/dock if they still exist in your HTML */
+.topbar, .dock{ display:none !important; }
