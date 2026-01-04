@@ -1,33 +1,36 @@
 /* ===========================
-   FARMHOUSE MOCK — styles.css (FIXED)
+   FARMHOUSE MOCK — styles.css (CLEAN)
+   - Uses NEW filenames: coffee-bg.PNG + bg-mobile.PNG
+   - Hero image NOT darkened
+   - Hero image shows FULL frame (no cropping)
+   - Glass panel clear + readable (no weird text plates)
+   - Social icons correctly sized
+   - No top bar / no dock / no modal UI
    =========================== */
 
 :root{
-  --text: #111214;
-  --muted: rgba(17,18,20,.72);
+  --text:#131416;
+  --muted: rgba(19,20,22,.72);
 
   --radius: 26px;
-  --tileRadius: 22px;
   --shadow: 0 18px 55px rgba(0,0,0,.18);
 
   --wrap: min(1100px, calc(100% - 36px));
 
-  --glass: rgba(255,255,255,.10);
-  --glass2: rgba(255,255,255,.16);
-  --glassBorder: rgba(255,255,255,.46);
+  /* Clear glass (not foggy) */
+  --glassA: rgba(255,255,255,.18);
+  --glassB: rgba(255,255,255,.26);
+  --glassBorder: rgba(255,255,255,.42);
 
-  --panelText: rgba(17,18,20,.92);
-  --panelTextSoft: rgba(17,18,20,.78);
-
-  --btn: rgba(255,255,255,.60);
-  --btnBorder: rgba(255,255,255,.62);
-  --btnHover: rgba(255,255,255,.78);
+  --btnBg: rgba(255,255,255,.70);
+  --btnBorder: rgba(255,255,255,.66);
+  --btnHover: rgba(255,255,255,.86);
 
   --primary: #e3c08a;
   --primaryHover: #efcf9d;
 }
 
-*{ box-sizing: border-box; }
+*{ box-sizing:border-box; }
 html,body{ height:100%; }
 
 body{
@@ -36,6 +39,7 @@ body{
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   overflow-x:hidden;
 
+  /* ✅ NEW filenames */
   background-image: url("./coffee-bg.PNG");
   background-size: cover;
   background-position: center;
@@ -44,16 +48,16 @@ body{
 }
 
 img{ max-width:100%; height:auto; display:block; }
-button{ font: inherit; color: inherit; }
-a{ color: inherit; text-decoration: none; }
+a{ color:inherit; text-decoration:none; }
 
 .skip{
   position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
 }
 .skip:focus{
-  left: 12px; top: 12px; width:auto; height:auto;
+  left: 12px; top: 12px;
+  width:auto; height:auto;
   padding:10px 12px;
-  background: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.95);
   border-radius: 12px;
   box-shadow: var(--shadow);
   z-index: 9999;
@@ -62,76 +66,71 @@ a{ color: inherit; text-decoration: none; }
 .wrap{
   width: var(--wrap);
   margin: 0 auto;
-  padding: 24px 0 42px;
+  padding: 26px 0 42px;
 }
 
+/* =======================
+   HERO
+   ======================= */
 .hero{
   border-radius: var(--radius);
   overflow: hidden;
+  border: 1px solid rgba(255,255,255,.26);
   box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,.25);
-  background: rgba(255,255,255,.06);
+  background: rgba(255,255,255,.04);
 }
 
+/* FULL FRAME HERO (no crop) */
 .hero__media{
-  width: 100%;
+  width:100%;
   background-image: url("./sf-hero.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: contain;      /* ✅ NO CROP */
   background-color: rgba(255,255,255,.06);
-  height: clamp(360px, 46vw, 560px);
+
+  /* Make it big enough to feel premium */
+  height: clamp(360px, 46vw, 580px);
 }
 
+/* Glass panel sits UNDER the hero image (not over it) */
 .hero__panel{
-  margin: -160px auto 18px;
+  margin: 14px auto 18px;
   width: min(820px, calc(100% - 26px));
   padding: 18px 18px 16px;
   border-radius: 22px;
 
-  background: linear-gradient(180deg, var(--glass2), var(--glass));
+  background: linear-gradient(180deg, var(--glassB), var(--glassA));
   border: 1px solid var(--glassBorder);
 
-  backdrop-filter: blur(18px) saturate(1.0);
-  -webkit-backdrop-filter: blur(18px) saturate(1.0);
+  /* “glass” effect without fogging everything */
+  backdrop-filter: blur(10px) saturate(1.02);
+  -webkit-backdrop-filter: blur(10px) saturate(1.02);
 
-  box-shadow: 0 18px 55px rgba(0,0,0,.14);
-  text-align: center;
-  color: var(--panelText);
+  box-shadow: 0 18px 55px rgba(0,0,0,.12);
+  text-align:center;
 }
 
-.hero__title,
-.hero__desc{
-  display:inline-block;
-  padding: 6px 10px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.36);
-  border: 1px solid rgba(255,255,255,.38);
-  box-shadow: 0 10px 26px rgba(0,0,0,.08);
-}
-
-.hero__title{
-  margin: 0 0 10px;
-  font-size: 22px;
-  letter-spacing: .2px;
+.hero__logo{
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 8px;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.12));
 }
 
 .hero__desc{
   margin: 0 auto 14px;
-  max-width: 56ch;
-  color: var(--panelTextSoft);
+  max-width: 58ch;
+  color: rgba(19,20,22,.84);
   line-height: 1.35;
   font-size: 14px;
+
+  /* subtle readability without “text plates” */
+  text-shadow: 0 1px 0 rgba(255,255,255,.55);
 }
 
-.hero__logo{
-  width: 90px;
-  height: 90px;
-  margin: 0 auto 10px;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
-}
-
+/* Buttons */
 .hero__cta{
   display:flex;
   justify-content:center;
@@ -142,14 +141,21 @@ a{ color: inherit; text-decoration: none; }
 
 .btn{
   appearance:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
   border: 1px solid var(--btnBorder);
-  background: var(--btn);
-  color: rgba(17,18,20,.92);
+  background: var(--btnBg);
+  color: rgba(19,20,22,.92);
+
   padding: 10px 16px;
   border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  transition: transform .08s ease, background .12s ease;
 }
+
 .btn:hover{ background: var(--btnHover); }
 .btn:active{ transform: translateY(1px); }
 
@@ -159,160 +165,128 @@ a{ color: inherit; text-decoration: none; }
 }
 .btn--primary:hover{ background: var(--primaryHover); }
 
+/* Social icons (NOT gigantic) */
 .hero__meta{
   display:flex;
   justify-content:center;
-  gap: 12px;
+  gap: 10px;
   margin-top: 6px;
 }
 
 .socialBtn{
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 999px;
-  background: rgba(255,255,255,.62);
+  background: rgba(255,255,255,.72);
   border: 1px solid rgba(255,255,255,.62);
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
 }
-.socialBtn:hover{ background: rgba(255,255,255,.80); }
+
+.socialBtn:hover{ background: rgba(255,255,255,.88); }
 
 .socialBtn img{
-  width: 26px;
-  height: 26px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   display:block;
 }
 
-/* Hours banner */
-.hoursBanner{
+/* =======================
+   SECONDARY STRIP (optional)
+   ======================= */
+.strip{
   margin-top: 18px;
   border-radius: var(--radius);
   overflow:hidden;
+  border: 1px solid rgba(255,255,255,.26);
   box-shadow: var(--shadow);
-  border: 1px solid rgba(255,255,255,.25);
-  background: rgba(255,255,255,.05);
+  background: rgba(255,255,255,.04);
 }
-.hoursBanner img{
+
+.strip img{
   width:100%;
   height:auto;
-  display:block;
 }
 
-/* Grid */
-.grid{
-  margin-top: 18px;
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
+/* =======================
+   PAGES
+   ======================= */
+.pageHead{
+  margin-bottom: 14px;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.18));
+  border: 1px solid rgba(255,255,255,.40);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 18px 55px rgba(0,0,0,.10);
 }
 
-.tile{
-  border-radius: var(--tileRadius);
+.backLink{
+  display:inline-block;
+  margin-bottom: 8px;
+  font-weight: 700;
+  opacity: .85;
+}
+
+.pageTitle{
+  margin: 0 0 4px;
+  font-size: 24px;
+  letter-spacing: .2px;
+}
+
+.pageSub{
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.card{
+  border-radius: var(--radius);
   overflow:hidden;
-  background: rgba(255,255,255,.06);
-  border: 1px solid rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.26);
   box-shadow: var(--shadow);
-  cursor: pointer;
-  text-align: center;
+  background: rgba(255,255,255,.06);
 }
 
-.tile img{
-  width:100%;
-  height: 210px;
-  object-fit: cover;
-}
-
-.tile__cap{
-  padding: 12px 12px 14px;
-  background: rgba(255,255,255,.28);
+.card--glass{
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.18));
+  border: 1px solid rgba(255,255,255,.40);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
 }
 
-.tile__title{ font-weight: 700; letter-spacing: .2px; }
-.tile__sub{ margin-top: 2px; font-size: 12px; color: rgba(17,18,20,.72); }
+.cardTitle{ margin:0 0 8px; }
+.cardText{ margin:0 0 12px; color: rgba(19,20,22,.82); line-height:1.35; }
 
-/* Modal */
-.modal[hidden]{ display:none; }
-.modal{ position: fixed; inset: 0; z-index: 9999; }
-
-.modal__backdrop{
-  position:absolute;
-  inset:0;
-  background: rgba(0,0,0,.35);
-}
-
-.modal__sheet{
-  position:absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 16px;
-
-  width: min(860px, calc(100% - 24px));
-  max-height: min(80vh, 700px);
-  overflow:hidden;
-
-  border-radius: 22px;
-  background: rgba(255,255,255,.88);
-  border: 1px solid rgba(255,255,255,.55);
-  box-shadow: 0 30px 80px rgba(0,0,0,.35);
-}
-
-.modal__head{
+.row{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap: 10px;
-  padding: 14px 16px;
-  border-bottom: 1px solid rgba(0,0,0,.08);
+  gap:10px;
+  flex-wrap: wrap;
 }
 
-.modal__title{ font-weight: 800; letter-spacing: .2px; }
-
-.modal__close{
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.75);
-  border-radius: 12px;
-  width: 38px;
-  height: 38px;
-  cursor:pointer;
-}
-
-.modal__body{
-  padding: 16px;
-  overflow:auto;
-  max-height: calc(min(80vh, 700px) - 64px);
-}
-
-/* ✅ Safety: images in modal cannot blow up */
-.modal__body img{
-  max-width: 100%;
-  height: auto;
-}
-
-/* Responsive */
+/* =======================
+   RESPONSIVE
+   ======================= */
 @media (max-width: 760px){
   body{
     background-attachment: scroll;
-    background-image: url("./bg-mobile.PNG");
+    background-image: url("./bg-mobile.PNG"); /* ✅ NEW mobile filename */
   }
 
   .wrap{ padding: 18px 0 34px; }
 
   .hero__media{
-    height: clamp(320px, 72vw, 520px);
+    height: clamp(320px, 78vw, 520px);
   }
 
   .hero__panel{
-    margin-top: -150px;
     width: calc(100% - 22px);
   }
-
-  .grid{ grid-template-columns: 1fr; }
-  .tile img{ height: 220px; }
 }
 
-/* Kill any legacy */
-.topbar, .dock{ Perfect. But this is now my in store pick up only menu so these need to be actual links to those pages. But right now they all take me to the images. And those images should be buttons.
+/* Legacy nukes (in case old markup exists) */
+.topbar, .dock, .modal { display:none !important; }
