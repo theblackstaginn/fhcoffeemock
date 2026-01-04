@@ -10,12 +10,13 @@
 </head>
 
 <body>
-  <!-- iOS “fixed background” layer -->
+  <!-- Fixed background layer -->
   <div class="bg-fixed" aria-hidden="true"></div>
 
   <a class="skip" href="#content">Skip to content</a>
 
   <main id="content" class="wrap">
+
     <!-- HERO -->
     <section class="hero" aria-label="Farmhouse Coffee">
       <div class="hero__media" role="img" aria-label="Farmhouse Coffee hero image"></div>
@@ -31,48 +32,70 @@
         <div class="hero__cta" role="group" aria-label="Primary actions">
           <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
           <button class="btn" type="button" data-open="hours">Hours</button>
-          <a class="btn" href="#" aria-label="Order (placeholder)">Order</a>
+          <a class="btn" href="./order.html">Order</a>
         </div>
 
         <div class="hero__meta" aria-label="Social links">
-          <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+          <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener">
             <img src="./instagram.PNG" alt="" />
           </a>
-          <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+          <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener">
             <img src="./facebook.PNG" alt="" />
           </a>
-          <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+          <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener">
             <img src="./tiktok.PNG" alt="" />
           </a>
         </div>
       </div>
     </section>
 
-    <!-- IMAGE-ONLY GALLERY TILES -->
-    <section class="grid" id="galleryGrid" aria-label="Gallery tiles"></section>
+    <!-- IMAGE SECTIONS -->
+    <section class="image-sections" aria-label="Coffee imagery">
+
+      <!-- BEAN SLIDE -->
+      <div class="image-strip">
+        <img src="./beanslide/coff-1.jpg" alt="" loading="lazy" />
+        <img src="./beanslide/coff-2.jpg" alt="" loading="lazy" />
+        <img src="./beanslide/coff-3.jpg" alt="" loading="lazy" />
+        <img src="./beanslide/coff-4.jpg" alt="" loading="lazy" />
+        <img src="./beanslide/coff-5.jpg" alt="" loading="lazy" />
+        <img src="./beanslide/coff-6.jpg" alt="" loading="lazy" />
+      </div>
+
+      <!-- BEAN STORY -->
+      <div class="image-strip">
+        <img src="./beanstory/cbs-1.jpg" alt="" loading="lazy" />
+        <img src="./beanstory/cbs-2.jpg" alt="" loading="lazy" />
+        <img src="./beanstory/cbs-3.jpg" alt="" loading="lazy" />
+        <img src="./beanstory/cbs-4.jpg" alt="" loading="lazy" />
+        <img src="./beanstory/cbs-5.jpg" alt="" loading="lazy" />
+        <img src="./beanstory/cbs-6.jpg" alt="" loading="lazy" />
+      </div>
+
+      <!-- TILE GRID -->
+      <div class="tile-grid">
+        <img src="./tiles/counter.jpg" alt="" loading="lazy" />
+        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
+        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
+        <img src="./tiles/menu.jpg" alt="" loading="lazy" />
+        <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
+      </div>
+
+    </section>
+
   </main>
 
-  <!-- MENU / HOURS MODAL -->
+  <!-- MODAL -->
   <div class="modal" hidden aria-hidden="true">
     <div class="modal__backdrop" data-close></div>
 
     <section class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <header class="modal__head">
-        <div id="modalTitle" class="modal__title">Menu</div>
+        <div id="modalTitle" class="modal__title"></div>
         <button class="modal__close" type="button" data-close aria-label="Close">✕</button>
       </header>
-
       <div class="modal__body" id="modalBody"></div>
     </section>
-  </div>
-
-  <!-- IMAGE VIEWER MODAL (for gallery tiles) -->
-  <div class="imgModal" id="imgModal" hidden aria-hidden="true">
-    <div class="imgModal__backdrop" data-img-close></div>
-    <div class="imgModal__sheet" role="dialog" aria-modal="true" aria-label="Image preview">
-      <button class="imgModal__close" type="button" data-img-close aria-label="Close image">✕</button>
-      <img class="imgModal__img" id="imgModalImg" alt="" />
-    </div>
   </div>
 
   <script src="./app.js"></script>
