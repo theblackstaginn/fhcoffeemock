@@ -1,11 +1,5 @@
 /* ===========================
    FARMHOUSE MOCK — styles.css (FIXED)
-   - Uses NEW filenames: coffee-bg.PNG + bg-mobile.PNG
-   - Hero image NOT darkened
-   - Hero image shows FULL frame (no cropping)
-   - Glass panel is clearer/untinted + readable
-   - Social icons correctly sized (uses instagram.PNG/facebook.PNG/tiktok.PNG)
-   - Removes any legacy topbar/dock if still in HTML
    =========================== */
 
 :root{
@@ -18,16 +12,13 @@
 
   --wrap: min(1100px, calc(100% - 36px));
 
-  /* “clear glass” (more see-through, less tint) */
   --glass: rgba(255,255,255,.10);
   --glass2: rgba(255,255,255,.16);
   --glassBorder: rgba(255,255,255,.46);
 
-  /* readability helpers (NOT a dark overlay on the hero image) */
   --panelText: rgba(17,18,20,.92);
   --panelTextSoft: rgba(17,18,20,.78);
 
-  /* buttons */
   --btn: rgba(255,255,255,.60);
   --btnBorder: rgba(255,255,255,.62);
   --btnHover: rgba(255,255,255,.78);
@@ -36,18 +27,15 @@
   --primaryHover: #efcf9d;
 }
 
-/* =======================
-   RESET
-   ======================= */
 *{ box-sizing: border-box; }
 html,body{ height:100%; }
+
 body{
   margin:0;
   color:var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   overflow-x:hidden;
 
-  /* ✅ NEW ROOT FILENAMES (PNG, correct case) */
   background-image: url("./coffee-bg.PNG");
   background-size: cover;
   background-position: center;
@@ -71,18 +59,12 @@ a{ color: inherit; text-decoration: none; }
   z-index: 9999;
 }
 
-/* =======================
-   PAGE WRAP
-   ======================= */
 .wrap{
   width: var(--wrap);
   margin: 0 auto;
   padding: 24px 0 42px;
 }
 
-/* =======================
-   HERO
-   ======================= */
 .hero{
   border-radius: var(--radius);
   overflow: hidden;
@@ -91,52 +73,33 @@ a{ color: inherit; text-decoration: none; }
   background: rgba(255,255,255,.06);
 }
 
-/* HERO MEDIA (div with background-image OR an <img>) */
 .hero__media{
   width: 100%;
   background-image: url("./sf-hero.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;          /* ✅ NO CROP */
+  background-size: contain;
   background-color: rgba(255,255,255,.06);
-
-  /* Make it BIG so it doesn’t feel “tiny” */
   height: clamp(360px, 46vw, 560px);
 }
 
-/* If your HTML uses an <img class="hero__img"> */
-.hero__img{
-  width:100%;
-  height: clamp(360px, 46vw, 560px);
-  object-fit: contain;               /* ✅ NO CROP */
-  object-position: center;
-  background: rgba(255,255,255,.06);
-}
-
-/* Glass panel overlayed on the image area */
 .hero__panel{
   margin: -160px auto 18px;
   width: min(820px, calc(100% - 26px));
   padding: 18px 18px 16px;
   border-radius: 22px;
 
-  /* ✅ clearer/untinted glass */
-  background:
-    linear-gradient(180deg, var(--glass2), var(--glass));
+  background: linear-gradient(180deg, var(--glass2), var(--glass));
   border: 1px solid var(--glassBorder);
 
-  /* blur is the “glass”; keep saturation low to avoid tint */
   backdrop-filter: blur(18px) saturate(1.0);
   -webkit-backdrop-filter: blur(18px) saturate(1.0);
 
   box-shadow: 0 18px 55px rgba(0,0,0,.14);
-
   text-align: center;
   color: var(--panelText);
 }
 
-/* Improve readability without darkening the HERO image:
-   a subtle “text plate” behind the copy only */
 .hero__title,
 .hero__desc{
   display:inline-block;
@@ -161,7 +124,6 @@ a{ color: inherit; text-decoration: none; }
   font-size: 14px;
 }
 
-/* Logo inside hero panel */
 .hero__logo{
   width: 90px;
   height: 90px;
@@ -170,7 +132,6 @@ a{ color: inherit; text-decoration: none; }
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
 }
 
-/* CTA buttons */
 .hero__cta{
   display:flex;
   justify-content:center;
@@ -198,11 +159,10 @@ a{ color: inherit; text-decoration: none; }
 }
 .btn--primary:hover{ background: var(--primaryHover); }
 
-/* Social row (icon-only) */
 .hero__meta{
   display:flex;
   justify-content:center;
-  gap: 10px;
+  gap: 12px;
   margin-top: 6px;
 }
 
@@ -215,11 +175,9 @@ a{ color: inherit; text-decoration: none; }
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  cursor: pointer;
 }
 .socialBtn:hover{ background: rgba(255,255,255,.80); }
 
-/* ✅ properly sized icons (do NOT rely on content:url; use <img src="..."> in HTML) */
 .socialBtn img{
   width: 26px;
   height: 26px;
@@ -227,9 +185,7 @@ a{ color: inherit; text-decoration: none; }
   display:block;
 }
 
-/* =======================
-   HOURS BANNER (full width under hero)
-   ======================= */
+/* Hours banner */
 .hoursBanner{
   margin-top: 18px;
   border-radius: var(--radius);
@@ -238,16 +194,13 @@ a{ color: inherit; text-decoration: none; }
   border: 1px solid rgba(255,255,255,.25);
   background: rgba(255,255,255,.05);
 }
-
 .hoursBanner img{
   width:100%;
-  height:auto; /* ✅ show full image */
+  height:auto;
   display:block;
 }
 
-/* =======================
-   TILE GRID
-   ======================= */
+/* Grid */
 .grid{
   margin-top: 18px;
   display:grid;
@@ -278,26 +231,12 @@ a{ color: inherit; text-decoration: none; }
   -webkit-backdrop-filter: blur(10px);
 }
 
-.tile__title{
-  font-weight: 700;
-  letter-spacing: .2px;
-}
-.tile__sub{
-  margin-top: 2px;
-  font-size: 12px;
-  color: rgba(17,18,20,.72);
-}
+.tile__title{ font-weight: 700; letter-spacing: .2px; }
+.tile__sub{ margin-top: 2px; font-size: 12px; color: rgba(17,18,20,.72); }
 
-/* =======================
-   MODAL
-   ======================= */
+/* Modal */
 .modal[hidden]{ display:none; }
-
-.modal{
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-}
+.modal{ position: fixed; inset: 0; z-index: 9999; }
 
 .modal__backdrop{
   position:absolute;
@@ -330,10 +269,7 @@ a{ color: inherit; text-decoration: none; }
   border-bottom: 1px solid rgba(0,0,0,.08);
 }
 
-.modal__title{
-  font-weight: 800;
-  letter-spacing: .2px;
-}
+.modal__title{ font-weight: 800; letter-spacing: .2px; }
 
 .modal__close{
   border: 1px solid rgba(0,0,0,.10);
@@ -350,73 +286,23 @@ a{ color: inherit; text-decoration: none; }
   max-height: calc(min(80vh, 700px) - 64px);
 }
 
-/* Menu UI inside modal */
-.menuTop{
-  display:flex;
-  gap: 8px;
-  overflow:auto;
-  padding-bottom: 10px;
-  margin-bottom: 12px;
-}
-.menuTab{
-  border: 1px solid rgba(0,0,0,.10);
-  background: rgba(255,255,255,.7);
-  padding: 8px 12px;
-  border-radius: 999px;
-  cursor:pointer;
-  white-space: nowrap;
-}
-.menuTab[aria-selected="true"]{
-  background: var(--primary);
-  border-color: rgba(227,192,138,.85);
+/* ✅ Safety: images in modal cannot blow up */
+.modal__body img{
+  max-width: 100%;
+  height: auto;
 }
 
-.menuSection{
-  border: 1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.7);
-  border-radius: 16px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-
-.menuSection h3{
-  margin: 0 0 10px;
-  font-size: 14px;
-  letter-spacing: .2px;
-}
-
-.menuItem{
-  padding: 10px 10px;
-  border-radius: 12px;
-  border: 1px solid rgba(0,0,0,.06);
-  background: rgba(255,255,255,.85);
-  margin-bottom: 8px;
-}
-.menuItem .name{
-  font-weight: 700;
-}
-.note{
-  margin-top: 4px;
-  font-size: 12px;
-  color: rgba(17,18,20,.68);
-  line-height: 1.25;
-}
-
-/* =======================
-   RESPONSIVE
-   ======================= */
+/* Responsive */
 @media (max-width: 760px){
   body{
     background-attachment: scroll;
-    /* ✅ NEW ROOT MOBILE FILENAME (PNG, correct case) */
     background-image: url("./bg-mobile.PNG");
   }
 
   .wrap{ padding: 18px 0 34px; }
 
-  .hero__media,
-  .hero__img{
-    height: clamp(320px, 72vw, 520px); /* keep it big on mobile too */
+  .hero__media{
+    height: clamp(320px, 72vw, 520px);
   }
 
   .hero__panel{
@@ -424,12 +310,9 @@ a{ color: inherit; text-decoration: none; }
     width: calc(100% - 22px);
   }
 
-  .grid{
-    grid-template-columns: 1fr;
-  }
-
+  .grid{ grid-template-columns: 1fr; }
   .tile img{ height: 220px; }
 }
 
-/* Nuke any legacy topbar/dock if they still exist in your HTML */
-.topbar, .dock{ display:none !important; }
+/* Kill any legacy */
+.topbar, .dock{ Perfect. But this is now my in store pick up only menu so these need to be actual links to those pages. But right now they all take me to the images. And those images should be buttons.
