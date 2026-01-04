@@ -1,11 +1,12 @@
+/* styles.css */
 /* ===========================
    FARMHOUSE MOCK — styles.css
    - 2-column tile grid
    - Top two spots are carousels
    - Carousels same size as tiles
    - No crop: images use contain
-   - Hours banner full-width between hero & grid
-   - Mobile stability tweaks
+   - iOS fixed background via .bg-fixed
+   - Carousels: TAP ONLY (no swipe/scroll)
    =========================== */
 
 :root{
@@ -140,7 +141,6 @@ a{ color:inherit; text-decoration:none; }
   border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  touch-action: manipulation;
 }
 .btn:hover{ background: var(--btnHover); }
 .btn:active{ transform: translateY(1px); }
@@ -166,7 +166,6 @@ a{ color:inherit; text-decoration:none; }
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  touch-action: manipulation;
 }
 .socialBtn:hover{ background: rgba(255,255,255,.92); }
 
@@ -176,23 +175,19 @@ a{ color:inherit; text-decoration:none; }
   object-fit: contain;
 }
 
-/* =======================
-   HOURS BANNER
-   ======================= */
+/* HOURS BANNER (full width, no crop) */
 .hoursBanner{
-  margin-top: 14px;
-  border-radius: var(--radius);
+  margin-top: 16px;
+  border-radius: var(--tileRadius);
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.22);
+  background: rgba(255,255,255,.14);
   box-shadow: var(--shadow);
-  background: rgba(255,255,255,.10);
 }
 .hoursBanner__img{
   width: 100%;
   height: auto;
   display:block;
-  object-fit: contain; /* no crop */
-  background: rgba(255,255,255,.10);
 }
 
 /* =======================
@@ -222,7 +217,6 @@ a{ color:inherit; text-decoration:none; }
   cursor: pointer;
   display:block;
   background: transparent;
-  touch-action: manipulation;
 }
 .tile__img{
   width:100%;
@@ -232,7 +226,9 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* =======================
-   CAROUSELS: same size as tiles
+   CAROUSELS: TAP ONLY
+   - no scrolling, no dragging
+   - JS moves track via transform
    ======================= */
 .carousel{
   position: relative;
@@ -241,33 +237,28 @@ a{ color:inherit; text-decoration:none; }
 
 .carousel__viewport{
   width: 100%;
-  aspect-ratio: 16 / 9;            /* EXACTLY matches tiles */
-  overflow-x: auto;
-  overflow-y: hidden;
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-  cursor: grab;
-  touch-action: pan-x;
+  aspect-ratio: 16 / 9; /* EXACT match with tiles */
+  overflow: hidden;      /* ✅ no scroll, no swipe */
+  position: relative;
+  touch-action: manipulation; /* reduce weirdness on mobile */
 }
-.carousel__viewport::-webkit-scrollbar{ display:none; }
-.carousel__viewport.is-dragging{ cursor: grabbing; }
 
 .carousel__track{
   height: 100%;
   display:flex;
+  will-change: transform;
+  transition: transform 260ms ease;
 }
 
 .carousel__img{
   flex: 0 0 100%;
   width: 100%;
   height: 100%;
-  object-fit: contain;              /* ✅ no crop */
+  object-fit: contain; /* ✅ no crop */
   background: rgba(255,255,255,.10);
-  scroll-snap-align: start;
   user-select: none;
   -webkit-user-drag: none;
-  pointer-events: none; /* ✅ makes tap logic reliable (tap hits viewport, not img) */
+  pointer-events: none; /* ✅ ensures taps hit viewport, not the img */
 }
 
 /* Dots */
@@ -292,7 +283,6 @@ a{ color:inherit; text-decoration:none; }
   background: rgba(255,255,255,.55);
   padding: 0;
   cursor: pointer;
-  touch-action: manipulation;
 }
 .dot.is-active{
   background: rgba(227,192,138,.95);
@@ -340,7 +330,6 @@ a{ color:inherit; text-decoration:none; }
   width: 38px;
   height: 38px;
   cursor:pointer;
-  touch-action: manipulation;
 }
 
 .modal__body{
@@ -364,26 +353,12 @@ a{ color:inherit; text-decoration:none; }
     padding: calc(14px + env(safe-area-inset-top)) 0 28px;
   }
 
+  /* 1 column on phone */
   .grid{
     grid-template-columns: 1fr;
   }
 
   .hero__media{
     height: clamp(240px, 62vw, 380px);
-  }
-
-  /* Make the hero panel fit better on phone */
-  .hero__panel{
-    width: min(860px, calc(100% - 18px));
-    padding: 14px 14px 12px;
-  }
-
-  .socialBtn{
-    width: 46px;
-    height: 46px;
-  }
-  .socialBtn img{
-    width: 30px;
-    height: 30px;
   }
 }
