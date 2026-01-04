@@ -5,13 +5,6 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
 
-  // Image viewer modal (gallery)
-  const imgModal = document.getElementById("imgModal");
-  const imgModalImg = document.getElementById("imgModalImg");
-
-  // Gallery mount
-  const galleryGrid = document.getElementById("galleryGrid");
-
   // ---- EDIT THIS MENU DATA ----
   const MENU = [
     {
@@ -20,7 +13,7 @@
         {
           title: "House Coffee",
           items: [
-            { name: "Drip Coffee", price: "$" , note: "" },
+            { name: "Drip Coffee", price: "$", note: "" },
             { name: "Cold Brew", price: "$", note: "" },
           ]
         },
@@ -60,34 +53,6 @@
     }
   ];
 
-  /* ===========================
-     GALLERY: Put ALL non-background, non-hero photos here
-     - These become your tiles
-     - No text, just images
-     =========================== */
-  const GALLERY_IMAGES = [
-    // Example — replace with your actual filenames:
-    "counter.jpg"
-    // "interior1.jpg",
-    // "drink1.jpg",
-    // "kolache.jpg",
-    // "latte-art.jpg",
-  ];
-
-  /* Exclusions so you don’t accidentally tile UI assets */
-  const EXCLUDE = new Set([
-    "coffee-bg.PNG",
-    "bg-mobile.PNG",
-    "sf-hero.jpg",
-    "logo.PNG",
-    "favicon.PNG",
-    "instagram.PNG",
-    "facebook.PNG",
-    "tiktok.PNG",
-    "hours-panel.PNG",
-    "menu.jpg"
-  ]);
-
   function openModal(title, contentNode) {
     modalTitle.textContent = title;
     modalBody.innerHTML = "";
@@ -102,21 +67,6 @@
     modal.hidden = true;
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
-  }
-
-  function openImg(src) {
-    imgModalImg.src = src;
-    imgModal.hidden = false;
-    imgModal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  function closeImg() {
-    imgModal.hidden = true;
-    imgModal.setAttribute("aria-hidden", "true");
-    imgModalImg.removeAttribute("src");
-    // Only restore scroll if the menu modal is not open
-    if (modal.hidden) document.body.style.overflow = "";
   }
 
   function buildMenuUI() {
@@ -192,83 +142,81 @@
     return wrap;
   }
 
-  function buildHoursUI() {
-    const wrap = document.createElement("div");
-    const img = document.createElement("img");
-    img.className = "hoursImg";
-    img.src = "./hours-panel.PNG";
-    img.alt = "Hours";
-    img.loading = "lazy";
-    wrap.appendChild(img);
-    return wrap;
-  }
-
-  /* ===========================
-     Build the image-only tile grid
-     =========================== */
-  function buildGallery() {
-    if (!galleryGrid) return;
-
-    galleryGrid.innerHTML = "";
-
-    // Filter out anything excluded (defensive)
-    const images = GALLERY_IMAGES
-      .map(s => String(s || "").trim())
-      .filter(Boolean)
-      .filter(fn => !EXCLUDE.has(fn));
-
-    images.forEach((fn) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "tile";
-      btn.setAttribute("aria-label", "Open image");
-
-      const wrap = document.createElement("div");
-      wrap.className = "tile__imgWrap";
-
-      const img = document.createElement("img");
-      img.className = "tile__img";
-      img.src = `./${fn}`;
-      img.alt = "";
-      img.loading = "lazy";
-
-      wrap.appendChild(img);
-      btn.appendChild(wrap);
-
-      btn.addEventListener("click", () => openImg(img.src));
-
-      galleryGrid.appendChild(btn);
-    });
-  }
-
-  // ---- Event wiring ----
+  // ---- Modal wiring (Menu button) ----
   document.addEventListener("click", (e) => {
     const openBtn = e.target.closest("[data-open]");
     if (openBtn) {
       const what = openBtn.getAttribute("data-open");
       if (what === "menu") openModal("Menu", buildMenuUI());
-      if (what === "hours") openModal("Hours", buildHoursUI());
       return;
     }
 
     if (e.target.matches("[data-close]") || e.target.closest("[data-close]")) {
       closeModal();
-      return;
-    }
-
-    if (e.target.matches("[data-img-close]") || e.target.closest("[data-img-close]")) {
-      closeImg();
-      return;
     }
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
-      if (!imgModal.hidden) closeImg();
-      else if (!modal.hidden) closeModal();
-    }
+    if (e.key === "Escape" && !modal.hidden) closeModal();
   });
 
-  // Boot
-  buildGallery();
+  // ---- Instagram-style swipe dots for carousels ----
+  function initCarousels() {
+    const carousels = document.querySelectorAll(".carousel");
+    carousels.forEach((c) => {
+      const track = c.querySelector(".carousel__track");
+      const dotsWrap = c.querySelector(".carousel__dots");
+      const slides = [...track.querySelectorAll("img")];
+
+      if (!track || !dotsWrap || slides.length === 0) return;
+
+      // build dots
+      dotsWrap.innerHTML = "";
+      const dots = slides.map((_, i) => {
+        const d = document.createElement("button");
+        d.type = "button";
+        d.className = "dot" + (i === 0 ? " is-active" : "");
+        d.setAttribute("aria-label", `Slide ${i + 1}`);
+        d.addEventListener("click", () => {
+          slides[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+        });
+        dotsWrap.appendChild(d);
+        return d;
+      });
+
+      // update active dot on scroll
+      let raf = 0;
+      const update = () => {
+        raf = 0;
+
+        const trackRect = track.getBoundingClientRect();
+        const centerX = trackRect.left + trackRect.width / 2;
+
+        let bestIdx = 0;
+        let bestDist = Infinity;
+
+        slides.forEach((img, i) => {
+          const r = img.getBoundingClientRect();
+          const imgCenter = r.left + r.width / 2;
+          const dist = Math.abs(centerX - imgCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestIdx = i;
+          }
+        });
+
+        dots.forEach((d, i) => d.classList.toggle("is-active", i === bestIdx));
+      };
+
+      track.addEventListener("scroll", () => {
+        if (raf) return;
+        raf = requestAnimationFrame(update);
+      }, { passive: true });
+
+      // initial
+      update();
+    });
+  }
+
+  initCarousels();
 })();
