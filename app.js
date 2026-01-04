@@ -3,8 +3,8 @@
    - centered tile UI
    - modal content
    - menu data (from your screenshots only)
-   - removes menu image from modal
-   - adds ORDER button instead
+   - NO "full menu image" section
+   - Adds "Order" button inside menu modal
    - offline service worker
    =========================== */
 
@@ -17,9 +17,6 @@
   const modal = $("#modal");
   const modalTitle = $("#modalTitle");
   const modalBody = $("#modalBody");
-
-  // ✅ Replace this with their real order URL when you have it.
-  const ORDER_LINK = "#";
 
   const MENU = [
     {
@@ -130,40 +127,6 @@
     }
   ];
 
-  const CARDS = {
-    hours: {
-      title: "New Hours",
-      html: `
-        <div class="menuSection">
-          <img src="hours-panel.PNG" alt="New hours" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-          <div class="note" style="margin-top:10px;">
-            Hours shown exactly as the posted panel.
-          </div>
-        </div>
-      `
-    },
-    counter: {
-      title: "Inside",
-      html: `
-        <div class="menuSection">
-          <img src="counter.jpg" alt="Counter photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-        </div>
-      `
-    },
-    feature: {
-      title: "Rise & Shine",
-      html: `
-        <div class="menuSection">
-          <img src="r-s-coffee.jpg" alt="Coffee feature" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
-        </div>
-      `
-    },
-    menu: {
-      title: "Menu",
-      html: buildMenuUI()
-    }
-  };
-
   function esc(s){
     return String(s ?? "")
       .replaceAll("&","&amp;")
@@ -194,21 +157,58 @@
       `;
     }).join("");
 
-    // ✅ No menu.jpg here. Order button instead.
+    // "Order" block at top; no full menu image section
     return `
+      <div class="orderBox">
+        <div><strong>Order for In-Store Pickup</strong></div>
+        <a class="orderBtn" href="#" aria-label="Order (mock link)">Order</a>
+        <div class="orderNote">(Mock) Link goes to their ordering flow.</div>
+      </div>
+
       <div class="menuTop" role="tablist" aria-label="Menu sections">
         ${tabs}
       </div>
 
       ${sections}
-
-      <div class="orderRow" aria-label="Ordering">
-        <a class="orderBtn" href="${esc(ORDER_LINK)}" target="_blank" rel="noopener">
-          Order Now
-        </a>
-      </div>
     `;
   }
+
+  const CARDS = {
+    hours: {
+      title: "New Hours",
+      html: `
+        <div class="menuSection">
+          <h3>New Hours</h3>
+          <img src="hours-panel.PNG" alt="New hours panel"
+               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+        </div>
+      `
+    },
+    counter: {
+      title: "Inside",
+      html: `
+        <div class="menuSection">
+          <h3>Inside</h3>
+          <img src="counter.jpg" alt="Counter photo"
+               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+        </div>
+      `
+    },
+    feature: {
+      title: "Rise & Shine",
+      html: `
+        <div class="menuSection">
+          <h3>Rise &amp; Shine</h3>
+          <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo"
+               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+        </div>
+      `
+    },
+    menu: {
+      title: "Menu",
+      html: buildMenuUI()
+    }
+  };
 
   function openModal(key){
     const card = CARDS[key];
