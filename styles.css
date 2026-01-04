@@ -4,8 +4,8 @@
    - Top two spots are carousels
    - Carousels same size as tiles
    - No crop: images use contain
-   - Hours banner full width (no crop)
-   - iOS fixed background via .bg-fixed
+   - Hours banner full-width between hero & grid
+   - Mobile stability tweaks
    =========================== */
 
 :root{
@@ -140,6 +140,7 @@ a{ color:inherit; text-decoration:none; }
   border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  touch-action: manipulation;
 }
 .btn:hover{ background: var(--btnHover); }
 .btn:active{ transform: translateY(1px); }
@@ -165,6 +166,7 @@ a{ color:inherit; text-decoration:none; }
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
+  touch-action: manipulation;
 }
 .socialBtn:hover{ background: rgba(255,255,255,.92); }
 
@@ -175,15 +177,15 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* =======================
-   HOURS BANNER (Full width, no crop)
+   HOURS BANNER
    ======================= */
 .hoursBanner{
   margin-top: 14px;
-  border-radius: var(--tileRadius);
+  border-radius: var(--radius);
   overflow: hidden;
-  background: rgba(255,255,255,.18);
-  border: 1px solid rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.25);
   box-shadow: var(--shadow);
+  background: rgba(255,255,255,.10);
 }
 .hoursBanner__img{
   width: 100%;
@@ -220,6 +222,7 @@ a{ color:inherit; text-decoration:none; }
   cursor: pointer;
   display:block;
   background: transparent;
+  touch-action: manipulation;
 }
 .tile__img{
   width:100%;
@@ -245,11 +248,10 @@ a{ color:inherit; text-decoration:none; }
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   cursor: grab;
-
-  /* Helps iOS interpret swipe/tap correctly */
-  touch-action: pan-y;
+  touch-action: pan-x;
 }
 .carousel__viewport::-webkit-scrollbar{ display:none; }
+.carousel__viewport.is-dragging{ cursor: grabbing; }
 
 .carousel__track{
   height: 100%;
@@ -265,6 +267,7 @@ a{ color:inherit; text-decoration:none; }
   scroll-snap-align: start;
   user-select: none;
   -webkit-user-drag: none;
+  pointer-events: none; /* ✅ makes tap logic reliable (tap hits viewport, not img) */
 }
 
 /* Dots */
@@ -289,13 +292,14 @@ a{ color:inherit; text-decoration:none; }
   background: rgba(255,255,255,.55);
   padding: 0;
   cursor: pointer;
+  touch-action: manipulation;
 }
 .dot.is-active{
   background: rgba(227,192,138,.95);
   border-color: rgba(227,192,138,.95);
 }
 
-/* MODAL (existing styling) */
+/* MODAL */
 .modal[hidden]{ display:none; }
 .modal{ position: fixed; inset: 0; z-index: 9999; }
 
@@ -336,6 +340,7 @@ a{ color:inherit; text-decoration:none; }
   width: 38px;
   height: 38px;
   cursor:pointer;
+  touch-action: manipulation;
 }
 
 .modal__body{
@@ -359,12 +364,26 @@ a{ color:inherit; text-decoration:none; }
     padding: calc(14px + env(safe-area-inset-top)) 0 28px;
   }
 
-  /* 1 column on phone */
   .grid{
     grid-template-columns: 1fr;
   }
 
   .hero__media{
     height: clamp(240px, 62vw, 380px);
+  }
+
+  /* Make the hero panel fit better on phone */
+  .hero__panel{
+    width: min(860px, calc(100% - 18px));
+    padding: 14px 14px 12px;
+  }
+
+  .socialBtn{
+    width: 46px;
+    height: 46px;
+  }
+  .socialBtn img{
+    width: 30px;
+    height: 30px;
   }
 }
