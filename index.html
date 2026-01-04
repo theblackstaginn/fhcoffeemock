@@ -3,244 +3,140 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#111214" />
   <title>Farmhouse Coffee — Mock</title>
-  <meta name="description" content="Farmhouse Coffee mock: social-style tiles + centered menu + hours panel." />
+  <meta name="description" content="Farmhouse Coffee mock site. Social-style tiles, centered text, fast menu access." />
+
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.PNG" type="image/png" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon-192.PNG" />
+
   <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
-  <a class="skip" href="#content">Skip to content</a>
+  <a class="skip" href="#main">Skip to content</a>
 
-  <header class="topbar">
+  <!-- Ambient background layers -->
+  <div class="bg" aria-hidden="true"></div>
+
+  <header class="topbar" role="banner">
     <div class="topbar__inner">
       <div class="brand">
-        <div class="brand__badge" aria-hidden="true">FC</div>
+        <img class="brand__icon" src="icon-192.PNG" alt="Farmhouse Coffee icon" />
         <div class="brand__text">
           <div class="brand__name">Farmhouse Coffee</div>
-          <div class="brand__sub">Cleveland • Gainesville • Demorest</div>
+          <div class="brand__sub">Mock • Social tiles • Centered layout</div>
         </div>
       </div>
 
-      <nav class="topbar__actions" aria-label="Primary">
-        <a class="pill" href="#hours">Hours</a>
-        <a class="pill" href="#menu">Menu</a>
-        <a class="pill" href="#visit">Visit</a>
-      </nav>
+      <div class="topbar__actions" aria-label="Quick actions">
+        <button class="chip" type="button" data-open="hours" aria-haspopup="dialog">Hours</button>
+        <button class="chip chip--primary" type="button" data-open="menu" aria-haspopup="dialog">Menu</button>
+      </div>
     </div>
   </header>
 
-  <main id="content" class="page">
-    <!-- HERO -->
-    <section class="hero" aria-label="Hero">
-      <img class="hero__img" src="sf-hero.jpg" alt="Farmhouse Coffee interior" loading="eager" />
-      <div class="hero__overlay" aria-hidden="true"></div>
-
-      <div class="hero__copy">
-        <div class="hero__kicker">Small-town comfort. Big-time caffeine.</div>
-        <h1 class="hero__title">Your daily ritual, made simple.</h1>
-        <p class="hero__note">This is a mock site panel for the Farmhouse Coffee brand.</p>
+  <main id="main" class="wrap" role="main">
+    <!-- Solid hero panel -->
+    <section class="hero" aria-label="Farmhouse Coffee hero">
+      <div class="hero__media" role="img" aria-label="Coffee hero image"></div>
+      <div class="hero__panel">
+        <h1 class="hero__title">Farmhouse Coffee</h1>
+        <p class="hero__desc">
+          A clean, social-style mock: big tiles, centered text, fast browsing.
+        </p>
 
         <div class="hero__cta">
-          <a class="btn" href="#menu">View Menu</a>
-          <a class="btn btn--ghost" href="#hours">New Hours</a>
+          <button class="btn btn--primary" type="button" data-open="menu" aria-haspopup="dialog">Open Menu</button>
+          <button class="btn" type="button" data-open="hours" aria-haspopup="dialog">View New Hours</button>
+        </div>
+
+        <div class="hero__meta" aria-label="Social links">
+          <a class="pill" href="#" aria-label="Instagram (mock link)">Instagram</a>
+          <a class="pill" href="#" aria-label="Facebook (mock link)">Facebook</a>
+          <a class="pill" href="#" aria-label="TikTok (mock link)">TikTok</a>
         </div>
       </div>
     </section>
 
-    <!-- STORY HIGHLIGHTS (social vibe) -->
-    <section class="stories" aria-label="Highlights">
-      <div class="stories__row">
-        <button class="story" data-scroll="#hours" type="button">
-          <span class="story__ring"><span class="story__dot">⏰</span></span>
-          <span class="story__label">New Hours</span>
-        </button>
+    <!-- Tile grid (social feed vibe) -->
+    <section class="grid" aria-label="Featured tiles">
+      <article class="tile" tabindex="0" role="button" data-open="hours" aria-haspopup="dialog" aria-label="Open new hours panel">
+        <img src="hours-panel.PNG" alt="New hours panel" loading="lazy" />
+        <div class="tile__cap">
+          <div class="tile__title">New Hours</div>
+          <div class="tile__sub">Tap to view</div>
+        </div>
+      </article>
 
-        <button class="story" data-scroll="#menu" type="button">
-          <span class="story__ring"><span class="story__dot">☕</span></span>
-          <span class="story__label">Menu</span>
-        </button>
+      <article class="tile" tabindex="0" role="button" data-open="menu" aria-haspopup="dialog" aria-label="Open menu">
+        <img src="menu.jpg" alt="Menu board photo" loading="lazy" />
+        <div class="tile__cap">
+          <div class="tile__title">Menu</div>
+          <div class="tile__sub">Browse sections</div>
+        </div>
+      </article>
 
-        <button class="story" data-scroll="#specials" type="button">
-          <span class="story__ring"><span class="story__dot">✨</span></span>
-          <span class="story__label">Signature</span>
-        </button>
+      <article class="tile" tabindex="0" role="button" data-open="counter" aria-haspopup="dialog" aria-label="Open counter photo">
+        <img src="counter.jpg" alt="Counter photo" loading="lazy" />
+        <div class="tile__cap">
+          <div class="tile__title">Inside</div>
+          <div class="tile__sub">A look at the bar</div>
+        </div>
+      </article>
 
-        <button class="story" data-scroll="#visit" type="button">
-          <span class="story__ring"><span class="story__dot">📍</span></span>
-          <span class="story__label">Locations</span>
-        </button>
-
-        <button class="story" data-scroll="#contact" type="button">
-          <span class="story__ring"><span class="story__dot">📲</span></span>
-          <span class="story__label">Connect</span>
-        </button>
-      </div>
+      <article class="tile" tabindex="0" role="button" data-open="feature" aria-haspopup="dialog" aria-label="Open Rise and Shine feature">
+        <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" loading="lazy" />
+        <div class="tile__cap">
+          <div class="tile__title">Rise &amp; Shine</div>
+          <div class="tile__sub">Morning fuel</div>
+        </div>
+      </article>
     </section>
 
-    <!-- FEATURE TILES (rounded, social grid) -->
-    <section class="tiles" aria-label="Featured tiles">
-      <div class="tiles__grid">
-        <article class="tile" role="button" tabindex="0"
-          data-modal-title="Counter + Setup"
-          data-modal-sub="Clean, bright, and quick-service friendly."
-          data-modal-img="counter.jpg">
-          <img src="counter.jpg" alt="Counter photo" loading="lazy" />
-          <div class="tile__meta">
-            <div class="tile__title">Counter</div>
-            <div class="tile__sub">Behind the bar</div>
-          </div>
-        </article>
-
-        <article class="tile" role="button" tabindex="0"
-          data-modal-title="Front + Brand"
-          data-modal-sub="That simple, iconic storefront vibe."
-          data-modal-img="r-s-coffee.jpg">
-          <img src="r-s-coffee.jpg" alt="Storefront photo" loading="lazy" />
-          <div class="tile__meta">
-            <div class="tile__title">Storefront</div>
-            <div class="tile__sub">Farmhouse Coffee</div>
-          </div>
-        </article>
-
-        <article class="tile" role="button" tabindex="0"
-          data-modal-title="Menu Snapshot"
-          data-modal-sub="Quick view — full menu below."
-          data-modal-img="menu.jpg">
-          <img src="menu.jpg" alt="Menu photo" loading="lazy" />
-          <div class="tile__meta">
-            <div class="tile__title">Menu</div>
-            <div class="tile__sub">Fast glance</div>
-          </div>
-        </article>
-
-        <article class="tile" role="button" tabindex="0"
-          data-modal-title="New Hours"
-          data-modal-sub="Same vibe, clearer schedule."
-          data-modal-img="hours-panel.PNG">
-          <img src="hours-panel.PNG" alt="Hours panel" loading="lazy" />
-          <div class="tile__meta">
-            <div class="tile__title">Hours</div>
-            <div class="tile__sub">Updated</div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <!-- HOURS -->
-    <section id="hours" class="panel" aria-label="New hours">
-      <h2 class="panel__title">New Hours</h2>
-      <p class="panel__sub">Use this as a banner-style panel anywhere (site, post, promo).</p>
-
-      <div class="media">
-        <img class="media__img" src="hours-panel.PNG" alt="Farmhouse Coffee new hours panel" loading="lazy" />
-      </div>
-    </section>
-
-    <!-- SPECIALS -->
-    <section id="specials" class="panel" aria-label="Signature drinks">
-      <h2 class="panel__title">Signature Drinks</h2>
-      <p class="panel__sub">Built for the “share it” crowd. Simple names. Simple cravings.</p>
-
-      <div class="menuBlock" id="signatureBlock" aria-live="polite"></div>
-    </section>
-
-    <!-- MENU -->
-    <section id="menu" class="panel" aria-label="Menu">
-      <h2 class="panel__title">Menu</h2>
-      <p class="panel__sub">All text centered. Tap a category. Scroll is smooth.</p>
-
-      <div class="menuTabs" role="tablist" aria-label="Menu categories" id="menuTabs"></div>
-      <div class="menuBlock" id="menuBlock" aria-live="polite"></div>
-
-      <div class="menuNote">
-        <div class="menuNote__inner">
-          <div class="menuNote__title">Heads up</div>
-          <div class="menuNote__body">
-            This menu was captured from screenshots. If anything changes, you edit one JS array and the site updates everywhere.
-          </div>
+    <footer class="footer" role="contentinfo">
+      <div class="footer__inner">
+        <div class="footer__small">
+          Mock site • Centered UI • Tile-first layout • Offline-ready
         </div>
       </div>
-    </section>
-
-    <!-- VISIT -->
-    <section id="visit" class="panel" aria-label="Visit">
-      <h2 class="panel__title">Visit</h2>
-      <p class="panel__sub">Locations listed like a social bio — short, clean, actionable.</p>
-
-      <div class="cards">
-        <div class="card">
-          <div class="card__title">Cleveland</div>
-          <div class="card__text">Coffee • Comfort • Quick stop</div>
-          <a class="card__link" href="#hours">See hours</a>
-        </div>
-
-        <div class="card">
-          <div class="card__title">Gainesville</div>
-          <div class="card__text">Grab-and-go • Tea+More</div>
-          <a class="card__link" href="#menu">See menu</a>
-        </div>
-
-        <div class="card">
-          <div class="card__title">Demorest</div>
-          <div class="card__text">Short hours • Big energy</div>
-          <a class="card__link" href="#hours">See hours</a>
-        </div>
-      </div>
-    </section>
-
-    <!-- CONTACT -->
-    <section id="contact" class="panel" aria-label="Connect">
-      <h2 class="panel__title">Connect</h2>
-      <p class="panel__sub">Social-first layout. Your links go here.</p>
-
-      <div class="linkstack">
-        <a class="linkstack__btn" href="#" onclick="return false;">Instagram</a>
-        <a class="linkstack__btn" href="#" onclick="return false;">Facebook</a>
-        <a class="linkstack__btn" href="#" onclick="return false;">Google Business</a>
-      </div>
-
-      <div class="footerNote">
-        <div class="footerNote__inner">
-          Built as a quick mock: clean tiles, centered menu, and an hours banner you can reuse anywhere.
-        </div>
-      </div>
-    </section>
+    </footer>
   </main>
 
-  <!-- BOTTOM NAV (social app vibe) -->
-  <nav class="bottomNav" aria-label="Bottom navigation">
-    <button class="bn" type="button" data-scroll="#content" aria-label="Home">
-      <span class="bn__icon">⌂</span><span class="bn__label">Home</span>
+  <!-- Bottom nav (social app vibe) -->
+  <nav class="dock" aria-label="Bottom navigation">
+    <button class="dock__btn" type="button" data-open="menu" aria-haspopup="dialog">
+      <span class="dock__icon" aria-hidden="true">☕</span>
+      <span class="dock__label">Menu</span>
     </button>
-    <button class="bn" type="button" data-scroll="#hours" aria-label="Hours">
-      <span class="bn__icon">⏰</span><span class="bn__label">Hours</span>
+    <button class="dock__btn" type="button" data-open="hours" aria-haspopup="dialog">
+      <span class="dock__icon" aria-hidden="true">🕒</span>
+      <span class="dock__label">Hours</span>
     </button>
-    <button class="bn" type="button" data-scroll="#menu" aria-label="Menu">
-      <span class="bn__icon">☕</span><span class="bn__label">Menu</span>
-    </button>
-    <button class="bn" type="button" data-scroll="#visit" aria-label="Visit">
-      <span class="bn__icon">📍</span><span class="bn__label">Visit</span>
-    </button>
-    <button class="bn" type="button" data-scroll="#contact" aria-label="Connect">
-      <span class="bn__icon">📲</span><span class="bn__label">Connect</span>
-    </button>
+    <a class="dock__btn" href="#" aria-label="Instagram (mock link)">
+      <span class="dock__icon" aria-hidden="true">📷</span>
+      <span class="dock__label">Social</span>
+    </a>
   </nav>
 
-  <!-- MODAL -->
-  <div class="modal" id="modal" aria-hidden="true">
-    <div class="modal__backdrop" data-close="1"></div>
-    <div class="modal__panel" role="dialog" aria-modal="true" aria-label="Image preview">
-      <button class="modal__close" type="button" data-close="1" aria-label="Close">✕</button>
-      <div class="modal__media">
-        <img id="modalImg" alt="" />
-      </div>
-      <div class="modal__text">
-        <div class="modal__title" id="modalTitle"></div>
-        <div class="modal__sub" id="modalSub"></div>
-      </div>
-    </div>
+  <!-- Modal -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal__backdrop" data-close="1" aria-hidden="true"></div>
+
+    <section class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal__head">
+        <div class="modal__title" id="modalTitle">Title</div>
+        <button class="modal__close" type="button" data-close="1" aria-label="Close">✕</button>
+      </header>
+
+      <div class="modal__body" id="modalBody"></div>
+    </section>
   </div>
 
-  <script src="app.js"></script>
+  <script src="app.js" defer></script>
 </body>
 </html>
