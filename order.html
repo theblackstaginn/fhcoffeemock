@@ -4,32 +4,115 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Order — Farmhouse Coffee</title>
-  <meta name="theme-color" content="#efe6d6" />
-  <link rel="stylesheet" href="styles.css" />
+  <meta name="description" content="In-store pickup ordering (mock)." />
+  <link rel="icon" href="./favicon.PNG" />
+  <link rel="stylesheet" href="./order.css" />
 </head>
 
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <div class="bg-fixed" aria-hidden="true"></div>
 
-  <main id="main" class="wrap">
-    <header class="pageHead">
-      <a class="backLink" href="index.html">← Back</a>
-      <h1 class="pageTitle">Order</h1>
-      <p class="pageSub">In-store pickup only (mock).</p>
-    </header>
+  <header class="topbar">
+    <a class="back" href="./index.html" aria-label="Back to home">← Back</a>
+    <div class="brand">
+      <img src="./logo.PNG" alt="" onerror="this.style.display='none'">
+      <div class="brand__text">
+        <div class="brand__title">Order</div>
+        <div class="brand__sub">In-store pickup only (mock)</div>
+      </div>
+    </div>
 
-    <section class="card card--glass">
-      <h2 class="cardTitle">Pickup Ordering</h2>
-      <p class="cardText">
-        This is a mock ordering page. In a real build, this could be:
-        a simple pickup form, a Payhip/Stripe checkout link, or a square online ordering link.
+    <button class="cartBtn" type="button" id="cartBtn" aria-label="Open cart">
+      <span class="cartBtn__icon" aria-hidden="true">🛒</span>
+      <span class="cartBtn__count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main class="wrap">
+    <section class="card intro">
+      <h1>Pickup Ordering</h1>
+      <p>
+        This is a mock pickup ordering page. In a real build, this can connect to Payhip/Stripe,
+        Square, Toast, or a simple pickup form — but the flow stays the same.
       </p>
 
-      <div class="row">
-        <a class="btn btn--primary" href="menu.html">View Menu</a>
-        <a class="btn" href="hours.html">Check Hours</a>
+      <div class="intro__actions">
+        <button class="btn btn--primary" type="button" data-open="menu">View Menu</button>
+        <button class="btn" type="button" data-open="hours">Check Hours</button>
       </div>
     </section>
+
+    <section class="sectionHead">
+      <h2>Popular pickup items</h2>
+      <p class="muted">Tap “Add” to build a cart. Adjust quantities anytime.</p>
+    </section>
+
+    <section class="grid" id="productGrid" aria-label="Products"></section>
   </main>
+
+  <!-- CART DRAWER -->
+  <aside class="drawer" id="drawer" hidden aria-hidden="true">
+    <div class="drawer__backdrop" data-close></div>
+
+    <section class="drawer__panel" role="dialog" aria-modal="true" aria-label="Cart">
+      <header class="drawer__head">
+        <div class="drawer__title">Your pickup cart</div>
+        <button class="iconBtn" type="button" data-close aria-label="Close cart">✕</button>
+      </header>
+
+      <div class="drawer__body">
+        <div class="empty" id="emptyCart" hidden>
+          <div class="empty__big">Nothing in the cart yet.</div>
+          <div class="muted">Add a drink, then come back here.</div>
+        </div>
+
+        <div class="cartList" id="cartList"></div>
+
+        <div class="cartNotes">
+          <label for="orderNotes" class="cartNotes__label">Pickup notes (optional)</label>
+          <textarea id="orderNotes" class="cartNotes__input" rows="3"
+            placeholder="Example: Oat milk, no foam, name on cup: Jess"></textarea>
+        </div>
+      </div>
+
+      <footer class="drawer__foot">
+        <div class="totals">
+          <div class="totals__row">
+            <span>Subtotal</span>
+            <span id="subtotal">$0.00</span>
+          </div>
+          <div class="totals__row totals__row--small muted">
+            <span>Tax</span>
+            <span id="tax">$0.00</span>
+          </div>
+          <div class="totals__row totals__row--big">
+            <span>Total</span>
+            <span id="total">$0.00</span>
+          </div>
+        </div>
+
+        <button class="btn btn--primary btn--full" type="button" id="placeOrder">
+          Place pickup order (mock)
+        </button>
+        <div class="muted tiny">No payment collected — this generates an order summary.</div>
+      </footer>
+    </section>
+  </aside>
+
+  <!-- MODAL (shared style + behavior with homepage pattern) -->
+  <div class="modal" id="modal" hidden aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+
+    <section class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal__head">
+        <div id="modalTitle" class="modal__title">Menu</div>
+        <button class="modal__close" type="button" data-close aria-label="Close">✕</button>
+      </header>
+
+      <div class="modal__body" id="modalBody"></div>
+    </section>
+  </div>
+
+  <script src="./order.js"></script>
 </body>
 </html>
