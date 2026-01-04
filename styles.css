@@ -128,6 +128,47 @@ a{ color:inherit; text-decoration:none; }
   margin-bottom: 12px;
 }
 
+/* =======================
+   NO-OVERLAP HERO STACK
+   ======================= */
+
+/* Give the hero breathing room and stop any internal overlap */
+.hero{
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep the hero image full-frame, but don’t let it fight the panel */
+.hero__media{
+  height: clamp(320px, 52vw, 560px);
+}
+
+/* ✅ Remove the overlap: no negative margin */
+.hero__panel{
+  margin: 14px auto 0;          /* was negative */
+  width: min(820px, calc(100% - 26px));
+}
+
+/* Add spacing so the tiles below never tuck under the hero */
+.grid{
+  margin-top: 18px;             /* keep separation */
+}
+
+/* Mobile: keep everything stacked and roomy */
+@media (max-width: 760px){
+  .hero__media{
+    height: clamp(280px, 70vw, 520px);
+  }
+
+  .hero__panel{
+    margin: 12px auto 0;        /* no overlap on mobile */
+    width: calc(100% - 22px);
+  }
+
+  .grid{
+    margin-top: 16px;
+  }
+}
 .btn{
   appearance:none;
   border: 1px solid var(--btnBorder);
