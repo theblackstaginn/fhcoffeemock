@@ -1,13 +1,3 @@
-/* ===========================
-   FARMHOUSE MOCK — APP
-   - centered tile UI
-   - modal content
-   - menu data (from your screenshots only)
-   - NO "full menu image" section
-   - Adds "Order" button inside menu modal
-   - offline service worker
-   =========================== */
-
 (() => {
   "use strict";
 
@@ -157,12 +147,13 @@
       `;
     }).join("");
 
-    // "Order" block at top; no full menu image section
     return `
-      <div class="orderBox">
-        <div><strong>Order for In-Store Pickup</strong></div>
-        <a class="orderBtn" href="#" aria-label="Order (mock link)">Order</a>
-        <div class="orderNote">(Mock) Link goes to their ordering flow.</div>
+      <div class="menuSection">
+        <h3>Order</h3>
+        <div class="note" style="margin-top:6px;">
+          Mock button for online ordering / pickup.
+        </div>
+        <button class="btn btn--primary" type="button" style="margin-top:10px;">Order Now</button>
       </div>
 
       <div class="menuTop" role="tablist" aria-label="Menu sections">
@@ -175,12 +166,11 @@
 
   const CARDS = {
     hours: {
-      title: "New Hours",
+      title: "Hours",
       html: `
         <div class="menuSection">
           <h3>New Hours</h3>
-          <img src="hours-panel.PNG" alt="New hours panel"
-               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+          <img src="hours-panel.PNG" alt="New hours panel" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(0,0,0,.10);display:block;" />
         </div>
       `
     },
@@ -188,9 +178,8 @@
       title: "Inside",
       html: `
         <div class="menuSection">
-          <h3>Inside</h3>
-          <img src="counter.jpg" alt="Counter photo"
-               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+          <h3>Counter</h3>
+          <img src="counter.jpg" alt="Counter photo" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(0,0,0,.10);display:block;" />
         </div>
       `
     },
@@ -198,9 +187,8 @@
       title: "Rise & Shine",
       html: `
         <div class="menuSection">
-          <h3>Rise &amp; Shine</h3>
-          <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo"
-               style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+          <h3>Morning Mood</h3>
+          <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(0,0,0,.10);display:block;" />
         </div>
       `
     },
