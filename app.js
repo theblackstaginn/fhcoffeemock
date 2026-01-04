@@ -5,8 +5,14 @@
   const modalTitle = document.getElementById("modalTitle");
   const modalBody = document.getElementById("modalBody");
 
+  // Image viewer modal (gallery)
+  const imgModal = document.getElementById("imgModal");
+  const imgModalImg = document.getElementById("imgModalImg");
+
+  // Gallery mount
+  const galleryGrid = document.getElementById("galleryGrid");
+
   // ---- EDIT THIS MENU DATA ----
-  // Replace with the real Farmhouse Coffee items when you have them.
   const MENU = [
     {
       tab: "Coffee",
@@ -54,6 +60,34 @@
     }
   ];
 
+  /* ===========================
+     GALLERY: Put ALL non-background, non-hero photos here
+     - These become your tiles
+     - No text, just images
+     =========================== */
+  const GALLERY_IMAGES = [
+    // Example — replace with your actual filenames:
+    "counter.jpg"
+    // "interior1.jpg",
+    // "drink1.jpg",
+    // "kolache.jpg",
+    // "latte-art.jpg",
+  ];
+
+  /* Exclusions so you don’t accidentally tile UI assets */
+  const EXCLUDE = new Set([
+    "coffee-bg.PNG",
+    "bg-mobile.PNG",
+    "sf-hero.jpg",
+    "logo.PNG",
+    "favicon.PNG",
+    "instagram.PNG",
+    "facebook.PNG",
+    "tiktok.PNG",
+    "hours-panel.PNG",
+    "menu.jpg"
+  ]);
+
   function openModal(title, contentNode) {
     modalTitle.textContent = title;
     modalBody.innerHTML = "";
@@ -68,6 +102,21 @@
     modal.hidden = true;
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
+  }
+
+  function openImg(src) {
+    imgModalImg.src = src;
+    imgModal.hidden = false;
+    imgModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeImg() {
+    imgModal.hidden = true;
+    imgModal.setAttribute("aria-hidden", "true");
+    imgModalImg.removeAttribute("src");
+    // Only restore scroll if the menu modal is not open
+    if (modal.hidden) document.body.style.overflow = "";
   }
 
   function buildMenuUI() {
@@ -145,16 +194,51 @@
 
   function buildHoursUI() {
     const wrap = document.createElement("div");
-
-    // You can swap this for text hours if you prefer.
     const img = document.createElement("img");
     img.className = "hoursImg";
     img.src = "./hours-panel.PNG";
     img.alt = "Hours";
     img.loading = "lazy";
     wrap.appendChild(img);
-
     return wrap;
+  }
+
+  /* ===========================
+     Build the image-only tile grid
+     =========================== */
+  function buildGallery() {
+    if (!galleryGrid) return;
+
+    galleryGrid.innerHTML = "";
+
+    // Filter out anything excluded (defensive)
+    const images = GALLERY_IMAGES
+      .map(s => String(s || "").trim())
+      .filter(Boolean)
+      .filter(fn => !EXCLUDE.has(fn));
+
+    images.forEach((fn) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "tile";
+      btn.setAttribute("aria-label", "Open image");
+
+      const wrap = document.createElement("div");
+      wrap.className = "tile__imgWrap";
+
+      const img = document.createElement("img");
+      img.className = "tile__img";
+      img.src = `./${fn}`;
+      img.alt = "";
+      img.loading = "lazy";
+
+      wrap.appendChild(img);
+      btn.appendChild(wrap);
+
+      btn.addEventListener("click", () => openImg(img.src));
+
+      galleryGrid.appendChild(btn);
+    });
   }
 
   // ---- Event wiring ----
@@ -167,20 +251,24 @@
       return;
     }
 
-    const tile = e.target.closest("[data-tile]");
-    if (tile) {
-      const what = tile.getAttribute("data-tile");
-      if (what === "menu") openModal("Menu", buildMenuUI());
-      if (what === "hours") openModal("Hours", buildHoursUI());
+    if (e.target.matches("[data-close]") || e.target.closest("[data-close]")) {
+      closeModal();
       return;
     }
 
-    if (e.target.matches("[data-close]") || e.target.closest("[data-close]")) {
-      closeModal();
+    if (e.target.matches("[data-img-close]") || e.target.closest("[data-img-close]")) {
+      closeImg();
+      return;
     }
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modal.hidden) closeModal();
+    if (e.key === "Escape") {
+      if (!imgModal.hidden) closeImg();
+      else if (!modal.hidden) closeModal();
+    }
   });
+
+  // Boot
+  buildGallery();
 })();
