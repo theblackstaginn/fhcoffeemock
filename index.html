@@ -45,12 +45,17 @@
       </div>
     </section>
 
+    <!-- HOURS BANNER (FULL WIDTH, NO CROP) -->
+    <section class="hoursBanner" aria-label="Hours banner">
+      <img class="hoursBanner__img" src="./hours-panel.PNG" alt="Hours" loading="lazy" />
+    </section>
+
     <!-- TILES GRID (2 columns) -->
     <section class="grid" aria-label="Slides + image tiles">
 
       <!-- SLOT 1: Carousel (beanslide) -->
       <div class="card carousel" data-carousel="beanslide" aria-label="Bean Slide carousel">
-        <div class="carousel__viewport" tabindex="0" aria-label="Swipe slides">
+        <div class="carousel__viewport" tabindex="0" aria-label="Tap or swipe slides">
           <div class="carousel__track">
             <img class="carousel__img" src="./beanslide/coff-1.jpg" alt="" loading="lazy">
             <img class="carousel__img" src="./beanslide/coff-2.jpg" alt="" loading="lazy">
@@ -65,7 +70,7 @@
 
       <!-- SLOT 2: Carousel (beanstory) -->
       <div class="card carousel" data-carousel="beanstory" aria-label="Bean Story carousel">
-        <div class="carousel__viewport" tabindex="0" aria-label="Swipe slides">
+        <div class="carousel__viewport" tabindex="0" aria-label="Tap or swipe slides">
           <div class="carousel__track">
             <img class="carousel__img" src="./beanstory/cbs-1.jpg" alt="" loading="lazy">
             <img class="carousel__img" src="./beanstory/cbs-2.jpg" alt="" loading="lazy">
@@ -78,29 +83,25 @@
         <div class="dots" aria-hidden="true"></div>
       </div>
 
-      <!-- Image tiles (tiles folder) — images only, no text -->
+      <!-- Image tiles (tiles folder ONLY) — images only, no text -->
       <button class="card tile" type="button" data-tile="menu" aria-label="Open menu">
-        <img src="./tiles/menu.jpg" alt="" loading="lazy" />
-      </button>
-
-      <button class="card tile" type="button" data-tile="hours" aria-label="Open hours">
-        <img src="./hours-panel.PNG" alt="" loading="lazy" />
+        <img class="tile__img" src="./tiles/menu.jpg" alt="" loading="lazy" />
       </button>
 
       <a class="card tile" href="./order.html" aria-label="Order (pickup)">
-        <img src="./tiles/counter.jpg" alt="" loading="lazy" />
+        <img class="tile__img" src="./tiles/counter.jpg" alt="" loading="lazy" />
       </a>
 
       <button class="card tile" type="button" aria-label="Coffee image">
-        <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
+        <img class="tile__img" src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
       </button>
 
       <button class="card tile" type="button" aria-label="Espresso image">
-        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
+        <img class="tile__img" src="./tiles/espresso.jpg" alt="" loading="lazy" />
       </button>
 
       <button class="card tile" type="button" aria-label="Farmhouse image">
-        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
+        <img class="tile__img" src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
       </button>
 
     </section>
@@ -122,7 +123,7 @@
 
   <script src="./app.js"></script>
 
-  <!-- tiny inline script: swipe + dots (no external libs) -->
+  <!-- tiny inline script: swipe + dots + TAP-TO-ADVANCE (no external libs) -->
   <script>
   (() => {
     "use strict";
@@ -150,14 +151,34 @@
         return d;
       });
 
+      const getIndex = () =>
+        clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
+
+      const go = (idx) => {
+        idx = clamp(idx, 0, imgs.length - 1);
+        viewport.scrollTo({ left: viewport.clientWidth * idx, behavior: "smooth" });
+      };
+
       const setActive = () => {
-        const idx = clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
+        const idx = getIndex();
         dotEls.forEach((d, i) => d.classList.toggle("is-active", i === idx));
       };
 
       viewport.addEventListener("scroll", () => requestAnimationFrame(setActive), { passive: true });
       window.addEventListener("resize", setActive);
       setActive();
+
+      // Tap-to-advance (left = prev, right = next)
+      viewport.addEventListener("click", (e) => {
+        // If user clicked a dot, let the dot handler win.
+        if (e.target && (e.target.classList?.contains("dot") || e.target.closest?.(".dots"))) return;
+
+        const r = viewport.getBoundingClientRect();
+        const x = e.clientX - r.left;
+        const idx = getIndex();
+        if (x < r.width * 0.5) go(idx - 1);
+        else go(idx + 1);
+      });
 
       // Drag / swipe support (mouse + touch)
       let isDown = false;
@@ -184,8 +205,7 @@
         if (!isDown) return;
         isDown = false;
         viewport.classList.remove("is-dragging");
-        const idx = clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
-        viewport.scrollTo({ left: viewport.clientWidth * idx, behavior: "smooth" });
+        go(getIndex());
       };
 
       viewport.addEventListener("mousedown", down);
