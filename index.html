@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#111214" />
   <title>Farmhouse Coffee — Mock</title>
-  <meta name="description" content="Farmhouse Coffee mock site. Warm, farmhouse-friendly tiles with quick access to menu and hours." />
+  <meta name="description" content="Farmhouse Coffee mock site. Tile-first browsing, quick hours, easy ordering." />
 
+  <!-- Favicon -->
   <link rel="icon" href="favicon.PNG" type="image/png" />
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="icon-192.PNG" />
 
@@ -18,6 +20,7 @@
 <body>
   <a class="skip" href="#main">Skip to content</a>
 
+  <!-- Ambient background layers -->
   <div class="bg" aria-hidden="true"></div>
 
   <header class="topbar" role="banner">
@@ -26,7 +29,7 @@
         <img class="brand__icon" src="icon-192.PNG" alt="Farmhouse Coffee icon" />
         <div class="brand__text">
           <div class="brand__name">Farmhouse Coffee</div>
-          <div class="brand__sub">Warm coffee • Local comfort • Built for quick browsing</div>
+          <div class="brand__sub">Warm coffee. Small-town comfort.</div>
         </div>
       </div>
 
@@ -38,47 +41,54 @@
   </header>
 
   <main id="main" class="wrap" role="main">
+    <!-- Solid hero panel -->
     <section class="hero" aria-label="Farmhouse Coffee hero">
-      <div class="hero__media" role="img" aria-label="Coffee hero image">
-        <img src="sf-hero.jpg" alt="Farmhouse Coffee hero photo" />
+      <div class="hero__media" aria-hidden="true">
+        <!-- Full image visible (no cropping) -->
+        <img class="hero__img" src="sf-hero.jpg" alt="" />
       </div>
 
       <div class="hero__panel">
-        <!-- Logo in hero -->
-        <img class="hero__logo" src="icon-512.PNG" alt="Farmhouse Coffee logo" />
+        <!-- LOGO instead of text -->
+        <img class="hero__logo" src="icon-512.PNG" alt="Farmhouse Coffee" />
 
         <p class="hero__desc">
-          A warm place to slow down—good coffee, friendly faces, and something sweet to go with it.
+          Fresh drinks, friendly faces, and a place that feels like home.
+          Tap below for hours, menu, and ordering.
         </p>
 
         <div class="hero__cta">
-          <button class="btn btn--primary" type="button" data-open="menu" aria-haspopup="dialog">Open Menu</button>
+          <button class="btn btn--primary" type="button" data-open="menu" aria-haspopup="dialog">Menu</button>
           <button class="btn" type="button" data-open="hours" aria-haspopup="dialog">Hours</button>
         </div>
 
-        <div class="hero__social" aria-label="Social links">
-          <a class="social" href="#" aria-label="Instagram (mock link)">
-            <img src="icon-instagram.svg" alt="" />
+        <!-- Social icons -->
+        <div class="social-icons" aria-label="Social links">
+          <a class="social-icon" href="#" aria-label="Instagram (mock link)">
+            <img src="instagram.png" alt="Instagram" />
           </a>
-          <a class="social" href="#" aria-label="Facebook (mock link)">
-            <img src="icon-facebook.svg" alt="" />
+          <a class="social-icon" href="#" aria-label="Facebook (mock link)">
+            <img src="facebook.png" alt="Facebook" />
           </a>
-          <a class="social" href="#" aria-label="TikTok (mock link)">
-            <img src="icon-tiktok.svg" alt="" />
+          <a class="social-icon" href="#" aria-label="TikTok (mock link)">
+            <img src="tiktok.png" alt="TikTok" />
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Hours banner directly below hero -->
+    <!-- HOURS BANNER (below hero, same width, entire image visible) -->
     <section class="hoursBanner" aria-label="New hours banner">
-      <img src="hours-panel.PNG" alt="New hours" loading="lazy" />
+      <button class="hoursBanner__btn" type="button" data-open="hours" aria-haspopup="dialog">
+        <img src="hours-panel.PNG" alt="New hours" loading="lazy" />
+      </button>
     </section>
 
-    <!-- Tiles -->
+    <!-- Tile grid (social feed vibe) -->
     <section class="grid" aria-label="Featured tiles">
-      <article class="tile" tabindex="0" role="button" data-open="menu" aria-haspopup="dialog" aria-label="Open menu">
-        <img src="r-s-coffee.jpg" alt="Coffee photo" loading="lazy" />
+      <!-- Menu tile (no menu.jpg) -->
+      <article class="tile tile--menu" tabindex="0" role="button" data-open="menu" aria-haspopup="dialog" aria-label="Open menu">
+        <div class="tile__art" aria-hidden="true">☕</div>
         <div class="tile__cap">
           <div class="tile__title">Menu</div>
           <div class="tile__sub">Browse sections</div>
@@ -94,42 +104,42 @@
       </article>
 
       <article class="tile" tabindex="0" role="button" data-open="feature" aria-haspopup="dialog" aria-label="Open Rise and Shine feature">
-        <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" loading="lazy" />
+        <img src="r-s-coffee.jpg" alt="Coffee feature" loading="lazy" />
         <div class="tile__cap">
           <div class="tile__title">Rise &amp; Shine</div>
           <div class="tile__sub">Morning fuel</div>
         </div>
       </article>
-
-      <article class="tile" tabindex="0" role="button" data-open="hours" aria-haspopup="dialog" aria-label="Open hours">
-        <img src="hours-panel.PNG" alt="New hours" loading="lazy" />
-        <div class="tile__cap">
-          <div class="tile__title">Hours</div>
-          <div class="tile__sub">Tap to view</div>
-        </div>
-      </article>
     </section>
 
     <footer class="footer" role="contentinfo">
-      Mock site • Tile-first layout • Offline-ready
+      <div class="footer__inner">
+        <div class="footer__small">
+          Mock site • Tile-first layout • Offline-ready
+        </div>
+      </div>
     </footer>
   </main>
 
+  <!-- Bottom nav (social app vibe) -->
   <nav class="dock" aria-label="Bottom navigation">
     <button class="dock__btn" type="button" data-open="menu" aria-haspopup="dialog">
       <span class="dock__icon" aria-hidden="true">☕</span>
       <span class="dock__label">Menu</span>
     </button>
+
     <button class="dock__btn" type="button" data-open="hours" aria-haspopup="dialog">
       <span class="dock__icon" aria-hidden="true">🕒</span>
       <span class="dock__label">Hours</span>
     </button>
+
     <a class="dock__btn" href="#" aria-label="Instagram (mock link)">
       <span class="dock__icon" aria-hidden="true">📷</span>
       <span class="dock__label">Social</span>
     </a>
   </nav>
 
+  <!-- Modal -->
   <div class="modal" id="modal" hidden>
     <div class="modal__backdrop" data-close="1" aria-hidden="true"></div>
 
