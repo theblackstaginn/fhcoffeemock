@@ -1,12 +1,12 @@
 /* ===========================
-   FARMHOUSE MOCK — styles.css (INTEGRATED + CLEANED)
+   FARMHOUSE MOCK — styles.css
    - Uses NEW filenames: coffee-bg.PNG + bg-mobile.PNG
-   - iOS “fixed background” workaround via .bg-fixed (REAL fixed on mobile)
+   - iOS fixed background via .bg-fixed
    - Hero image NOT darkened
    - Hero image shows FULL frame (no cropping)
-   - NO overlapping panels (hero media + panel + tiles)
-   - Social icons correctly sized (bigger)
-   - Grid never collapses into “one giant tile”
+   - NO overlapping panels
+   - Social icons correctly sized
+   - Gallery tiles: images only, symmetrical
    =========================== */
 
 :root{
@@ -19,11 +19,9 @@
 
   --wrap: min(1100px, calc(100% - 36px));
 
-  /* Soft readable panel (not frosted-glass takeover) */
   --panel: rgba(255,255,255,.72);
   --panelBorder: rgba(255,255,255,.55);
 
-  /* Buttons */
   --btn: rgba(255,255,255,.70);
   --btnBorder: rgba(255,255,255,.55);
   --btnHover: rgba(255,255,255,.88);
@@ -32,9 +30,7 @@
   --primaryHover: #efcf9d;
 }
 
-/* =======================
-   RESET
-   ======================= */
+/* RESET */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
 body{
@@ -42,10 +38,6 @@ body{
   color:var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   overflow-x:hidden;
-
-  /* IMPORTANT:
-     We do NOT rely on background-attachment:fixed for mobile Safari.
-     Background is handled by .bg-fixed (below). */
   background: transparent;
 }
 
@@ -53,11 +45,7 @@ img{ max-width:100%; height:auto; display:block; }
 button{ font:inherit; color:inherit; }
 a{ color:inherit; text-decoration:none; }
 
-/* =======================
-   FIXED BACKGROUND LAYER
-   - Add this ONE line to HTML, right after <body>:
-     <div class="bg-fixed" aria-hidden="true"></div>
-   ======================= */
+/* Fixed background layer */
 .bg-fixed{
   position: fixed;
   inset: 0;
@@ -66,7 +54,7 @@ a{ color:inherit; text-decoration:none; }
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: translateZ(0); /* iOS perf hint */
+  transform: translateZ(0);
 }
 
 /* Accessibility */
@@ -82,18 +70,14 @@ a{ color:inherit; text-decoration:none; }
   z-index: 9999;
 }
 
-/* =======================
-   PAGE WRAP
-   ======================= */
+/* Wrap */
 .wrap{
   width: var(--wrap);
   margin: 0 auto;
   padding: 24px 0 42px;
 }
 
-/* =======================
-   HERO (NO OVERLAP STACK)
-   ======================= */
+/* HERO (no overlap stack) */
 .hero{
   border-radius: var(--radius);
   overflow: hidden;
@@ -105,27 +89,17 @@ a{ color:inherit; text-decoration:none; }
   flex-direction: column;
 }
 
-/* Full-frame hero image (NO crop) */
+/* Full-frame hero (NO crop) */
 .hero__media{
   width:100%;
   background-image: url("./sf-hero.jpg");
   background-repeat:no-repeat;
   background-position:center;
-  background-size: contain;       /* ✅ NO CROP */
+  background-size: contain;
   background-color: rgba(255,255,255,.06);
   height: clamp(320px, 52vw, 560px);
 }
 
-/* If your HTML uses <img class="hero__img"> instead of .hero__media */
-.hero__img{
-  width:100%;
-  height: clamp(320px, 52vw, 560px);
-  object-fit: contain;            /* ✅ NO CROP */
-  object-position:center;
-  background: rgba(255,255,255,.06);
-}
-
-/* Clean readable panel — NOT overlapping */
 .hero__panel{
   margin: 14px auto 0;
   width: min(820px, calc(100% - 26px));
@@ -137,7 +111,6 @@ a{ color:inherit; text-decoration:none; }
   text-align:center;
 }
 
-/* Logo */
 .hero__logo{
   width: 88px;
   height: 88px;
@@ -146,7 +119,6 @@ a{ color:inherit; text-decoration:none; }
   filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
 }
 
-/* Text */
 .hero__desc{
   margin: 0 auto 14px;
   max-width: 60ch;
@@ -189,10 +161,9 @@ a{ color:inherit; text-decoration:none; }
   justify-content:center;
   gap: 12px;
 }
-
 .socialBtn{
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   border-radius: 999px;
   background: rgba(255,255,255,.78);
   border: 1px solid rgba(255,255,255,.65);
@@ -203,21 +174,30 @@ a{ color:inherit; text-decoration:none; }
 .socialBtn:hover{ background: rgba(255,255,255,.92); }
 
 .socialBtn img{
-  width: 34px;  /* ✅ bigger icons */
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
   display:block;
 }
 
 /* =======================
-   TILE GRID (NO “ONE GIANT TILE”)
+   GALLERY GRID (IMAGES ONLY)
+   - symmetrical aspect ratio
+   - no captions
    ======================= */
 .grid{
   margin-top: 18px;
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
-  align-items: start;
+  align-items: stretch;
+}
+
+@media (max-width: 980px){
+  .grid{ grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 760px){
+  .grid{ grid-template-columns: 1fr; }
 }
 
 .tile{
@@ -227,34 +207,28 @@ a{ color:inherit; text-decoration:none; }
   border: 1px solid rgba(255,255,255,.22);
   box-shadow: var(--shadow);
   cursor:pointer;
-  text-align: left;
+  padding: 0;
 }
 
-.tile--link{ display:block; }
+/* Fixed aspect ratio = “symmetrical and pretty” */
+.tile__imgWrap{
+  width: 100%;
+  aspect-ratio: 4 / 3; /* change to 1/1 for perfect squares */
+  background: rgba(255,255,255,.10);
+}
 
-.tile img{
+.tile__img{
   width:100%;
-  height: 220px;
+  height:100%;
   object-fit: cover;
+  display:block;
+  transform: translateZ(0);
 }
 
-.tile__cap{
-  padding: 12px 12px 14px;
-  background: rgba(255,255,255,.70);
-}
-
-.tile__title{
-  font-weight: 800;
-  letter-spacing: .2px;
-}
-.tile__sub{
-  margin-top: 2px;
-  font-size: 12px;
-  color: rgba(17,18,20,.72);
-}
+.tile:active{ transform: translateY(1px); }
 
 /* =======================
-   MODAL
+   MENU / HOURS MODAL
    ======================= */
 .modal[hidden]{ display:none; }
 .modal{ position: fixed; inset: 0; z-index: 9999; }
@@ -362,7 +336,6 @@ a{ color:inherit; text-decoration:none; }
   line-height: 1.25;
 }
 
-/* Hours image inside modal */
 .hoursImg{
   width: 100%;
   border-radius: 16px;
@@ -370,10 +343,54 @@ a{ color:inherit; text-decoration:none; }
 }
 
 /* =======================
-   RESPONSIVE (MOBILE)
-   - No overlap
-   - Fixed background via .bg-fixed using bg-mobile.PNG
+   IMAGE VIEWER MODAL
    ======================= */
+.imgModal[hidden]{ display:none; }
+.imgModal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+.imgModal__backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.55);
+}
+.imgModal__sheet{
+  position:absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(980px, calc(100% - 24px));
+  max-height: min(86vh, 900px);
+  border-radius: 22px;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.65);
+  box-shadow: 0 30px 80px rgba(0,0,0,.45);
+  overflow:hidden;
+}
+.imgModal__close{
+  position:absolute;
+  top: 10px;
+  right: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.85);
+  cursor:pointer;
+  z-index: 2;
+}
+.imgModal__img{
+  width: 100%;
+  height: 100%;
+  max-height: min(86vh, 900px);
+  object-fit: contain;
+  display:block;
+  background: rgba(255,255,255,.96);
+}
+
+/* MOBILE */
 @media (max-width: 760px){
   .bg-fixed{
     background-image: url("./bg-mobile.PNG");
@@ -388,15 +405,12 @@ a{ color:inherit; text-decoration:none; }
     border-radius: 22px;
   }
 
-  .hero__media,
-  .hero__img{
+  .hero__media{
     height: clamp(240px, 62vw, 380px);
-    background-size: contain;
-    background-position: center;
   }
 
   .hero__panel{
-    margin: 12px auto 0;     /* ✅ NO NEGATIVE MARGINS */
+    margin: 12px auto 0;
     width: 100%;
     max-width: none;
     padding: 14px 14px 12px;
@@ -415,21 +429,11 @@ a{ color:inherit; text-decoration:none; }
   }
 
   .socialBtn{
-    width: 52px;
-    height: 52px;
+    width: 54px;
+    height: 54px;
   }
-
   .socialBtn img{
-    width: 30px;
-    height: 30px;
-  }
-
-  .grid{
-    margin-top: 18px;
-    grid-template-columns: 1fr;
-  }
-
-  .tile img{
-    height: 200px;
+    width: 36px;
+    height: 36px;
   }
 }
