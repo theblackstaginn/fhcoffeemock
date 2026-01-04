@@ -3,9 +3,9 @@
    - centered tile UI
    - modal content
    - menu data (from your screenshots only)
+   - removes menu image from modal
+   - adds ORDER button instead
    - offline service worker
-   - menu modal includes "Order" button (mock)
-   - NO menu image inside modal
    =========================== */
 
 (() => {
@@ -17,6 +17,9 @@
   const modal = $("#modal");
   const modalTitle = $("#modalTitle");
   const modalBody = $("#modalBody");
+
+  // ✅ Replace this with their real order URL when you have it.
+  const ORDER_LINK = "#";
 
   const MENU = [
     {
@@ -31,67 +34,100 @@
         { name: "Michael Jackson", note: "Mocha/white chocolate" }
       ]
     },
-    { id: "Cold Brew", items: [
-      { name: "Cold Brew", note: "" },
-      { name: "Nitro Cold Brew", note: "" }
-    ]},
-    { id: "Iced/Frozen", items: [
-      { name: "Latte", note: "" }
-    ]},
-    { id: "Specialty", items: [
-      { name: "Caramel", note: "" },
-      { name: "Mocha", note: "" },
-      { name: "Vanilla Dream", note: "" },
-      { name: "White choc", note: "" }
-    ]},
-    { id: "Extras", items: [
-      { name: "Extra Shot", note: "" },
-      { name: "Syrup", note: "Vanilla, caramel, white choc, mocha, lavender, raspberry, coconut, toffee, hazelnut, sugar free: vanilla, caramel" },
-      { name: "Alt Milk", note: "Oat, almond, coconut, soy" }
-    ]},
-    { id: "Hot", items: [
-      { name: "Drip", note: "(Light, medium, dark)" },
-      { name: "Americano", note: "" },
-      { name: "Latte", note: "" }
-    ]},
-    { id: "Specialty Lattes", items: [
-      { name: "Caramelatte", note: "" },
-      { name: "Cafe Mocha Or White Chocolate", note: "" },
-      { name: "Vanilla Dream", note: "" }
-    ]},
-    { id: "Kolaches", items: [
-      { name: "Egg+Cheese", note: "" },
-      { name: "Bacon & Cheese", note: "" },
-      { name: "Plain", note: "" },
-      { name: "Cheddar", note: "" }
-    ]},
-    { id: "Kids", items: [
-      { name: "Honest Kids Organic", note: "" }
-    ]},
-    { id: "Tea+More", items: [
-      { name: "London Fog", note: "(Vanilla or lavender)" },
-      { name: "Chai Latte", note: "(Iced or hot)" },
-      { name: "Morning Mist", note: "" }
-    ]},
-    { id: "Hot Teas", items: [
-      { name: "Green", note: "" },
-      { name: "Black", note: "" },
-      { name: "Chai", note: "" },
-      { name: "Earl Grey", note: "" },
-      { name: "Peppermint", note: "" },
-      { name: "Lavender", note: "" }
-    ]},
-    { id: "Others", items: [
-      { name: "Cappuccino", note: "" },
-      { name: "Macchiato", note: "" },
-      { name: "Espresso (Double)", note: "" },
-      { name: "Muffins", note: "" },
-      { name: "Nutella Crepe", note: "" },
-      { name: "Waffle", note: "" },
-      { name: "Cinn. Roll", note: "" },
-      { name: "French Toast Blueberry", note: "" },
-      { name: "Kids' Juice", note: "" }
-    ]}
+    {
+      id: "Cold Brew",
+      items: [
+        { name: "Cold Brew", note: "" },
+        { name: "Nitro Cold Brew", note: "" }
+      ]
+    },
+    {
+      id: "Iced/Frozen",
+      items: [
+        { name: "Latte", note: "" }
+      ]
+    },
+    {
+      id: "Specialty",
+      items: [
+        { name: "Caramel", note: "" },
+        { name: "Mocha", note: "" },
+        { name: "Vanilla Dream", note: "" },
+        { name: "White choc", note: "" }
+      ]
+    },
+    {
+      id: "Extras",
+      items: [
+        { name: "Extra Shot", note: "" },
+        { name: "Syrup", note: "Vanilla, caramel, white choc, mocha, lavender, raspberry, coconut, toffee, hazelnut, sugar free: vanilla, caramel" },
+        { name: "Alt Milk", note: "Oat, almond, coconut, soy" }
+      ]
+    },
+    {
+      id: "Hot",
+      items: [
+        { name: "Drip", note: "(Light, medium, dark)" },
+        { name: "Americano", note: "" },
+        { name: "Latte", note: "" }
+      ]
+    },
+    {
+      id: "Specialty Lattes",
+      items: [
+        { name: "Caramelatte", note: "" },
+        { name: "Cafe Mocha Or White Chocolate", note: "" },
+        { name: "Vanilla Dream", note: "" }
+      ]
+    },
+    {
+      id: "Kolaches",
+      items: [
+        { name: "Egg+Cheese", note: "" },
+        { name: "Bacon & Cheese", note: "" },
+        { name: "Plain", note: "" },
+        { name: "Cheddar", note: "" }
+      ]
+    },
+    {
+      id: "Kids",
+      items: [
+        { name: "Honest Kids Organic", note: "" }
+      ]
+    },
+    {
+      id: "Tea+More",
+      items: [
+        { name: "London Fog", note: "(Vanilla or lavender)" },
+        { name: "Chai Latte", note: "(Iced or hot)" },
+        { name: "Morning Mist", note: "" }
+      ]
+    },
+    {
+      id: "Hot Teas",
+      items: [
+        { name: "Green", note: "" },
+        { name: "Black", note: "" },
+        { name: "Chai", note: "" },
+        { name: "Earl Grey", note: "" },
+        { name: "Peppermint", note: "" },
+        { name: "Lavender", note: "" }
+      ]
+    },
+    {
+      id: "Others",
+      items: [
+        { name: "Cappuccino", note: "" },
+        { name: "Macchiato", note: "" },
+        { name: "Espresso (Double)", note: "" },
+        { name: "Muffins", note: "" },
+        { name: "Nutella Crepe", note: "" },
+        { name: "Waffle", note: "" },
+        { name: "Cinn. Roll", note: "" },
+        { name: "French Toast Blueberry", note: "" },
+        { name: "Kids' Juice", note: "" }
+      ]
+    }
   ];
 
   const CARDS = {
@@ -99,10 +135,9 @@
       title: "New Hours",
       html: `
         <div class="menuSection">
-          <h3>Hours</h3>
-          <img src="hours-panel.PNG" alt="New hours panel" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+          <img src="hours-panel.PNG" alt="New hours" style="width:100%;height:auto;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
           <div class="note" style="margin-top:10px;">
-            (Mock) Hours shown exactly as the image.
+            Hours shown exactly as the posted panel.
           </div>
         </div>
       `
@@ -111,7 +146,6 @@
       title: "Inside",
       html: `
         <div class="menuSection">
-          <h3>Counter</h3>
           <img src="counter.jpg" alt="Counter photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
         </div>
       `
@@ -120,8 +154,7 @@
       title: "Rise & Shine",
       html: `
         <div class="menuSection">
-          <h3>Morning Mood</h3>
-          <img src="r-s-coffee.jpg" alt="Rise and Shine coffee photo" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
+          <img src="r-s-coffee.jpg" alt="Coffee feature" style="width:100%;border-radius:18px;border:1px solid rgba(255,255,255,.10);display:block;" />
         </div>
       `
     },
@@ -161,19 +194,18 @@
       `;
     }).join("");
 
+    // ✅ No menu.jpg here. Order button instead.
     return `
-      <div class="menuActionRow">
-        <a class="orderBtn" href="#" aria-label="Order online (mock)">Order</a>
-      </div>
-
       <div class="menuTop" role="tablist" aria-label="Menu sections">
         ${tabs}
       </div>
 
       ${sections}
 
-      <div class="menuActionRow" style="margin-top: 6px;">
-        <a class="orderBtn" href="#" aria-label="Order online (mock)">Order</a>
+      <div class="orderRow" aria-label="Ordering">
+        <a class="orderBtn" href="${esc(ORDER_LINK)}" target="_blank" rel="noopener">
+          Order Now
+        </a>
       </div>
     `;
   }
