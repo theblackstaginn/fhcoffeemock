@@ -10,82 +10,94 @@
 </head>
 
 <body>
-  <!-- Fixed background layer -->
+  <!-- fixed background layer (works on iOS) -->
   <div class="bg-fixed" aria-hidden="true"></div>
 
   <a class="skip" href="#content">Skip to content</a>
 
   <main id="content" class="wrap">
 
-    <!-- HERO -->
+    <!-- HERO IMAGE (NO PANEL OVER IT) -->
     <section class="hero" aria-label="Farmhouse Coffee">
       <div class="hero__media" role="img" aria-label="Farmhouse Coffee hero image"></div>
+    </section>
 
-      <div class="hero__panel">
-        <img class="hero__logo" src="./logo.PNG" alt="Farmhouse Coffee logo"
-             onerror="this.style.display='none';" />
+    <!-- LOGO + ACTIONS + SOCIAL (separate, no overlap) -->
+    <section class="card card--center" aria-label="Actions">
+      <img class="logo" src="./logo.PNG" alt="Farmhouse Coffee logo" onerror="this.style.display='none';" />
 
-        <p class="hero__desc">
-          Warm coffee. Small-town comfort. A place to slow down and feel at home.
-        </p>
+      <p class="tagline">
+        Warm coffee. Small-town comfort. A place to slow down and feel at home.
+      </p>
 
-        <div class="hero__cta" role="group" aria-label="Primary actions">
-          <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
-          <button class="btn" type="button" data-open="hours">Hours</button>
-          <a class="btn" href="./order.html">Order</a>
-        </div>
+      <div class="actions" role="group" aria-label="Primary actions">
+        <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
+        <a class="btn" href="./hours.html" aria-label="Hours page">Hours</a>
+        <a class="btn" href="./order.html" aria-label="Order page">Order</a>
+      </div>
 
-        <div class="hero__meta" aria-label="Social links">
-          <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener">
-            <img src="./instagram.PNG" alt="" />
-          </a>
-          <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener">
-            <img src="./facebook.PNG" alt="" />
-          </a>
-          <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener">
-            <img src="./tiktok.PNG" alt="" />
-          </a>
-        </div>
+      <div class="social" aria-label="Social links">
+        <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+          <img src="./instagram.PNG" alt="" />
+        </a>
+        <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+          <img src="./facebook.PNG" alt="" />
+        </a>
+        <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+          <img src="./tiktok.PNG" alt="" />
+        </a>
       </div>
     </section>
 
-    <!-- IMAGE SECTIONS -->
-    <section class="image-sections" aria-label="Coffee imagery">
+    <!-- NEW HOURS (its own block, like your sketch) -->
+    <section class="card" aria-label="New Hours">
+      <div class="cardTitle">New Hours</div>
+      <a class="hoursLink" href="./hours.html" aria-label="View hours">
+        <img class="hoursImgInline" src="./hours-panel.PNG" alt="Hours" loading="lazy" />
+      </a>
+    </section>
 
-      <!-- BEAN SLIDE -->
-      <div class="image-strip">
-        <img src="./beanslide/coff-1.jpg" alt="" loading="lazy" />
-        <img src="./beanslide/coff-2.jpg" alt="" loading="lazy" />
-        <img src="./beanslide/coff-3.jpg" alt="" loading="lazy" />
-        <img src="./beanslide/coff-4.jpg" alt="" loading="lazy" />
-        <img src="./beanslide/coff-5.jpg" alt="" loading="lazy" />
-        <img src="./beanslide/coff-6.jpg" alt="" loading="lazy" />
+    <!-- SLIDES (Instagram-style swipe) -->
+    <section class="slides" aria-label="Slides">
+      <!-- beanslide -->
+      <div class="carousel" data-carousel="beanslide" aria-label="Bean Slide carousel">
+        <div class="carousel__track" tabindex="0">
+          <img src="./beanslide/coff-1.jpg" alt="" loading="lazy" />
+          <img src="./beanslide/coff-2.jpg" alt="" loading="lazy" />
+          <img src="./beanslide/coff-3.jpg" alt="" loading="lazy" />
+          <img src="./beanslide/coff-4.jpg" alt="" loading="lazy" />
+          <img src="./beanslide/coff-5.jpg" alt="" loading="lazy" />
+          <img src="./beanslide/coff-6.jpg" alt="" loading="lazy" />
+        </div>
+        <div class="carousel__dots" aria-hidden="true"></div>
       </div>
 
-      <!-- BEAN STORY -->
-      <div class="image-strip">
-        <img src="./beanstory/cbs-1.jpg" alt="" loading="lazy" />
-        <img src="./beanstory/cbs-2.jpg" alt="" loading="lazy" />
-        <img src="./beanstory/cbs-3.jpg" alt="" loading="lazy" />
-        <img src="./beanstory/cbs-4.jpg" alt="" loading="lazy" />
-        <img src="./beanstory/cbs-5.jpg" alt="" loading="lazy" />
-        <img src="./beanstory/cbs-6.jpg" alt="" loading="lazy" />
+      <!-- beanstory -->
+      <div class="carousel" data-carousel="beanstory" aria-label="Bean Story carousel">
+        <div class="carousel__track" tabindex="0">
+          <img src="./beanstory/cbs-1.jpg" alt="" loading="lazy" />
+          <img src="./beanstory/cbs-2.jpg" alt="" loading="lazy" />
+          <img src="./beanstory/cbs-3.jpg" alt="" loading="lazy" />
+          <img src="./beanstory/cbs-4.jpg" alt="" loading="lazy" />
+          <img src="./beanstory/cbs-5.jpg" alt="" loading="lazy" />
+          <img src="./beanstory/cbs-6.jpg" alt="" loading="lazy" />
+        </div>
+        <div class="carousel__dots" aria-hidden="true"></div>
       </div>
+    </section>
 
-      <!-- TILE GRID -->
-      <div class="tile-grid">
-        <img src="./tiles/counter.jpg" alt="" loading="lazy" />
-        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
-        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
-        <img src="./tiles/menu.jpg" alt="" loading="lazy" />
-        <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
-      </div>
-
+    <!-- IMAGE TILES (JUST IMAGES, NO TEXT) -->
+    <section class="tileGrid" aria-label="Image tiles">
+      <img src="./tiles/counter.jpg" alt="" loading="lazy" />
+      <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
+      <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
+      <img src="./tiles/menu.jpg" alt="" loading="lazy" />
+      <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
     </section>
 
   </main>
 
-  <!-- MODAL -->
+  <!-- MODAL (menu + optional hours if you still use it elsewhere) -->
   <div class="modal" hidden aria-hidden="true">
     <div class="modal__backdrop" data-close></div>
 
