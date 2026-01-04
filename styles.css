@@ -1,45 +1,44 @@
 /* ===========================
-   FARMHOUSE MOCK — styles.css (CLEAN)
+   FARMHOUSE MOCK — styles.css
    - Uses NEW filenames: coffee-bg.PNG + bg-mobile.PNG
    - Hero image NOT darkened
    - Hero image shows FULL frame (no cropping)
-   - Glass panel clear + readable (no weird text plates)
+   - Clean readable panel (not "killing" hero)
    - Social icons correctly sized
-   - No top bar / no dock / no modal UI
    =========================== */
 
 :root{
-  --text:#131416;
-  --muted: rgba(19,20,22,.72);
+  --text: #111214;
+  --muted: rgba(17,18,20,.72);
 
   --radius: 26px;
+  --tileRadius: 22px;
   --shadow: 0 18px 55px rgba(0,0,0,.18);
 
   --wrap: min(1100px, calc(100% - 36px));
 
-  /* Clear glass (not foggy) */
-  --glassA: rgba(255,255,255,.18);
-  --glassB: rgba(255,255,255,.26);
-  --glassBorder: rgba(255,255,255,.42);
+  /* "Soft panel" (NOT frosted glass takeover) */
+  --panel: rgba(255,255,255,.72);
+  --panelBorder: rgba(255,255,255,.55);
 
-  --btnBg: rgba(255,255,255,.70);
-  --btnBorder: rgba(255,255,255,.66);
-  --btnHover: rgba(255,255,255,.86);
+  /* buttons */
+  --btn: rgba(255,255,255,.70);
+  --btnBorder: rgba(255,255,255,.55);
+  --btnHover: rgba(255,255,255,.88);
 
   --primary: #e3c08a;
   --primaryHover: #efcf9d;
 }
 
+/* Reset */
 *{ box-sizing:border-box; }
 html,body{ height:100%; }
-
 body{
   margin:0;
   color:var(--text);
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
   overflow-x:hidden;
 
-  /* ✅ NEW filenames */
   background-image: url("./coffee-bg.PNG");
   background-size: cover;
   background-position: center;
@@ -48,14 +47,14 @@ body{
 }
 
 img{ max-width:100%; height:auto; display:block; }
+button{ font:inherit; color:inherit; }
 a{ color:inherit; text-decoration:none; }
 
 .skip{
   position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;
 }
 .skip:focus{
-  left: 12px; top: 12px;
-  width:auto; height:auto;
+  left:12px; top:12px; width:auto; height:auto;
   padding:10px 12px;
   background: rgba(255,255,255,.95);
   border-radius: 12px;
@@ -66,71 +65,61 @@ a{ color:inherit; text-decoration:none; }
 .wrap{
   width: var(--wrap);
   margin: 0 auto;
-  padding: 26px 0 42px;
+  padding: 24px 0 42px;
 }
 
-/* =======================
-   HERO
-   ======================= */
+/* HERO */
 .hero{
   border-radius: var(--radius);
   overflow: hidden;
-  border: 1px solid rgba(255,255,255,.26);
   box-shadow: var(--shadow);
-  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.06);
 }
 
-/* FULL FRAME HERO (no crop) */
+/* full-frame hero image (NO crop) */
 .hero__media{
-  width:100%;
+  width: 100%;
   background-image: url("./sf-hero.jpg");
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;      /* ✅ NO CROP */
+  background-size: contain;          /* NO CROP */
   background-color: rgba(255,255,255,.06);
-
-  /* Make it big enough to feel premium */
-  height: clamp(360px, 46vw, 580px);
+  height: clamp(360px, 46vw, 560px);
 }
 
-/* Glass panel sits UNDER the hero image (not over it) */
+/* panel that reads clean, but doesn't bleach the hero */
 .hero__panel{
-  margin: 14px auto 18px;
+  margin: -140px auto 18px;
   width: min(820px, calc(100% - 26px));
-  padding: 18px 18px 16px;
+  padding: 16px 16px 14px;
   border-radius: 22px;
 
-  background: linear-gradient(180deg, var(--glassB), var(--glassA));
-  border: 1px solid var(--glassBorder);
+  background: var(--panel);
+  border: 1px solid var(--panelBorder);
+  box-shadow: 0 18px 55px rgba(0,0,0,.14);
 
-  /* “glass” effect without fogging everything */
-  backdrop-filter: blur(10px) saturate(1.02);
-  -webkit-backdrop-filter: blur(10px) saturate(1.02);
-
-  box-shadow: 0 18px 55px rgba(0,0,0,.12);
   text-align:center;
 }
 
+/* logo */
 .hero__logo{
-  width: 84px;
-  height: 84px;
-  margin: 0 auto 8px;
+  width: 88px;
+  height: 88px;
+  margin: 0 auto 10px;
   object-fit: contain;
-  filter: drop-shadow(0 10px 18px rgba(0,0,0,.12));
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.14));
 }
 
 .hero__desc{
   margin: 0 auto 14px;
-  max-width: 58ch;
-  color: rgba(19,20,22,.84);
+  max-width: 60ch;
+  color: rgba(17,18,20,.78);
   line-height: 1.35;
   font-size: 14px;
-
-  /* subtle readability without “text plates” */
-  text-shadow: 0 1px 0 rgba(255,255,255,.55);
 }
 
-/* Buttons */
+/* CTAs */
 .hero__cta{
   display:flex;
   justify-content:center;
@@ -141,21 +130,14 @@ a{ color:inherit; text-decoration:none; }
 
 .btn{
   appearance:none;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
   border: 1px solid var(--btnBorder);
-  background: var(--btnBg);
-  color: rgba(19,20,22,.92);
-
+  background: var(--btn);
+  color: rgba(17,18,20,.92);
   padding: 10px 16px;
   border-radius: 999px;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
-  transition: transform .08s ease, background .12s ease;
 }
-
 .btn:hover{ background: var(--btnHover); }
 .btn:active{ transform: translateY(1px); }
 
@@ -165,128 +147,206 @@ a{ color:inherit; text-decoration:none; }
 }
 .btn--primary:hover{ background: var(--primaryHover); }
 
-/* Social icons (NOT gigantic) */
+/* Social buttons: THIS is where size gets enforced */
 .hero__meta{
   display:flex;
   justify-content:center;
-  gap: 10px;
-  margin-top: 6px;
+  gap: 12px;
 }
 
 .socialBtn{
-  width: 42px;
-  height: 42px;
+  width: 52px;                 /* bigger */
+  height: 52px;
   border-radius: 999px;
-  background: rgba(255,255,255,.72);
-  border: 1px solid rgba(255,255,255,.62);
+  background: rgba(255,255,255,.78);
+  border: 1px solid rgba(255,255,255,.65);
   display:grid;
   place-items:center;
   box-shadow: 0 10px 22px rgba(0,0,0,.10);
 }
-
-.socialBtn:hover{ background: rgba(255,255,255,.88); }
+.socialBtn:hover{ background: rgba(255,255,255,.92); }
 
 .socialBtn img{
-  width: 22px;
-  height: 22px;
+  width: 34px;                 /* bigger icon */
+  height: 34px;
   object-fit: contain;
   display:block;
 }
 
-/* =======================
-   SECONDARY STRIP (optional)
-   ======================= */
-.strip{
+/* GRID (fixes the “one giant tile” issue) */
+.grid{
   margin-top: 18px;
-  border-radius: var(--radius);
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.tile{
+  border: 0;
+  padding: 0;
+  text-align: left;
+
+  border-radius: var(--tileRadius);
   overflow:hidden;
-  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.22);
   box-shadow: var(--shadow);
-  background: rgba(255,255,255,.04);
+  cursor: pointer;
 }
 
-.strip img{
+.tile--link{ display:block; }
+
+.tile img{
   width:100%;
-  height:auto;
+  height: 220px;
+  object-fit: cover;
 }
 
-/* =======================
-   PAGES
-   ======================= */
-.pageHead{
-  margin-bottom: 14px;
-  border-radius: 18px;
+.tile__cap{
+  padding: 12px 12px 14px;
+  background: rgba(255,255,255,.70);
+}
+
+.tile__title{
+  font-weight: 800;
+  letter-spacing: .2px;
+}
+.tile__sub{
+  margin-top: 2px;
+  font-size: 12px;
+  color: rgba(17,18,20,.72);
+}
+
+/* MODAL */
+.modal[hidden]{ display:none; }
+.modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+}
+.modal__backdrop{
+  position:absolute;
+  inset:0;
+  background: rgba(0,0,0,.38);
+}
+.modal__sheet{
+  position:absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 16px;
+
+  width: min(900px, calc(100% - 24px));
+  max-height: min(82vh, 760px);
+  overflow:hidden;
+
+  border-radius: 22px;
+  background: rgba(255,255,255,.95);
+  border: 1px solid rgba(255,255,255,.55);
+  box-shadow: 0 30px 80px rgba(0,0,0,.35);
+}
+.modal__head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 10px;
   padding: 14px 16px;
-  background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.18));
-  border: 1px solid rgba(255,255,255,.40);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  box-shadow: 0 18px 55px rgba(0,0,0,.10);
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.modal__title{
+  font-weight: 900;
+  letter-spacing: .2px;
+}
+.modal__close{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.75);
+  border-radius: 12px;
+  width: 38px;
+  height: 38px;
+  cursor:pointer;
+}
+.modal__body{
+  padding: 16px;
+  overflow:auto;
+  max-height: calc(min(82vh, 760px) - 64px);
 }
 
-.backLink{
-  display:inline-block;
-  margin-bottom: 8px;
+/* Menu content */
+.menuTop{
+  display:flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.menuTab{
+  border: 1px solid rgba(0,0,0,.10);
+  background: rgba(255,255,255,.9);
+  padding: 8px 12px;
+  border-radius: 999px;
+  cursor:pointer;
   font-weight: 700;
-  opacity: .85;
+}
+.menuTab[aria-selected="true"]{
+  background: var(--primary);
+  border-color: rgba(227,192,138,.85);
 }
 
-.pageTitle{
-  margin: 0 0 4px;
-  font-size: 24px;
+.menuSection{
+  border: 1px solid rgba(0,0,0,.08);
+  background: rgba(255,255,255,.92);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 12px;
+}
+
+.menuSection h3{
+  margin: 0 0 10px;
+  font-size: 14px;
   letter-spacing: .2px;
 }
 
-.pageSub{
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.card{
-  border-radius: var(--radius);
-  overflow:hidden;
-  border: 1px solid rgba(255,255,255,.26);
-  box-shadow: var(--shadow);
-  background: rgba(255,255,255,.06);
-}
-
-.card--glass{
-  padding: 18px;
-  background: linear-gradient(180deg, rgba(255,255,255,.34), rgba(255,255,255,.18));
-  border: 1px solid rgba(255,255,255,.40);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.cardTitle{ margin:0 0 8px; }
-.cardText{ margin:0 0 12px; color: rgba(19,20,22,.82); line-height:1.35; }
-
-.row{
+.menuItem{
   display:flex;
-  gap:10px;
-  flex-wrap: wrap;
+  justify-content:space-between;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,.06);
+  background: rgba(255,255,255,.98);
+  margin-bottom: 8px;
+}
+.menuItem .name{ font-weight: 800; }
+.menuItem .price{ font-weight: 800; white-space: nowrap; }
+.note{
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(17,18,20,.68);
+  line-height: 1.25;
 }
 
-/* =======================
-   RESPONSIVE
-   ======================= */
+/* Hours image inside modal (full width, not giant page) */
+.hoursImg{
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,.08);
+}
+
+/* Responsive */
 @media (max-width: 760px){
   body{
     background-attachment: scroll;
-    background-image: url("./bg-mobile.PNG"); /* ✅ NEW mobile filename */
+    background-image: url("./bg-mobile.PNG");
   }
 
   .wrap{ padding: 18px 0 34px; }
 
   .hero__media{
-    height: clamp(320px, 78vw, 520px);
+    height: clamp(320px, 72vw, 520px);
   }
 
   .hero__panel{
+    margin-top: -130px;
     width: calc(100% - 22px);
   }
 }
-
-/* Legacy nukes (in case old markup exists) */
-.topbar, .dock, .modal { display:none !important; }
