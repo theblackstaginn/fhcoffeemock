@@ -1,7 +1,7 @@
 /* app.js — Farmhouse Mock
    - Mobile-safe modal (Menu / Hours)
-   - Coffee menu ONLY (removes breakfast/lunch)
-   - Works with pointer events (iOS/Android/desktop)
+   - Coffee menu ONLY
+   - Works on iOS/Android/desktop (click + touch + pointer)
    - Carousels: swipe + dots + TAP left/right to advance
 */
 
@@ -47,6 +47,10 @@
       .replaceAll("'", "&#039;");
   }
 
+  function closestAttr(el, attr) {
+    return el && el.closest ? el.closest(`[${attr}]`) : null;
+  }
+
   /* ===========================
      Modal
      =========================== */
@@ -67,7 +71,9 @@
     modal.hidden = false;
     modal.setAttribute("aria-hidden", "false");
 
-    // Focus close button for accessibility
+    // lock background scroll (mobile)
+    document.body.style.overflow = "hidden";
+
     const closeBtn = $(".modal__close", modal);
     if (closeBtn) closeBtn.focus();
   }
@@ -76,6 +82,8 @@
     if (!modal) return;
     modal.hidden = true;
     modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
 
@@ -103,74 +111,89 @@
   }
 
   function renderHoursHtml() {
-    // Uses your hours-panel.PNG
-    return `
-      <img class="hoursImg" src="./hours-panel.PNG" alt="Hours" loading="lazy">
-    `;
+    return `<img class="hoursImg" src="./hours-panel.PNG" alt="Hours" loading="lazy">`;
   }
 
-  // Close handlers
+  function injectMenuCss() {
+    const css = `
+      .menuWrap{ display:grid; gap:14px; }
+      .menuSec__title{ margin:0 0 8px; font-size:16px; }
+      .menuSec__items{ display:grid; gap:8px; }
+      .mi{ display:flex; justify-content:space-between; gap:12px; padding:8px 10px; border-radius:12px; border:1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); }
+      .mi__name{ font-weight:600; }
+      .mi__price{ opacity:.75; font-weight:700; }
+    `;
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
   function initModal() {
     if (!modal) return;
 
-    // Close via buttons/backdrop
-    $$("[data-close]", modal).forEach(el => {
-      el.addEventListener("pointerup", (e) => {
-        e.preventDefault();
-        closeModal();
-      });
-    });
-
     // Close via ESC
     window.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal && !modal.hidden) closeModal();
+      if (e.key === "Escape" && !modal.hidden) closeModal();
     });
 
-    // Prevent clicks inside sheet from closing
-    const sheet = $(".modal__sheet", modal);
-    if (sheet) {
-      sheet.addEventListener("pointerup", (e) => e.stopPropagation());
-    }
-
-    // If user taps backdrop (not sheet)
-    modal.addEventListener("pointerup", (e) => {
-      const backdrop = $(".modal__backdrop", modal);
-      if (backdrop && e.target === backdrop) closeModal();
+    // Click/tap backdrop or close buttons
+    modal.addEventListener("click", (e) => {
+      const t = e.target;
+      if (t.closest?.("[data-close]")) return closeModal();
+      if (t.classList?.contains("modal__backdrop")) return closeModal();
     });
+
+    // iOS: also listen touchend for reliability
+    modal.addEventListener("touchend", (e) => {
+      const t = e.target;
+      if (t.closest?.("[data-close]")) return closeModal();
+      if (t.classList?.contains("modal__backdrop")) return closeModal();
+    }, { passive: true });
   }
 
   /* ===========================
-     Buttons + tiles
+     Actions (Menu / Hours / Tiles)
+     - Delegated click + touchend
      =========================== */
   function initActions() {
-    // Menu / Hours buttons in hero
-    $$("[data-open]").forEach(el => {
-      el.addEventListener("pointerup", (e) => {
-        e.preventDefault();
-        const which = el.getAttribute("data-open");
+    const handler = (e) => {
+      const t = e.target;
+
+      // Menu/Hours buttons (data-open)
+      const openBtn = closestAttr(t, "data-open");
+      if (openBtn) {
+        const which = openBtn.getAttribute("data-open");
         if (which === "menu") openModal("Menu", renderMenuHtml());
         if (which === "hours") openModal("Hours", renderHoursHtml());
-      });
-    });
+        return;
+      }
 
-    // Tile that opens menu
-    $$("[data-tile='menu']").forEach(el => {
-      el.addEventListener("pointerup", (e) => {
-        e.preventDefault();
+      // Tile opens menu
+      const tileMenu = t.closest?.("[data-tile='menu']");
+      if (tileMenu) {
         openModal("Menu", renderMenuHtml());
-      });
-    });
+      }
+    };
+
+    // Desktop + Android + most iOS cases
+    document.addEventListener("click", handler);
+
+    // iOS fallback (some taps don’t dispatch click if it thinks it was a scroll)
+    document.addEventListener("touchend", (e) => {
+      // If a swipe/scroll happened, iOS will usually not treat it as a tap.
+      // But when it *is* a tap, this makes it consistent.
+      handler(e);
+    }, { passive: true });
   }
 
   /* ===========================
-     Carousels (swipe + dots + tap-to-advance)
+     Carousels
      =========================== */
   function initCarousel(root) {
     const viewport = $(".carousel__viewport", root);
-    const track = $(".carousel__track", root);
     const imgs = $$(".carousel__img", root);
     const dots = $(".dots", root);
-    if (!viewport || !track || imgs.length === 0 || !dots) return;
+    if (!viewport || imgs.length === 0 || !dots) return;
 
     // Build dots
     dots.innerHTML = "";
@@ -179,10 +202,12 @@
       d.type = "button";
       d.className = "dot";
       d.setAttribute("aria-label", `Slide ${i + 1}`);
-      d.addEventListener("pointerup", (e) => {
-        e.preventDefault();
-        viewport.scrollTo({ left: viewport.clientWidth * i, behavior: "smooth" });
-      });
+
+      const goDot = () => viewport.scrollTo({ left: viewport.clientWidth * i, behavior: "smooth" });
+
+      d.addEventListener("click", (e) => { e.preventDefault(); goDot(); });
+      d.addEventListener("touchend", () => goDot(), { passive: true });
+
       dots.appendChild(d);
       return d;
     });
@@ -204,66 +229,75 @@
     window.addEventListener("resize", setActive);
     setActive();
 
-    // Tap-to-advance that doesn't trigger on swipes
-    let downX = 0;
-    let downY = 0;
-    let downT = 0;
-    let moved = false;
+    // Tap-to-advance (robust tap detection)
+    let startX = 0, startY = 0, startT = 0, moved = false;
 
-    viewport.addEventListener("pointerdown", (e) => {
-      // Only primary pointer
-      if (e.pointerType === "mouse" && e.button !== 0) return;
-      downX = e.clientX;
-      downY = e.clientY;
-      downT = performance.now();
+    const start = (x, y) => {
+      startX = x; startY = y;
+      startT = performance.now();
       moved = false;
-    });
+    };
 
-    viewport.addEventListener("pointermove", (e) => {
-      const dx = Math.abs(e.clientX - downX);
-      const dy = Math.abs(e.clientY - downY);
+    const move = (x, y) => {
+      const dx = Math.abs(x - startX);
+      const dy = Math.abs(y - startY);
       if (dx > 10 || dy > 10) moved = true;
-    });
+    };
 
-    viewport.addEventListener("pointerup", (e) => {
-      // Ignore if user interacted with dots
-      if (e.target && (e.target.classList?.contains("dot") || e.target.closest?.(".dots"))) return;
+    const end = (clientX, clientY) => {
+      const dt = performance.now() - startT;
+      const dx = Math.abs(clientX - startX);
+      const dy = Math.abs(clientY - startY);
 
-      const dt = performance.now() - downT;
-      const dx = Math.abs(e.clientX - downX);
-      const dy = Math.abs(e.clientY - downY);
-
-      // Treat as tap only if quick + low movement
       const isTap = !moved && dt < 450 && dx < 12 && dy < 12;
       if (!isTap) return;
 
       const r = viewport.getBoundingClientRect();
-      const x = e.clientX - r.left;
+      const x = clientX - r.left;
       const idx = getIndex();
       if (x < r.width * 0.5) go(idx - 1);
       else go(idx + 1);
+    };
+
+    // Pointer path (modern)
+    viewport.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      start(e.clientX, e.clientY);
     });
+
+    viewport.addEventListener("pointermove", (e) => {
+      move(e.clientX, e.clientY);
+    }, { passive: true });
+
+    viewport.addEventListener("pointerup", (e) => {
+      // ignore dot hits
+      if (e.target?.closest?.(".dots")) return;
+      end(e.clientX, e.clientY);
+    });
+
+    // Touch fallback (older iOS edge cases)
+    viewport.addEventListener("touchstart", (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      start(t.clientX, t.clientY);
+    }, { passive: true });
+
+    viewport.addEventListener("touchmove", (e) => {
+      const t = e.touches && e.touches[0];
+      if (!t) return;
+      move(t.clientX, t.clientY);
+    }, { passive: true });
+
+    viewport.addEventListener("touchend", (e) => {
+      if (e.target?.closest?.(".dots")) return;
+      const t = e.changedTouches && e.changedTouches[0];
+      if (!t) return;
+      end(t.clientX, t.clientY);
+    }, { passive: true });
   }
 
   function initCarousels() {
     $$(".carousel").forEach(initCarousel);
-  }
-
-  /* ===========================
-     Extra: inject minimal menu styling inside modal
-     =========================== */
-  function injectMenuCss() {
-    const css = `
-      .menuWrap{ display:grid; gap:14px; }
-      .menuSec__title{ margin:0 0 8px; font-size:16px; }
-      .menuSec__items{ display:grid; gap:8px; }
-      .mi{ display:flex; justify-content:space-between; gap:12px; padding:8px 10px; border-radius:12px; border:1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); }
-      .mi__name{ font-weight:600; }
-      .mi__price{ opacity:.75; font-weight:700; }
-    `;
-    const style = document.createElement("style");
-    style.textContent = css;
-    document.head.appendChild(style);
   }
 
   /* ===========================
