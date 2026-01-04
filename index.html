@@ -4,8 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <meta name="theme-color" content="#111214" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <title>Farmhouse Coffee — Mock</title>
   <meta name="description" content="Farmhouse Coffee mock site. Social-style tiles, centered text, fast menu access." />
 
@@ -31,7 +29,7 @@
         <img class="brand__icon" src="icon-192.PNG" alt="Farmhouse Coffee icon" />
         <div class="brand__text">
           <div class="brand__name">Farmhouse Coffee</div>
-          <div class="brand__sub">Mock • Social tiles • Centered layout</div>
+          <div class="brand__sub">Mock • Centered • Tile-first</div>
         </div>
       </div>
 
@@ -43,13 +41,19 @@
   </header>
 
   <main id="main" class="wrap" role="main">
-    <!-- Solid hero panel -->
+    <!-- HERO (no cropping: image uses contain) -->
     <section class="hero" aria-label="Farmhouse Coffee hero">
-      <div class="hero__media" role="img" aria-label="Coffee hero image"></div>
+      <div class="hero__media" aria-hidden="true">
+        <img class="hero__img" src="sf-hero.jpg" alt="" />
+      </div>
+
       <div class="hero__panel">
-        <h1 class="hero__title">Farmhouse Coffee</h1>
+        <div class="hero__logo">
+          <img src="icon-512.PNG" alt="Farmhouse Coffee logo" />
+        </div>
+
         <p class="hero__desc">
-          A clean, social-style mock: big tiles, centered text, fast browsing.
+          Coffee, comfort, and a little small-town calm — made fresh, served warm, and meant to be shared.
         </p>
 
         <div class="hero__cta">
@@ -64,23 +68,14 @@
         </div>
       </div>
     </section>
-    <!-- Hours banner (full image visible, same width as hero) -->
-     <section class="hoursBanner" aria-label="New hours banner">
-        <button class="hoursBanner__btn" type="button" data-open="hours" aria-haspopup="dialog">
-         <img src="hours-panel.PNG" alt="Farmhouse Coffee new hours" loading="lazy" />
-      </button>
+
+    <!-- NEW HOURS BANNER (full width under hero; no crop) -->
+    <section class="hours-banner" aria-label="New hours banner">
+      <img src="hours-panel.PNG" alt="New Hours" />
     </section>
 
     <!-- Tile grid (social feed vibe) -->
     <section class="grid" aria-label="Featured tiles">
-      <article class="tile" tabindex="0" role="button" data-open="hours" aria-haspopup="dialog" aria-label="Open new hours panel">
-        <img src="hours-panel.PNG" alt="New hours panel" loading="lazy" />
-        <div class="tile__cap">
-          <div class="tile__title">New Hours</div>
-          <div class="tile__sub">Tap to view</div>
-        </div>
-      </article>
-
       <article class="tile" tabindex="0" role="button" data-open="menu" aria-haspopup="dialog" aria-label="Open menu">
         <img src="menu.jpg" alt="Menu board photo" loading="lazy" />
         <div class="tile__cap">
@@ -109,13 +104,13 @@
     <footer class="footer" role="contentinfo">
       <div class="footer__inner">
         <div class="footer__small">
-          Mock site • Centered UI • Tile-first layout • Offline-ready
+          Mock site • Centered UI • Tile-first layout
         </div>
       </div>
     </footer>
   </main>
 
-  <!-- Bottom nav (social app vibe) -->
+  <!-- Bottom nav -->
   <nav class="dock" aria-label="Bottom navigation">
     <button class="dock__btn" type="button" data-open="menu" aria-haspopup="dialog">
       <span class="dock__icon" aria-hidden="true">☕</span>
