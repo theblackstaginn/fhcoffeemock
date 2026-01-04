@@ -1,195 +1,284 @@
+/* app.js — Farmhouse Mock
+   - Mobile-safe modal (Menu / Hours)
+   - Coffee menu ONLY (removes breakfast/lunch)
+   - Works with pointer events (iOS/Android/desktop)
+   - Carousels: swipe + dots + TAP left/right to advance
+*/
+
 (() => {
   "use strict";
 
-  const modal = document.querySelector(".modal");
-  const modalTitle = document.getElementById("modalTitle");
-  const modalBody = document.getElementById("modalBody");
-
-  if (!modal || !modalTitle || !modalBody) {
-    console.warn("[Farmhouse] Modal elements not found. Check .modal/#modalTitle/#modalBody.");
-    return;
-  }
-
-  // ===========================
-  // MENU DATA (COFFEE ONLY)
-  // ===========================
+  /* ===========================
+     DATA (Coffee only)
+     =========================== */
   const MENU = [
     {
-      tab: "Coffee",
-      sections: [
-        {
-          title: "House Coffee",
-          items: [
-            { name: "Drip Coffee", price: "", note: "" },
-            { name: "Cold Brew", price: "", note: "" },
-          ]
-        },
-        {
-          title: "Espresso",
-          items: [
-            { name: "Americano", price: "", note: "" },
-            { name: "Latte", price: "", note: "" },
-            { name: "Cappuccino", price: "", note: "" },
-          ]
-        }
+      title: "House Coffee",
+      items: [
+        { name: "Drip Coffee", price: "" },
+        { name: "Cold Brew", price: "" }
+      ]
+    },
+    {
+      title: "Espresso",
+      items: [
+        { name: "Espresso", price: "" },
+        { name: "Americano", price: "" },
+        { name: "Latte", price: "" },
+        { name: "Cappuccino", price: "" }
       ]
     }
   ];
 
-  // ===========================
-  // MODAL OPEN/CLOSE
-  // ===========================
-  function openModal(title, contentNode) {
+  /* ===========================
+     Helpers
+     =========================== */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+  function escapeHtml(s) {
+    return String(s)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  /* ===========================
+     Modal
+     =========================== */
+  const modal = $(".modal");
+  const modalBody = $("#modalBody");
+  const modalTitle = $("#modalTitle");
+
+  let lastFocus = null;
+
+  function openModal(title, html) {
+    if (!modal || !modalBody || !modalTitle) return;
+
+    lastFocus = document.activeElement;
+
     modalTitle.textContent = title;
-    modalBody.innerHTML = "";
-    modalBody.appendChild(contentNode);
+    modalBody.innerHTML = html;
 
     modal.hidden = false;
     modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
+
+    // Focus close button for accessibility
+    const closeBtn = $(".modal__close", modal);
+    if (closeBtn) closeBtn.focus();
   }
 
   function closeModal() {
+    if (!modal) return;
     modal.hidden = true;
     modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
+    if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
   }
 
-  // ===========================
-  // MENU UI
-  // ===========================
-  function buildMenuUI() {
-    const wrap = document.createElement("div");
+  function renderMenuHtml() {
+    const sections = MENU.map(sec => {
+      const items = sec.items.map(it => {
+        const price = it.price ? `<span class="mi__price">${escapeHtml(it.price)}</span>` : "";
+        return `
+          <div class="mi">
+            <div class="mi__name">${escapeHtml(it.name)}</div>
+            ${price}
+          </div>
+        `;
+      }).join("");
 
-    // Guard: if menu is empty, show a simple message
-    if (!Array.isArray(MENU) || MENU.length === 0) {
-      const p = document.createElement("p");
-      p.textContent = "Menu coming soon.";
-      wrap.appendChild(p);
-      return wrap;
-    }
+      return `
+        <section class="menuSec">
+          <h3 class="menuSec__title">${escapeHtml(sec.title)}</h3>
+          <div class="menuSec__items">${items}</div>
+        </section>
+      `;
+    }).join("");
 
-    const content = document.createElement("div");
-    content.className = "menuContent";
+    return `<div class="menuWrap">${sections}</div>`;
+  }
 
-    let activeIndex = 0;
+  function renderHoursHtml() {
+    // Uses your hours-panel.PNG
+    return `
+      <img class="hoursImg" src="./hours-panel.PNG" alt="Hours" loading="lazy">
+    `;
+  }
 
-    function renderTab(i) {
-      activeIndex = i;
-      content.innerHTML = "";
+  // Close handlers
+  function initModal() {
+    if (!modal) return;
 
-      const data = MENU[i];
-
-      (data.sections || []).forEach(sec => {
-        const section = document.createElement("section");
-        section.className = "menuSection";
-
-        const h = document.createElement("h3");
-        h.textContent = sec.title || "";
-        section.appendChild(h);
-
-        (sec.items || []).forEach(it => {
-          const row = document.createElement("div");
-          row.className = "menuItem";
-
-          const left = document.createElement("div");
-
-          const name = document.createElement("div");
-          name.className = "name";
-          name.textContent = it.name || "";
-          left.appendChild(name);
-
-          if (it.note) {
-            const note = document.createElement("div");
-            note.className = "note";
-            note.textContent = it.note;
-            left.appendChild(note);
-          }
-
-          const priceText = (it.price || "").trim();
-          const price = document.createElement("div");
-          price.className = "price";
-          price.textContent = priceText; // stays blank if blank
-
-          row.appendChild(left);
-
-          // Only append price node if there is a price
-          if (priceText) row.appendChild(price);
-
-          section.appendChild(row);
-        });
-
-        content.appendChild(section);
+    // Close via buttons/backdrop
+    $$("[data-close]", modal).forEach(el => {
+      el.addEventListener("pointerup", (e) => {
+        e.preventDefault();
+        closeModal();
       });
+    });
 
-      // Update aria-selected if tabs exist
-      const tabBar = wrap.querySelector(".menuTop");
-      if (tabBar) {
-        [...tabBar.children].forEach((btn, idx) => {
-          btn.setAttribute("aria-selected", idx === activeIndex ? "true" : "false");
-        });
-      }
+    // Close via ESC
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal && !modal.hidden) closeModal();
+    });
+
+    // Prevent clicks inside sheet from closing
+    const sheet = $(".modal__sheet", modal);
+    if (sheet) {
+      sheet.addEventListener("pointerup", (e) => e.stopPropagation());
     }
 
-    // Only render tabs if there is more than one tab
-    if (MENU.length > 1) {
-      const tabs = document.createElement("div");
-      tabs.className = "menuTop";
-      wrap.appendChild(tabs);
+    // If user taps backdrop (not sheet)
+    modal.addEventListener("pointerup", (e) => {
+      const backdrop = $(".modal__backdrop", modal);
+      if (backdrop && e.target === backdrop) closeModal();
+    });
+  }
 
-      MENU.forEach((m, idx) => {
-        const b = document.createElement("button");
-        b.type = "button";
-        b.className = "menuTab";
-        b.textContent = m.tab || `Tab ${idx + 1}`;
-        b.setAttribute("aria-selected", idx === 0 ? "true" : "false");
-        b.addEventListener("click", () => renderTab(idx));
-        tabs.appendChild(b);
+  /* ===========================
+     Buttons + tiles
+     =========================== */
+  function initActions() {
+    // Menu / Hours buttons in hero
+    $$("[data-open]").forEach(el => {
+      el.addEventListener("pointerup", (e) => {
+        e.preventDefault();
+        const which = el.getAttribute("data-open");
+        if (which === "menu") openModal("Menu", renderMenuHtml());
+        if (which === "hours") openModal("Hours", renderHoursHtml());
       });
-    }
+    });
 
-    wrap.appendChild(content);
-    renderTab(0);
-    return wrap;
+    // Tile that opens menu
+    $$("[data-tile='menu']").forEach(el => {
+      el.addEventListener("pointerup", (e) => {
+        e.preventDefault();
+        openModal("Menu", renderMenuHtml());
+      });
+    });
   }
 
-  function buildHoursUI() {
-    const wrap = document.createElement("div");
-    const img = document.createElement("img");
-    img.className = "hoursImg";
-    img.src = "./hours-panel.PNG";
-    img.alt = "Hours";
-    img.loading = "lazy";
-    wrap.appendChild(img);
-    return wrap;
+  /* ===========================
+     Carousels (swipe + dots + tap-to-advance)
+     =========================== */
+  function initCarousel(root) {
+    const viewport = $(".carousel__viewport", root);
+    const track = $(".carousel__track", root);
+    const imgs = $$(".carousel__img", root);
+    const dots = $(".dots", root);
+    if (!viewport || !track || imgs.length === 0 || !dots) return;
+
+    // Build dots
+    dots.innerHTML = "";
+    const dotEls = imgs.map((_, i) => {
+      const d = document.createElement("button");
+      d.type = "button";
+      d.className = "dot";
+      d.setAttribute("aria-label", `Slide ${i + 1}`);
+      d.addEventListener("pointerup", (e) => {
+        e.preventDefault();
+        viewport.scrollTo({ left: viewport.clientWidth * i, behavior: "smooth" });
+      });
+      dots.appendChild(d);
+      return d;
+    });
+
+    const getIndex = () =>
+      clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
+
+    const go = (idx) => {
+      idx = clamp(idx, 0, imgs.length - 1);
+      viewport.scrollTo({ left: viewport.clientWidth * idx, behavior: "smooth" });
+    };
+
+    const setActive = () => {
+      const idx = getIndex();
+      dotEls.forEach((d, i) => d.classList.toggle("is-active", i === idx));
+    };
+
+    viewport.addEventListener("scroll", () => requestAnimationFrame(setActive), { passive: true });
+    window.addEventListener("resize", setActive);
+    setActive();
+
+    // Tap-to-advance that doesn't trigger on swipes
+    let downX = 0;
+    let downY = 0;
+    let downT = 0;
+    let moved = false;
+
+    viewport.addEventListener("pointerdown", (e) => {
+      // Only primary pointer
+      if (e.pointerType === "mouse" && e.button !== 0) return;
+      downX = e.clientX;
+      downY = e.clientY;
+      downT = performance.now();
+      moved = false;
+    });
+
+    viewport.addEventListener("pointermove", (e) => {
+      const dx = Math.abs(e.clientX - downX);
+      const dy = Math.abs(e.clientY - downY);
+      if (dx > 10 || dy > 10) moved = true;
+    });
+
+    viewport.addEventListener("pointerup", (e) => {
+      // Ignore if user interacted with dots
+      if (e.target && (e.target.classList?.contains("dot") || e.target.closest?.(".dots"))) return;
+
+      const dt = performance.now() - downT;
+      const dx = Math.abs(e.clientX - downX);
+      const dy = Math.abs(e.clientY - downY);
+
+      // Treat as tap only if quick + low movement
+      const isTap = !moved && dt < 450 && dx < 12 && dy < 12;
+      if (!isTap) return;
+
+      const r = viewport.getBoundingClientRect();
+      const x = e.clientX - r.left;
+      const idx = getIndex();
+      if (x < r.width * 0.5) go(idx - 1);
+      else go(idx + 1);
+    });
   }
 
-  // ===========================
-  // EVENT WIRING
-  // ===========================
-  document.addEventListener("click", (e) => {
-    const openBtn = e.target.closest("[data-open]");
-    if (openBtn) {
-      const what = openBtn.getAttribute("data-open");
-      if (what === "menu") openModal("Menu", buildMenuUI());
-      if (what === "hours") openModal("Hours", buildHoursUI());
-      return;
-    }
+  function initCarousels() {
+    $$(".carousel").forEach(initCarousel);
+  }
 
-    const tile = e.target.closest("[data-tile]");
-    if (tile) {
-      const what = tile.getAttribute("data-tile");
-      if (what === "menu") openModal("Menu", buildMenuUI());
-      if (what === "hours") openModal("Hours", buildHoursUI());
-      return;
-    }
+  /* ===========================
+     Extra: inject minimal menu styling inside modal
+     =========================== */
+  function injectMenuCss() {
+    const css = `
+      .menuWrap{ display:grid; gap:14px; }
+      .menuSec__title{ margin:0 0 8px; font-size:16px; }
+      .menuSec__items{ display:grid; gap:8px; }
+      .mi{ display:flex; justify-content:space-between; gap:12px; padding:8px 10px; border-radius:12px; border:1px solid rgba(0,0,0,.06); background: rgba(0,0,0,.02); }
+      .mi__name{ font-weight:600; }
+      .mi__price{ opacity:.75; font-weight:700; }
+    `;
+    const style = document.createElement("style");
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
 
-    if (e.target.matches("[data-close]") || e.target.closest("[data-close]")) {
-      closeModal();
-    }
-  });
+  /* ===========================
+     Boot
+     =========================== */
+  function boot() {
+    injectMenuCss();
+    initModal();
+    initActions();
+    initCarousels();
+  }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && !modal.hidden) closeModal();
-  });
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot);
+  } else {
+    boot();
+  }
 })();
