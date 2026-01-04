@@ -3,53 +3,99 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Farmhouse Coffee — Mock</title>
-  <meta name="theme-color" content="#efe6d6" />
-  <link rel="stylesheet" href="styles.css" />
+  <title>Farmhouse Coffee</title>
+  <meta name="description" content="Warm coffee. Small-town comfort. A place to slow down and feel at home." />
+  <link rel="icon" href="./favicon.PNG" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 
 <body>
-  <a class="skip" href="#main">Skip to content</a>
+  <a class="skip" href="#content">Skip to content</a>
 
-  <main id="main" class="wrap">
-    <section class="hero" aria-label="Farmhouse Coffee hero">
-      <!-- HERO IMAGE (no crop) -->
-      <div class="hero__media" role="img" aria-label="Farmhouse Coffee storefront photo"></div>
+  <main id="content" class="wrap">
+    <!-- HERO -->
+    <section class="hero" aria-label="Farmhouse Coffee">
+      <div class="hero__media" role="img" aria-label="Farmhouse Coffee hero image"></div>
 
-      <!-- GLASS PANEL (compact, readable, not foggy) -->
       <div class="hero__panel">
-        <!-- Use your actual logo filename here if you have it -->
-        <img class="hero__logo" src="favicon.PNG" alt="Farmhouse Coffee logo" />
+        <!-- Use your real logo filename here if different -->
+        <img class="hero__logo" src="./logo.PNG" alt="Farmhouse Coffee logo" onerror="this.style.display='none';" />
 
         <p class="hero__desc">
           Warm coffee. Small-town comfort. A place to slow down and feel at home.
         </p>
 
-        <div class="hero__cta" aria-label="Primary links">
-          <a class="btn btn--primary" href="menu.html">Menu</a>
-          <a class="btn" href="hours.html">Hours</a>
-          <a class="btn" href="order.html">Order</a>
+        <div class="hero__cta" role="group" aria-label="Primary actions">
+          <button class="btn btn--primary" type="button" data-open="menu">Menu</button>
+          <button class="btn" type="button" data-open="hours">Hours</button>
+          <a class="btn" href="#" aria-label="Order (placeholder)">Order</a>
         </div>
 
         <div class="hero__meta" aria-label="Social links">
-          <!-- Put real URLs when you have them -->
-          <a class="socialBtn" href="#" aria-label="Instagram">
-            <img src="instagram.PNG" alt="" />
+          <a class="socialBtn" href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <img src="./instagram.PNG" alt="" />
           </a>
-          <a class="socialBtn" href="#" aria-label="Facebook">
-            <img src="facebook.PNG" alt="" />
+          <a class="socialBtn" href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+            <img src="./facebook.PNG" alt="" />
           </a>
-          <a class="socialBtn" href="#" aria-label="TikTok">
-            <img src="tiktok.PNG" alt="" />
+          <a class="socialBtn" href="https://tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+            <img src="./tiktok.PNG" alt="" />
           </a>
         </div>
       </div>
     </section>
 
-    <!-- Optional: keep your secondary image strip, or remove it -->
-    <section class="strip" aria-label="Coffee photo strip">
-      <img src="counter.jpg" alt="Counter photo" />
+    <!-- TILES -->
+    <section class="grid" aria-label="Quick tiles">
+      <!-- Replace images with whatever you actually have in repo -->
+      <button class="tile" type="button" data-tile="menu">
+        <img src="./menu.jpg" alt="Menu preview" />
+        <div class="tile__cap">
+          <div class="tile__title">Menu</div>
+          <div class="tile__sub">Breakfast, lunch, espresso</div>
+        </div>
+      </button>
+
+      <button class="tile" type="button" data-tile="hours">
+        <img src="./hours-panel.PNG" alt="Hours preview" />
+        <div class="tile__cap">
+          <div class="tile__title">Hours</div>
+          <div class="tile__sub">Open today</div>
+        </div>
+      </button>
+
+      <button class="tile" type="button" data-tile="photo1">
+        <img src="./counter.jpg" alt="Cafe counter" />
+        <div class="tile__cap">
+          <div class="tile__title">The Space</div>
+          <div class="tile__sub">Cozy + simple</div>
+        </div>
+      </button>
+
+      <a class="tile tile--link" href="#" aria-label="Order (placeholder)">
+        <img src="./counter.jpg" alt="Order" />
+        <div class="tile__cap">
+          <div class="tile__title">Order</div>
+          <div class="tile__sub">Pickup (placeholder)</div>
+        </div>
+      </a>
     </section>
   </main>
+
+  <!-- MODAL -->
+  <div class="modal" hidden aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+
+    <section class="modal__sheet" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <header class="modal__head">
+        <div id="modalTitle" class="modal__title">Menu</div>
+        <button class="modal__close" type="button" data-close aria-label="Close">✕</button>
+      </header>
+
+      <div class="modal__body" id="modalBody"></div>
+    </section>
+  </div>
+
+  <script src="./app.js"></script>
 </body>
 </html>
