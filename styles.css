@@ -391,3 +391,99 @@ a{ color:inherit; text-decoration:none; }
     width: calc(100% - 22px);
   }
 }
+
+/* =======================
+   MOBILE FIX (no weirdness)
+   ======================= */
+@media (max-width: 760px){
+
+  /* iOS safe-area + breathing room */
+  body{
+    background-attachment: scroll;
+    background-image: url("./bg-mobile.PNG");
+  }
+
+  .wrap{
+    width: min(1100px, calc(100% - 24px));  /* a little wider on phone */
+    padding: calc(14px + env(safe-area-inset-top)) 0 28px;
+  }
+
+  /* Make hero feel intentional (not huge + cramped) */
+  .hero{
+    border-radius: 22px;
+  }
+
+  /* Keep full image, but don’t let it dominate */
+  .hero__media,
+  .hero__img{
+    height: clamp(240px, 62vw, 380px);
+    background-size: contain;   /* full frame */
+    background-position: center;
+  }
+
+  /* ✅ NO OVERLAP, ever */
+  .hero__panel{
+    margin: 12px auto 0;        /* kill negative margins */
+    width: 100%;
+    max-width: none;
+    padding: 14px 14px 12px;
+    border-radius: 20px;
+  }
+
+  /* Stop the panel from feeling like a giant fogged window */
+  .hero__panel{
+    backdrop-filter: blur(12px) saturate(1);
+    -webkit-backdrop-filter: blur(12px) saturate(1);
+  }
+
+  /* Make the headline readable without extra “mini panels” */
+  .hero__title,
+  .hero__desc{
+    display: block;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .hero__title{
+    font-size: 18px;
+    line-height: 1.15;
+    margin: 0 0 8px;
+  }
+
+  .hero__desc{
+    font-size: 13px;
+    line-height: 1.3;
+    margin: 0 0 12px;
+  }
+
+  /* Buttons: 3 across can look cramped; make it clean */
+  .hero__cta{
+    gap: 10px;
+  }
+  .btn{
+    padding: 10px 14px;
+    min-width: 96px;
+  }
+
+  /* Social buttons: make them obviously “buttons” */
+  .socialBtn{
+    width: 52px;
+    height: 52px;
+  }
+  .socialBtn img{
+    width: 30px;
+    height: 30px;
+  }
+
+  /* Tiles: ensure the next panel never feels glued to hero */
+  .grid{
+    margin-top: 18px;
+    grid-template-columns: 1fr;
+  }
+
+  .tile img{
+    height: 200px;
+  }
+}
