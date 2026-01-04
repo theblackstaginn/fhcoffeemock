@@ -10,9 +10,7 @@
 </head>
 
 <body>
-  <!-- Fixed background layer (works on iOS) -->
   <div class="bg-fixed" aria-hidden="true"></div>
-
   <a class="skip" href="#content">Skip to content</a>
 
   <main id="content" class="wrap">
@@ -47,95 +45,64 @@
       </div>
     </section>
 
-    <!-- HOURS PANEL (between hero and slides, no overlap) -->
-    <section class="hoursPanel" aria-label="Hours panel">
-      <img src="./hours-panel.PNG" alt="Hours" loading="lazy" />
-    </section>
+    <!-- TILES GRID (2 columns) -->
+    <section class="grid" aria-label="Slides + image tiles">
 
-    <!-- SLIDES (same size as tiles, not cropped, swipe like Instagram) -->
-    <section class="mediaStack" aria-label="Slides">
-      <!-- beanslide -->
-      <div class="carousel" data-carousel aria-label="Bean Slide">
-        <div class="carousel__viewport">
+      <!-- SLOT 1: Carousel (beanslide) -->
+      <div class="card carousel" data-carousel="beanslide" aria-label="Bean Slide carousel">
+        <div class="carousel__viewport" tabindex="0" aria-label="Swipe slides">
           <div class="carousel__track">
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-1.jpg" alt="Bean Slide 1" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-2.jpg" alt="Bean Slide 2" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-3.jpg" alt="Bean Slide 3" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-4.jpg" alt="Bean Slide 4" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-5.jpg" alt="Bean Slide 5" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanslide/coff-6.jpg" alt="Bean Slide 6" loading="lazy" />
-            </div>
+            <img class="carousel__img" src="./beanslide/coff-1.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanslide/coff-2.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanslide/coff-3.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanslide/coff-4.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanslide/coff-5.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanslide/coff-6.jpg" alt="" loading="lazy">
           </div>
         </div>
-        <div class="carousel__dots" aria-label="Slide position"></div>
+        <div class="dots" aria-hidden="true"></div>
       </div>
 
-      <!-- beanstory -->
-      <div class="carousel" data-carousel aria-label="Bean Story">
-        <div class="carousel__viewport">
+      <!-- SLOT 2: Carousel (beanstory) -->
+      <div class="card carousel" data-carousel="beanstory" aria-label="Bean Story carousel">
+        <div class="carousel__viewport" tabindex="0" aria-label="Swipe slides">
           <div class="carousel__track">
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-1.jpg" alt="Bean Story 1" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-2.jpg" alt="Bean Story 2" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-3.jpg" alt="Bean Story 3" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-4.jpg" alt="Bean Story 4" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-5.jpg" alt="Bean Story 5" loading="lazy" />
-            </div>
-            <div class="carousel__slide">
-              <img src="./beanstory/cbs-6.jpg" alt="Bean Story 6" loading="lazy" />
-            </div>
+            <img class="carousel__img" src="./beanstory/cbs-1.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanstory/cbs-2.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanstory/cbs-3.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanstory/cbs-4.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanstory/cbs-5.jpg" alt="" loading="lazy">
+            <img class="carousel__img" src="./beanstory/cbs-6.jpg" alt="" loading="lazy">
           </div>
         </div>
-        <div class="carousel__dots" aria-label="Slide position"></div>
+        <div class="dots" aria-hidden="true"></div>
       </div>
-    </section>
 
-    <!-- IMAGE TILES (just images, symmetrical, pulled from /tiles) -->
-    <section class="grid" aria-label="Image tiles">
-      <!-- Menu + Hours still trigger modal, but show your new tile images -->
-      <button class="tile" type="button" data-open="menu" aria-label="Open menu">
-        <img src="./tiles/menu.jpg" alt="Menu" loading="lazy" />
+      <!-- Image tiles (tiles folder) — images only, no text -->
+      <button class="card tile" type="button" data-tile="menu" aria-label="Open menu">
+        <img src="./tiles/menu.jpg" alt="" loading="lazy" />
       </button>
 
-      <button class="tile" type="button" data-open="hours" aria-label="Open hours">
-        <img src="./hours-panel.PNG" alt="Hours" loading="lazy" />
+      <button class="card tile" type="button" data-tile="hours" aria-label="Open hours">
+        <img src="./hours-panel.PNG" alt="" loading="lazy" />
       </button>
 
-      <!-- The rest are just pretty tiles -->
-      <div class="tile" role="img" aria-label="Tile: counter">
+      <a class="card tile" href="./order.html" aria-label="Order (pickup)">
         <img src="./tiles/counter.jpg" alt="" loading="lazy" />
-      </div>
+      </a>
 
-      <div class="tile" role="img" aria-label="Tile: espresso">
-        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
-      </div>
-
-      <div class="tile" role="img" aria-label="Tile: fh-mc">
-        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
-      </div>
-
-      <div class="tile" role="img" aria-label="Tile: r-s-coffee">
+      <button class="card tile" type="button" aria-label="Coffee image">
         <img src="./tiles/r-s-coffee.jpg" alt="" loading="lazy" />
-      </div>
+      </button>
+
+      <button class="card tile" type="button" aria-label="Espresso image">
+        <img src="./tiles/espresso.jpg" alt="" loading="lazy" />
+      </button>
+
+      <button class="card tile" type="button" aria-label="Farmhouse image">
+        <img src="./tiles/fh-mc.jpg" alt="" loading="lazy" />
+      </button>
+
     </section>
   </main>
 
@@ -154,5 +121,85 @@
   </div>
 
   <script src="./app.js"></script>
+
+  <!-- tiny inline script: swipe + dots (no external libs) -->
+  <script>
+  (() => {
+    "use strict";
+
+    const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
+
+    function initCarousel(root){
+      const viewport = root.querySelector(".carousel__viewport");
+      const track = root.querySelector(".carousel__track");
+      const imgs = Array.from(root.querySelectorAll(".carousel__img"));
+      const dots = root.querySelector(".dots");
+      if (!viewport || !track || imgs.length === 0 || !dots) return;
+
+      // Build dots
+      dots.innerHTML = "";
+      const dotEls = imgs.map((_, i) => {
+        const d = document.createElement("button");
+        d.type = "button";
+        d.className = "dot";
+        d.setAttribute("aria-label", `Slide ${i+1}`);
+        d.addEventListener("click", () => {
+          viewport.scrollTo({ left: viewport.clientWidth * i, behavior: "smooth" });
+        });
+        dots.appendChild(d);
+        return d;
+      });
+
+      const setActive = () => {
+        const idx = clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
+        dotEls.forEach((d, i) => d.classList.toggle("is-active", i === idx));
+      };
+
+      viewport.addEventListener("scroll", () => requestAnimationFrame(setActive), { passive: true });
+      window.addEventListener("resize", setActive);
+      setActive();
+
+      // Drag / swipe support (mouse + touch)
+      let isDown = false;
+      let startX = 0;
+      let startLeft = 0;
+
+      const getX = (e) => (e.touches ? e.touches[0].clientX : e.clientX);
+
+      const down = (e) => {
+        isDown = true;
+        startX = getX(e);
+        startLeft = viewport.scrollLeft;
+        viewport.classList.add("is-dragging");
+      };
+
+      const move = (e) => {
+        if (!isDown) return;
+        const x = getX(e);
+        const dx = startX - x;
+        viewport.scrollLeft = startLeft + dx;
+      };
+
+      const up = () => {
+        if (!isDown) return;
+        isDown = false;
+        viewport.classList.remove("is-dragging");
+        const idx = clamp(Math.round(viewport.scrollLeft / viewport.clientWidth), 0, imgs.length - 1);
+        viewport.scrollTo({ left: viewport.clientWidth * idx, behavior: "smooth" });
+      };
+
+      viewport.addEventListener("mousedown", down);
+      window.addEventListener("mousemove", move);
+      window.addEventListener("mouseup", up);
+
+      viewport.addEventListener("touchstart", down, { passive: true });
+      viewport.addEventListener("touchmove", move, { passive: true });
+      viewport.addEventListener("touchend", up);
+      viewport.addEventListener("touchcancel", up);
+    }
+
+    document.querySelectorAll(".carousel").forEach(initCarousel);
+  })();
+  </script>
 </body>
 </html>
